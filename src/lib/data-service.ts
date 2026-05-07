@@ -1,8 +1,26 @@
 /**
- * KOVAIS DATA SERVICE
- * This service handles all data fetching and persistence locally.
- * It simulates a backend API while allowing the app to remain perfectly static.
+ * KOVAIS ENTERPRISE DATA SERVICE
+ * 
+ * ARCHITECTURE NOTE:
+ * This service layer abstracts all external data interactions.
+ * Currently, it uses a high-fidelity mock implementation (localStorage + artificial delays).
+ * 
+ * TO TRANSITION TO PRODUCTION:
+ * 1. Replace the base methods (userService.login, bookingService.createGenericBooking) 
+ *    with standard fetch/axios calls to your production API.
+ * 2. Update the API_BASE_URL constant.
+ * 3. Ensure your production backend returns matching schemas.
  */
+
+const API_BASE_URL = "https://api.kovais.in/v1"; // Example Production URL
+
+// --- Shared Types ---
+export interface User {
+    user_id: number;
+    username: string;
+    points: number;
+    emblem_url: string;
+}
 
 // --- Hotel Data ---
 export const ROOMS = [
@@ -49,9 +67,10 @@ export const PARLOUR_PRODUCTS = [
 
 // --- Gym Data ---
 export const GYM_PLANS = [
-    { id: 'g1', duration: '1 Month', price: 1500, features: ['Full Equipment Access', 'Locker Room', 'Basic Training'] },
-    { id: 'g2', duration: '3 Months', price: 4000, features: ['Premium Access', 'Personal Trainer (2 sessions)', 'Diet Plan'] },
-    { id: 'g3', duration: '12 Months', price: 12000, features: ['VIP Access', 'Unlimited Training', 'Spa Access Included'] },
+    { id: 'g1', duration: '1 Month', price: 399, features: ['Full Equipment Access', 'Unlimited Group Classes', 'Locker Facility', 'Free Wi-Fi'] },
+    { id: 'g2', duration: '3 Months', price: 1099, features: ['All Monthly Benefits', '1 Personal Training Session/Month', 'Nutrition Consultation', 'Priority Booking'] },
+    { id: 'g3', duration: '6 Months', price: 2199, features: ['All Quarterly Benefits', '2 Personal Training Sessions/Month', 'Nutrition Consultation', 'Priority Booking'] },
+    { id: 'g4', duration: '12 Months', price: 4099, features: ['All Semi-Annual Benefits', 'Unlimited Personal Training', 'Diet Plan Included', 'VIP Member Privileges'] },
 ];
 
 // --- Function/Funeral Data ---
@@ -62,7 +81,8 @@ export const HALLS = [
 
 // --- User Mock Service ---
 export const userService = {
-    login: async (username: string, _password: string) => {
+    login: async (username: string, _password: string): Promise<User> => {
+        // PRODUCTION: return axios.post(`${API_BASE_URL}/auth/login`, { username, password });
         await new Promise(r => setTimeout(r, 800));
         const user = {
             user_id: 101,
@@ -77,6 +97,7 @@ export const userService = {
     },
     
     signup: async (_name: string, _phone: string, _password: string) => {
+        // PRODUCTION: return axios.post(`${API_BASE_URL}/auth/signup`, { name, phone, password });
         await new Promise(r => setTimeout(r, 1000));
         return { message: "Account Created Successfully" };
     },
@@ -95,6 +116,7 @@ export const userService = {
 // --- Booking Mock Service ---
 export const bookingService = {
     createGenericBooking: async (type: string, bookingData: any) => {
+        // PRODUCTION: return axios.post(`${API_BASE_URL}/bookings/${type}`, bookingData);
         await new Promise(r => setTimeout(r, 1000));
         const history = JSON.parse(localStorage.getItem(`${type}_history`) || "[]");
         const newBooking = { 
@@ -113,4 +135,5 @@ export const bookingService = {
     createParlourBooking: (data: any) => bookingService.createGenericBooking('parlour', data),
     createGymBooking: (data: any) => bookingService.createGenericBooking('gym', data),
     createHallBooking: (data: any) => bookingService.createGenericBooking('hall', data),
+    createFuneralBooking: (data: any) => bookingService.createGenericBooking('funeral', data),
 };

@@ -42,11 +42,11 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 
     const bookingLinks = [
         { label: "Hotel", desc: "Book luxury stays.", href: "/hotel", icon: Hotel },
-        { label: "Barber Shop", desc: "Professional grooming.", href: "/grooming", icon: Scissors },
+        { label: "Barber Shop", desc: "Professional grooming.", href: "/barber", icon: Scissors },
         { label: "Spa Center", desc: "Relax and rejuvenate.", href: "/spa", icon: Sparkles },
         { label: "Parlour", desc: "Beauty treatments.", href: "/parlour", icon: Heart },
-        { label: "Gym", desc: "Personal training.", href: "/fitness", icon: Dumbbell },
-        { label: "Function", desc: "Events and celebrations.", href: "/booking/function", icon: Calendar },
+        { label: "Gym", desc: "Personal training.", href: "/gym", icon: Dumbbell },
+        { label: "Function", desc: "Events and celebrations.", href: "/function", icon: Calendar },
         { label: "Funeral", desc: "Respectful services.", href: "/funeral", icon: Clock },
     ];
 

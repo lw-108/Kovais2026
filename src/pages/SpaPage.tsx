@@ -1,634 +1,855 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { 
-  Calendar as CalendarIcon, 
   Star, 
-  Flower2,
-  MapPin, 
   Clock, 
-  User, 
-  Phone, 
-  Mail, 
   Home, 
-  Building, 
-  Check, 
-  ChevronRight, 
-  ChevronLeft,
-  X,
+  User, 
+  Calendar as CalendarIcon, 
+  ArrowRight,
   Award,
-  Users,
-  Quote,
-  Sparkles,
+  Phone,
+  Zap,
+  Check,
+  Lock,
+  Flower2,
   Droplets,
-  Massage,
   Leaf,
-  Coffee,
-  Wind,
-  Scissors,
+  Sparkles,
+  Building,
   Heart,
-  Moon,
-  Sun
+  Shield,
+  ChevronRight,
+  Eye
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
-// Type definitions
-interface Service {
-  id: string;
-  name: string;
-  desc: string;
-  duration: string;
-  price: number;
-  category: string;
-  popular?: boolean;
-}
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-interface Specialist {
-  id: number;
-  name: string;
-  role: string;
-  rating: number;
-  image: string;
-  expertise: string;
-}
+import { userService, bookingService } from "@/lib/data-service";
 
-interface CustomerDetails {
-  name: string;
-  phone: string;
-  address: string;
-  extraNote: string;
-}
+const HERO_SLIDES = [
+  {
+    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80",
+    title: "Discover Your",
+    titleHighlight: "Inner Peace",
+    desc: "Experience ancient wellness rituals redefined for the modern soul."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80",
+    title: "Premium",
+    titleHighlight: "Wellness Care",
+    desc: "Dermatologically tested organic elixirs for your ultimate rejuvenation."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80",
+    title: "Expert",
+    titleHighlight: "Ritual Masters",
+    desc: "Our therapists bring decades of mastery in holistic healing arts."
+  }
+];
 
-// UI Components (same as barber page)
-const Button = ({ 
-  children, 
-  onClick, 
-  variant = "default", 
-  className = "", 
-  disabled = false, 
-  size = "default" 
-}: { 
-  children: React.ReactNode;
-  onClick?: () => void;
-  variant?: "default" | "outline" | "ghost";
-  className?: string;
-  disabled?: boolean;
-  size?: "sm" | "default" | "lg";
-}) => {
-  let baseClass = "inline-flex items-center justify-center font-bold uppercase tracking-wider transition-all duration-300 rounded-none ";
-  if (variant === "default") baseClass += "bg-[#D4AF37] hover:bg-[#B8962E] text-black ";
-  if (variant === "outline") baseClass += "border border-[#D4AF37]/30 bg-transparent hover:bg-[#D4AF37]/10 text-black ";
-  if (variant === "ghost") baseClass += "bg-transparent hover:bg-black/5 text-black ";
-  if (size === "sm") baseClass += "px-4 py-2 text-[10px] h-10 ";
-  if (size === "default") baseClass += "px-6 py-3 text-[11px] h-12 ";
-  if (size === "lg") baseClass += "px-8 py-4 text-sm h-14 ";
-  return (
-    <button className={`${baseClass} ${className}`} onClick={onClick} disabled={disabled}>
-      {children}
-    </button>
-  );
+const SPA_SERVICES = {
+  Women: [
+    { 
+      id: "w1", 
+      name: "Signature Glow Facial", 
+      description: "Deep cleansing with organic botanical extracts for radiant skin.",
+      fullDescription: "Our Signature Glow Facial uses high-altitude organic botanicals and cold-pressed elixirs. This 7-step ritual includes deep pore cleansing, enzymatic exfoliation, and a revitalizing gold-infused mask to restore your natural luminosity.",
+      price: 2500, 
+      duration: "60 min", 
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80",
+      features: ["Botanical Cleansing", "Enzymatic Exfoliation", "Gold-Infused Mask", "Deep Hydration", "Lymphatic Drainage Massage"]
+    },
+    { 
+      id: "w2", 
+      name: "Aromatherapy Ritual", 
+      description: "Full body relaxation with essential oils and hot stone therapy.",
+      fullDescription: "A sensory journey tailored to your emotional and physical needs. We blend rare essential oils with rhythmic massage techniques and heated basalt stones to dissolve tension and align your energy centers.",
+      price: 3000, 
+      duration: "90 min", 
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80",
+      features: ["Custom Oil Blending", "Hot Stone Therapy", "Full Body Massage", "Pressure Point Release", "Aromatic Steam Session"]
+    },
+    { 
+      id: "w3", 
+      name: "Traditional Thai Healing", 
+      description: "Ancient stretching and pressure point therapy for flexibility.",
+      fullDescription: "Known as 'lazy yoga', this ancient healing art involves assisted stretching and deep compression along energy lines. Performed on a traditional mat, it improves circulation and restores skeletal alignment.",
+      price: 2800, 
+      duration: "90 min", 
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80",
+      features: ["Assisted Yoga Stretching", "Sen Line Compression", "Joint Mobilization", "Circulatory Boost", "Traditional Mat Setting"]
+    },
+  ],
+  Men: [
+    { 
+      id: "m1", 
+      name: "Deep Tissue Release", 
+      description: "Intense muscle therapy for active lifestyles and chronic tension.",
+      fullDescription: "Focused on the deeper layers of muscle tissue. Our therapists use slow, firm pressure to release chronic muscle knots and tension. Ideal for athletes or those with high-stress desk environments.",
+      price: 2500, 
+      duration: "60 min", 
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1519824141121-b97674389913?auto=format&fit=crop&q=80",
+      features: ["Deep Muscle Compression", "Trigger Point Therapy", "Myofascial Release", "Sports Alignment", "Tension Dissolve"]
+    },
+    { 
+      id: "m2", 
+      name: "Executive Stress Relief", 
+      description: "Focus on neck, shoulders, and head tension for mental clarity.",
+      fullDescription: "Specifically designed for the modern professional. This concentrated ritual targets the areas where stress accumulates most—the cervical spine, trapezius, and scalp. Includes a cooling peppermint oil treatment.",
+      price: 1800, 
+      duration: "45 min", 
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1511424326902-d3dd5c39c5ac?auto=format&fit=crop&q=80",
+      features: ["Cervical Tension Release", "Scalp Invigoration", "Peppermint Oil Therapy", "Mental Clarity Focus", "Shoulder De-stressing"]
+    },
+    { 
+      id: "m3", 
+      name: "Swedish Relaxation", 
+      description: "Gentle rhythmic strokes for total calm and improved circulation.",
+      fullDescription: "The classic relaxation massage. Long, gliding strokes towards the heart promote blood flow and induce a state of profound physiological rest. Perfect for a first-time spa experience.",
+      price: 2200, 
+      duration: "75 min", 
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80",
+      features: ["Long Gliding Strokes", "Effleurage Techniques", "Circulation Improvement", "Gentle Pressure", "Total Calm Inducement"]
+    },
+  ],
+  Couples: [
+    { 
+      id: "c1", 
+      name: "Eternal Bond Ritual", 
+      description: "Side-by-side aromatherapy for two in a private sanctuary suite.",
+      fullDescription: "Reconnect in our signature couples' suite. You and your partner will enjoy synchronized aromatherapy massages followed by a private relaxation session with herbal infusions and dark chocolate.",
+      price: 5500, 
+      duration: "120 min", 
+      rating: 5.0,
+      image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80",
+      features: ["Synchronized Massage", "Private Sanctuary Suite", "Herbal Infusion Service", "Artisanal Chocolates", "Shared Wellness Journey"]
+    },
+    { 
+      id: "c2", 
+      name: "Sanctuary Escape", 
+      description: "Massage followed by a luxury floral bath experience for two.",
+      fullDescription: "The ultimate romantic retreat. After a rejuvenating full-body massage, immerse yourselves in a hand-drawn floral bath infused with sandalwood and rose petals. Includes chilled refreshments and fruit platter.",
+      price: 7500, 
+      duration: "150 min", 
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&q=80",
+      features: ["Full Body Rejuvenation", "Floral Bath Ritual", "Sandalwood Immersion", "Chilled Refreshments", "Luxury Fruit Platter"]
+    },
+  ]
 };
 
-const Badge = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <span className={`inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#D4AF37]/10 border border-[#D4AF37]/20 ${className}`}>
-    {children}
-  </span>
-);
+const THERAPISTS = [
+  { id: 't1', name: 'Maya Sharma', speciality: 'Ayurvedic Master', rating: 4.9 },
+  { id: 't2', name: 'Liam Chen', speciality: 'Deep Tissue Expert', rating: 4.8 },
+  { id: 't3', name: 'Sarah Wilson', speciality: 'Aesthetician', rating: 4.9 }
+];
 
-const Dialog = ({ open, onClose, children }: { open: boolean; onClose: () => void; children: React.ReactNode }) => {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
-      <div className="relative max-w-2xl w-full mx-4 bg-[#FDFBF7] border border-[#D4AF37]/30 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-        {children}
-      </div>
-    </div>
-  );
-};
+const TIME_SLOTS = [
+  '09:00 AM', '10:30 AM', '12:00 PM', '02:00 PM', '03:30 PM', '05:00 PM', '06:30 PM', '08:00 PM'
+];
 
-const SimpleCalendar = ({ selected, onSelect }: { selected: Date | null; onSelect: (date: Date) => void }) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-  const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-  const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-  const startDay = startOfMonth.getDay();
-  const daysArray: (Date | null)[] = [];
-  for (let i = 0; i < startDay; i++) daysArray.push(null);
-  for (let i = 1; i <= endOfMonth.getDate(); i++) daysArray.push(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i));
-  
-  const isSelected = (date: Date) => selected && format(date, "yyyy-MM-dd") === format(selected, "yyyy-MM-dd");
-  const isToday = (date: Date) => format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
-  
-  return (
-    <div className="p-4 bg-white border border-[#D4AF37]/20 w-full">
-      <div className="flex justify-between mb-4">
-        <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}>
-          <ChevronLeft className="w-4 h-4"/>
-        </Button>
-        <span className="font-bold text-sm">{format(currentMonth, "MMMM yyyy")}</span>
-        <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))}>
-          <ChevronRight className="w-4 h-4"/>
-        </Button>
-      </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-muted-foreground mb-2">
-        {days.map(d => <div key={d}>{d}</div>)}
-      </div>
-      <div className="grid grid-cols-7 gap-1">
-        {daysArray.map((date, idx) => (
-          <div key={idx} className="h-10 flex items-center justify-center">
-            {date && (
-              <button 
-                onClick={() => onSelect(date)} 
-                className={`w-8 h-8 text-xs font-bold rounded-full transition-all ${isSelected(date) ? "bg-[#D4AF37] text-white" : isToday(date) ? "border border-[#D4AF37] text-black" : "hover:bg-[#D4AF37]/20"}`}
-              >
-                {date.getDate()}
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+const WHY_CHOOSE_SPA = [
+  { icon: <Sparkles size={24} />, title: 'Premium Elixirs', desc: 'We only use internationally acclaimed, organic botanical products.' },
+  { icon: <Star size={24} />, title: 'Wellness Experts', desc: 'Our certified therapists have 10+ years of mastery in holistic arts.' },
+  { icon: <Heart size={24} />, title: 'Bespoke Rituals', desc: 'Every journey is tailored to your unique energy and physical needs.' },
+  { icon: <Shield size={24} />, title: 'Sanctity of Space', desc: 'Pristine environments, sterilized tools, and meditative calm — always.' },
+];
 
-// Main SPA Component
 export default function SpaPage() {
-  // --- State Management ---
-  const [serviceType, setServiceType] = useState<"salon" | "home">("salon");
-  const [selectedCategory, setSelectedCategory] = useState<"women" | "men" | "couples" | null>(null);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [bookingStep, setBookingStep] = useState(1);
-  const [selectedSpecialist, setSelectedSpecialist] = useState<Specialist | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState<"salon" | "doorstep">("salon");
+  const [selectedCategory, setSelectedCategory] = useState<string>("Women");
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [selectedTherapist, setSelectedTherapist] = useState<any>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({ name: "", phone: "", address: "", extraNote: "" });
-  const [showInfo, setShowInfo] = useState(false);
+
+  const [selectedDetailService, setSelectedDetailService] = useState<any>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+
+  const [showLogin, setShowLogin] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
   
-  // Carousel
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const carouselImages = [
-    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1200&auto=format",
-    "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=1200&auto=format",
-    "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1200&auto=format"
-  ];
-  const carouselTitles = [
-    "Where Beauty Meets Serenity",
-    "Rejuvenate Your Senses",
-    "Luxury Wellness Since 2010"
-  ];
-  const carouselSubtitles = [
-    "Step into our sanctuary of beauty where expert therapists deliver transformative spa experiences. Discover ultimate relaxation and radiant glow.",
-    "Experience the finest in traditional wellness with modern techniques. Our master therapists deliver personalized treatments for complete rejuvenation.",
-    "Every treatment is a journey to wellness. Our skilled professionals combine ancient wisdom with contemporary luxury to restore your natural beauty."
-  ];
-  
-  // Auto carousel
+  const [user, setUser] = useState<any>(null);
+  const [points, setPoints] = useState(0);
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [loginData, setLoginData] = useState({ username: "", password: "", phone: "" });
+  const [loading, setLoading] = useState(false);
+
+  const [payType, setPayType] = useState<"online" | "offline">("offline");
+  const [usedPoints, setUsedPoints] = useState(0);
+  const [pointsInput, setPointsInput] = useState("");
+
+  const serviceTotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  const doorstepCharge = selectedLocation === "doorstep" ? 300 : 0;
+  const baseTotal = serviceTotal + doorstepCharge;
+  const discount = usedPoints * 0.10;
+  const finalTotal = Math.max(0, baseTotal - discount);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 5000);
-    return () => clearInterval(interval);
-  }, [carouselImages.length]);
-  
-  // Services Data
-  const servicesMap: Record<string, Service[]> = {
-    women: [
-      { id: "facial", name: "Signature Facial", desc: "Deep cleansing with organic products", duration: "60 min", price: 85, category: "Women", popular: true },
-      { id: "massage", name: "Aromatherapy Massage", desc: "Full body relaxation with essential oils", duration: "90 min", price: 120, category: "Women" },
-      { id: "bodywrap", name: "Body Wrap & Scrub", desc: "Exfoliation and nourishing wrap", duration: "75 min", price: 95, category: "Women" },
-      { id: "bridal", name: "Bridal Package", desc: "Complete wedding day preparation", duration: "240 min", price: 250, category: "Women", popular: true }
-    ],
-    men: [
-      { id: "mensfacial", name: "Gentleman's Facial", desc: "Deep cleansing for men's skin", duration: "50 min", price: 75, category: "Men" },
-      { id: "sportsmassage", name: "Sports Massage", desc: "Deep tissue relief for active men", duration: "60 min", price: 90, category: "Men", popular: true },
-      { id: "grooming", name: "Premium Grooming", desc: "Facial, manicure & head massage", duration: "90 min", price: 110, category: "Men" }
-    ],
-    couples: [
-      { id: "couplesmassage", name: "Couples Massage", desc: "Side-by-side relaxation experience", duration: "90 min", price: 220, category: "Couples", popular: true },
-      { id: "spaday", name: "Spa Day Package", desc: "Full day of pampering for two", duration: "300 min", price: 380, category: "Couples" },
-      { id: "romantic", name: "Romantic Retreat", desc: "Champagne, chocolates & massage", duration: "120 min", price: 280, category: "Couples" }
-    ]
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("loggedInUser");
+    if (savedUser) {
+      try {
+        const u = JSON.parse(savedUser);
+        if (u && u.user_id) {
+          setUser(u);
+          setPoints(userService.getPoints(u.user_id));
+        }
+      } catch (e) {}
+    }
+  }, []);
+
+  const handleServiceToggle = (service: any) => {
+    if (selectedServices.find(s => s.id === service.id)) {
+      setSelectedServices(selectedServices.filter(s => s.id !== service.id));
+    } else {
+      setSelectedServices([...selectedServices, service]);
+    }
   };
-  
-  const specialists: Specialist[] = [
-    { id: 1, name: "Dr. Sarah Wilson", role: "Master Aesthetician", rating: 4.9, image: "https://randomuser.me/api/portraits/women/44.jpg", expertise: "women" },
-    { id: 2, name: "Maria Garcia", role: "Spa Therapist", rating: 4.8, image: "https://randomuser.me/api/portraits/women/68.jpg", expertise: "women" },
-    { id: 3, name: "James Peterson", role: "Men's Specialist", rating: 4.7, image: "https://randomuser.me/api/portraits/men/32.jpg", expertise: "men" },
-    { id: 4, name: "Emma & David", role: "Couples Experts", rating: 4.9, image: "https://randomuser.me/api/portraits/women/89.jpg", expertise: "couples" }
-  ];
-  
-  const timeSlots = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"];
-  
-  const handleCategorySelect = (category: "women" | "men" | "couples") => {
-    setSelectedCategory(category);
-    setSelectedService(null);
-    setBookingStep(1);
-  };
-  
-  const handleServiceSelect = (service: Service) => {
-    setSelectedService(service);
-    setBookingStep(1);
-  };
-  
-  const proceedToStep2 = () => {
-    if (!selectedService) return;
-    setBookingStep(2);
-  };
-  
-  const proceedToStep3 = () => {
-    if (!selectedSpecialist) return;
-    setBookingStep(3);
-  };
-  
-  const proceedToStep4 = () => {
-    if (!selectedDate || !selectedTime) return;
-    if (serviceType === "home") setBookingStep(4);
-    else handleFinalBooking();
-  };
-  
-  const handleFinalBooking = () => {
-    if (serviceType === "salon" && (!customerDetails.name || !customerDetails.phone)) {
-      alert("Please provide your name and phone number");
+
+  const handleBookingClick = () => {
+    if (selectedServices.length === 0) {
+      Swal.fire({ icon: 'error', title: 'Ritual Required', text: "Please select at least one spa ritual" });
       return;
     }
-    if (serviceType === "home" && (!customerDetails.name || !customerDetails.phone || !customerDetails.address)) {
-      alert("Please provide full address for home service");
+    if (!selectedTherapist) {
+      Swal.fire({ icon: 'error', title: 'Therapist Required', text: "Please select a wellness therapist" });
       return;
     }
-    const totalAmount = (selectedService?.price || 0) + (serviceType === "home" ? 300 : 0);
-    alert(`✨ Spa Booking Confirmed! ✨\n\nService: ${selectedService?.name}\nDate: ${selectedDate ? format(selectedDate, "PPP") : ""} at ${selectedTime}\nTherapist: ${selectedSpecialist?.name}\nTotal: ₹${totalAmount}\n${serviceType === "home" ? "📍 Home spa service to your address" : "🏢 Visit our luxury spa"}\n\nWe look forward to pampering you!`);
-    
-    // Reset
-    setBookingStep(1);
-    setSelectedService(null);
-    setSelectedSpecialist(null);
-    setSelectedDate(null);
-    setSelectedTime(null);
-    setSelectedCategory(null);
-    setCustomerDetails({ name: "", phone: "", address: "", extraNote: "" });
+    if (!selectedDate || !selectedTime) {
+      Swal.fire({ icon: 'error', title: 'Time Required', text: "Please select your preferred ritual time" });
+      return;
+    }
+    if (!user) {
+      setShowLogin(true);
+    } else {
+      setShowBookingModal(true);
+    }
   };
-  
-  const getFilteredSpecialists = (): Specialist[] => {
-    if (!selectedCategory) return specialists;
-    if (selectedCategory === "women") return specialists.filter(s => s.expertise === "women");
-    if (selectedCategory === "men") return specialists.filter(s => s.expertise === "men");
-    return specialists.filter(s => s.expertise === "couples");
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const u = await userService.login(loginData.username, loginData.password);
+      setUser(u);
+      setPoints(u.points);
+      setShowLogin(false);
+      setShowBookingModal(true);
+      Swal.fire({ icon: 'success', title: 'Identity Verified', text: "Welcome back to your sanctuary" });
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Verification Failed', text: "Invalid credentials" });
+    } finally {
+      setLoading(false);
+    }
   };
-  
-  const homeFee = serviceType === "home" ? 300 : 0;
-  const totalPrice = selectedService ? selectedService.price + homeFee : 0;
-  
-  const renderStepContent = () => {
-    if (bookingStep === 1 && selectedService) {
-      return (
-        <div className="space-y-6">
-          <div className="border-l-4 border-[#D4AF37] pl-4 mb-4">
-            <h4 className="font-black text-lg">Selected Treatment</h4>
-            <div className="flex justify-between items-center mt-3 p-4 bg-white/60">
-              <div>
-                <p className="font-bold">{selectedService.name}</p>
-                <p className="text-xs text-muted-foreground">{selectedService.duration}</p>
-              </div>
-              <p className="font-black text-xl">₹{selectedService.price}</p>
-            </div>
-            <Button className="w-full mt-6" onClick={proceedToStep2}>
-              Continue <ChevronRight className="w-4 h-4 ml-2"/>
-            </Button>
-          </div>
-        </div>
-      );
+
+  const handleSignup = async () => {
+    setLoading(true);
+    try {
+      await userService.signup(loginData.username, loginData.phone, loginData.password);
+      setIsNewUser(false);
+      Swal.fire({ icon: 'success', title: 'Profile Created', text: "Your wellness journey begins now" });
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Error', text: "Profile creation failed" });
+    } finally {
+      setLoading(false);
     }
-    if (bookingStep === 2) {
-      return (
-        <div className="space-y-5">
-          <h4 className="font-black text-lg">Choose Your Therapist</h4>
-          <div className="grid grid-cols-1 gap-4 max-h-64 overflow-auto">
-            {getFilteredSpecialists().map(spec => (
-              <div 
-                key={spec.id} 
-                onClick={() => setSelectedSpecialist(spec)} 
-                className={`p-4 border cursor-pointer transition flex items-center gap-4 ${selectedSpecialist?.id === spec.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-gray-200 bg-white'}`}
-              >
-                <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
-                  <img src={spec.image} alt={spec.name} className="w-full h-full object-cover"/>
-                </div>
-                <div className="flex-1">
-                  <p className="font-bold">{spec.name}</p>
-                  <p className="text-xs text-muted-foreground">{spec.role}</p>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-[#D4AF37] text-[#D4AF37]"/>
-                  <span className="text-sm font-bold">{spec.rating}</span>
-                </div>
-                {selectedSpecialist?.id === spec.id && <Check className="w-5 h-5 text-[#D4AF37]"/>}
-              </div>
-            ))}
-          </div>
-          <Button onClick={proceedToStep3} disabled={!selectedSpecialist} className="w-full">
-            Continue <ChevronRight className="w-4 h-4 ml-2"/>
-          </Button>
-        </div>
-      );
-    }
-    if (bookingStep === 3) {
-      return (
-        <div className="space-y-6">
-          <h4 className="font-black text-lg">Choose Date & Time</h4>
-          <div className="border border-[#D4AF37]/20 p-4 bg-white">
-            <SimpleCalendar selected={selectedDate} onSelect={setSelectedDate}/>
-          </div>
-          <div>
-            <p className="font-bold text-sm mb-2">Available Time Slots</p>
-            <div className="grid grid-cols-3 gap-3">
-              {timeSlots.map(t => (
-                <button 
-                  key={t} 
-                  onClick={() => setSelectedTime(t)} 
-                  className={`py-2 border text-xs font-bold transition ${selectedTime === t ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'bg-white border-gray-200 hover:border-[#D4AF37]'}`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-          <Button onClick={proceedToStep4} disabled={!selectedDate || !selectedTime} className="w-full">
-            Continue
-          </Button>
-        </div>
-      );
-    }
-    if (bookingStep === 4 && serviceType === "home") {
-      return (
-        <div className="space-y-5">
-          <h4 className="font-black text-lg">Your Details for Home Spa</h4>
-          <input 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            placeholder="Full Name" 
-            value={customerDetails.name} 
-            onChange={e => setCustomerDetails({...customerDetails, name: e.target.value})} 
-          />
-          <input 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            placeholder="Phone Number" 
-            value={customerDetails.phone} 
-            onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} 
-          />
-          <textarea 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            rows={2} 
-            placeholder="Complete Address for Home Service" 
-            value={customerDetails.address} 
-            onChange={e => setCustomerDetails({...customerDetails, address: e.target.value})} 
-          />
-          <input 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            placeholder="Special requests / preferences (optional)" 
-            value={customerDetails.extraNote} 
-            onChange={e => setCustomerDetails({...customerDetails, extraNote: e.target.value})} 
-          />
-          <Button onClick={handleFinalBooking} className="w-full bg-[#D4AF37] text-black">
-            Confirm Spa Booking · ₹{totalPrice}
-          </Button>
-        </div>
-      );
-    }
-    if (bookingStep === 4 && serviceType === "salon") {
-      return (
-        <div className="space-y-5">
-          <h4 className="font-black text-lg">Your Contact Details</h4>
-          <input 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            placeholder="Full Name" 
-            value={customerDetails.name} 
-            onChange={e => setCustomerDetails({...customerDetails, name: e.target.value})} 
-          />
-          <input 
-            className="w-full p-3 border border-gray-200 bg-white" 
-            placeholder="Phone Number" 
-            value={customerDetails.phone} 
-            onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} 
-          />
-          <Button onClick={handleFinalBooking} className="w-full bg-[#D4AF37] text-black">
-            Confirm Booking · ₹{totalPrice}
-          </Button>
-        </div>
-      );
-    }
-    return null;
   };
-  
+
+  const handleApplyPoints = () => {
+    const pts = parseInt(pointsInput);
+    if (isNaN(pts) || pts <= 0) return;
+    if (pts > points) {
+      Swal.fire({ icon: 'error', title: 'Insufficient Rewards', text: "You don't have enough reward points" });
+      return;
+    }
+    setUsedPoints(pts);
+    Swal.fire({ icon: 'success', title: 'Applied', text: `₹${(pts * 0.1).toFixed(2)} reward applied!` });
+  };
+
+  const handleConfirmBooking = async () => {
+    setLoading(true);
+    try {
+      await bookingService.createSpaBooking({
+        user_id: user.user_id,
+        services: selectedServices.map(s => s.name).join(", "),
+        location: selectedLocation,
+        therapist_id: selectedTherapist.id,
+        date: format(selectedDate!, "yyyy-MM-dd"),
+        time: selectedTime!,
+        total_amount: finalTotal,
+        payment_type: payType,
+        points_used: usedPoints
+      });
+
+      if (usedPoints > 0) {
+        const newPoints = points - usedPoints;
+        userService.updatePoints(user.user_id, newPoints);
+        setPoints(newPoints);
+      }
+
+      setShowBookingModal(false);
+      Swal.fire({ icon: 'success', title: 'Ritual Confirmed', text: "Your wellness journey is scheduled." });
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Error', text: "Booking failed. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const currentServices = (SPA_SERVICES as any)[selectedCategory] || [];
+
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
-      {/* Header */}
-      <header className="fixed top-0 w-full z-30 bg-white/90 backdrop-blur-md border-b border-[#D4AF37]/20 px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Flower2 className="text-[#D4AF37] w-6 h-6"/>
-          <span className="font-black text-xl tracking-tighter" style={{ fontFamily: "'Playfair Display', serif" }}>KOVAIS SPA</span>
-        </div>
-        <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-wider">
-          <a href="#">Home</a>
-          <a href="#">Treatments</a>
-          <a href="#">Packages</a>
-          <a href="#">Contact</a>
-        </div>
-        <Button variant="outline" size="sm" onClick={() => setShowInfo(true)}>Book Now</Button>
-      </header>
-      
-      <main className="pt-28 pb-20">
-        {/* Hero Carousel Section */}
-        <div className="relative h-[70vh] overflow-hidden group">
-          <div 
-            className="absolute inset-0 transition-all duration-700" 
-            style={{
-              backgroundImage: `url(${carouselImages[carouselIndex]})`, 
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center'
-            }}
-          >
-            <div className="absolute inset-0 bg-black/40"/>
-          </div>
-          <div className="relative h-full flex flex-col justify-center items-center text-center text-white px-6">
-            <div className="max-w-3xl animate-fade">
-              <h1 className="text-5xl md:text-7xl font-black mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-                {carouselTitles[carouselIndex]}
-              </h1>
-              <p className="text-lg md:text-xl font-light opacity-90">{carouselSubtitles[carouselIndex]}</p>
+    <div className="min-h-screen bg-[#FDFBF7]">
+      <Header />
+
+      <main className="pt-32 pb-24 space-y-24">
+        {/* Animated Hero Section */}
+        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0"
+            >
+              <img src={HERO_SLIDES[currentSlide].image} className="size-full object-cover grayscale brightness-50" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="relative h-full flex items-center justify-center text-center px-6">
+            <div className="max-w-4xl space-y-10">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex items-center justify-center gap-3 text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase"
+              >
+                <div className="size-1.5 bg-[#D4AF37]" />
+                Kovais Wellness Sanctuary
+                <div className="size-1.5 bg-[#D4AF37]" />
+              </motion.div>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
+                    {HERO_SLIDES[currentSlide].title} <br />
+                    <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
+                  </h1>
+                  <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto mt-8">
+                    {HERO_SLIDES[currentSlide].desc}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-wrap justify-center gap-8 pt-8"
+              >
+                <Button 
+                  onClick={() => document.getElementById('ritual-menu')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="h-16 px-12 bg-[#D4AF37] hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+                >
+                  Explore Rituals
+                </Button>
+                <Button 
+                  className="h-16 px-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+                >
+                  View Wellness Menu
+                </Button>
+              </motion.div>
             </div>
           </div>
-          <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
-            {carouselImages.map((_, idx) => (
+
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4">
+            {HERO_SLIDES.map((_, i) => (
               <button 
-                key={idx} 
-                onClick={() => setCarouselIndex(idx)} 
-                className={`transition-all ${idx === carouselIndex ? 'w-8 bg-[#D4AF37]' : 'w-2 bg-white/50'} h-2 rounded-full`}
+                key={i} 
+                onClick={() => setCurrentSlide(i)}
+                className={`h-1 transition-all duration-700 ${i === currentSlide ? 'w-12 bg-[#D4AF37]' : 'w-4 bg-white/30'}`} 
               />
             ))}
           </div>
-        </div>
-        
-        {/* Premium Stats */}
-        <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-8 text-center border-b border-[#D4AF37]/20">
-          <div>
-            <Award className="mx-auto w-10 h-10 text-[#D4AF37] mb-3"/>
-            <div className="font-black text-2xl">4.9</div>
-            <p className="text-xs uppercase">Client Rating</p>
-          </div>
-          <div>
-            <Users className="mx-auto w-10 h-10 text-[#D4AF37] mb-3"/>
-            <div className="font-black text-2xl">10k+</div>
-            <p className="text-xs uppercase">Happy Clients</p>
-          </div>
-          <div>
-            <Heart className="mx-auto w-10 h-10 text-[#D4AF37] mb-3"/>
-            <div className="font-black text-2xl">15+</div>
-            <p className="text-xs uppercase">Expert Therapists</p>
+        </section>
+
+        {/* Marquee Track */}
+        <div className="py-8 bg-black overflow-hidden border-y border-[#D4AF37]/20">
+          <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
+            {[...Array(2)].map((_, ri) => (
+              <div key={ri} className="flex gap-16 items-center">
+                {['AYURVEDIC HEALING', 'AROMATHERAPY', 'DEEP TISSUE', 'FLORAL BATHS', 'MINDFULNESS', 'ORGANIC ELIXIRS'].map((item, i) => (
+                  <span key={i} className="text-white/40 text-[10px] font-black tracking-[0.5em] flex items-center gap-4 uppercase">
+                    <span className="text-[#D4AF37]">◆</span> {item}
+                  </span>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-        
-        {/* Service Location Switch & Category Selection */}
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex border-2 border-[#D4AF37]/40 p-1 rounded-full bg-white shadow-lg">
-              <button 
-                onClick={() => setServiceType("salon")} 
-                className={`px-8 py-3 rounded-full font-black uppercase text-xs tracking-wider transition-all ${serviceType === "salon" ? "bg-[#D4AF37] text-black" : "text-muted-foreground"}`}
-              >
-                <Building className="inline mr-2 w-4 h-4"/> Spa Salon
-              </button>
-              <button 
-                onClick={() => setServiceType("home")} 
-                className={`px-8 py-3 rounded-full font-black uppercase text-xs tracking-wider transition-all ${serviceType === "home" ? "bg-[#D4AF37] text-black" : "text-muted-foreground"}`}
-              >
-                <Home className="inline mr-2 w-4 h-4"/> Home Spa {serviceType === "home" && <span className="ml-1 text-[10px]">(+₹300)</span>}
-              </button>
+
+        {/* Ritual Configuration */}
+        <div className="max-w-7xl mx-auto px-6 space-y-1">
+          <div className="p-4 bg-white/60 backdrop-blur-2xl border border-[#D4AF37]/10 shadow-2xl relative">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Service Type</label>
+                <div className="grid grid-cols-2 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                  <button 
+                    onClick={() => setSelectedLocation("salon")}
+                    className={`flex items-center justify-center gap-2 h-11 text-[10px] font-black uppercase transition-all ${selectedLocation === 'salon' ? 'bg-[#D4AF37] text-white' : 'hover:bg-[#D4AF37]/5 text-muted-foreground'}`}
+                  >
+                    <Building className="size-3" /> Spa Salon
+                  </button>
+                  <button 
+                    onClick={() => setSelectedLocation("doorstep")}
+                    className={`flex items-center justify-center gap-2 h-11 text-[10px] font-black uppercase transition-all ${selectedLocation === 'doorstep' ? 'bg-[#D4AF37] text-white' : 'hover:bg-[#D4AF37]/5 text-muted-foreground'}`}
+                  >
+                    <Home className="size-3" /> Home Spa
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Target Category</label>
+                <div className="grid grid-cols-3 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                  {['Women', 'Men', 'Couples'].map(cat => (
+                    <button 
+                      key={cat}
+                      onClick={() => {
+                        setSelectedCategory(cat);
+                        setSelectedServices([]);
+                      }}
+                      className={`h-11 text-[10px] font-black uppercase transition-all ${selectedCategory === cat ? 'bg-[#D4AF37] text-white' : 'hover:bg-[#D4AF37]/5 text-muted-foreground'}`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Preferred Date</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-[#FDFBF7]">
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[#D4AF37]" />
+                      {selectedDate ? format(selectedDate, "PPP") : "Select date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 rounded-none border-[#D4AF37]/20" align="start">
+                    <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} initialFocus className="rounded-none" />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Therapist Preference</label>
+                <div className="flex items-center gap-2 p-3 bg-[#FDFBF7] border border-border/5 h-11 font-bold text-sm">
+                  <User className="size-4 text-[#D4AF37]" />
+                  {selectedTherapist ? selectedTherapist.name : "Choose below"}
+                </div>
+              </div>
             </div>
           </div>
-          
-          {/* Category Selection Buttons */}
-          <div className="flex justify-center gap-6 mb-16">
-            <button 
-              onClick={() => handleCategorySelect("women")} 
-              className={`px-8 py-3 font-black uppercase tracking-wider text-sm border-2 transition-all ${selectedCategory === "women" ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "bg-white text-black border-gray-300 hover:border-[#D4AF37]"}`}
-            >
-              <Sparkles className="inline mr-2 w-4 h-4"/> Women
-            </button>
-            <button 
-              onClick={() => handleCategorySelect("men")} 
-              className={`px-8 py-3 font-black uppercase tracking-wider text-sm border-2 transition-all ${selectedCategory === "men" ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "bg-white text-black border-gray-300 hover:border-[#D4AF37]"}`}
-            >
-              <Scissors className="inline mr-2 w-4 h-4"/> Men
-            </button>
-            <button 
-              onClick={() => handleCategorySelect("couples")} 
-              className={`px-8 py-3 font-black uppercase tracking-wider text-sm border-2 transition-all ${selectedCategory === "couples" ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "bg-white text-black border-gray-300 hover:border-[#D4AF37]"}`}
-            >
-              <Heart className="inline mr-2 w-4 h-4"/> Couples
-            </button>
-          </div>
-          
-          {/* Service Cards Grid */}
-          {selectedCategory && servicesMap[selectedCategory] && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
-              {servicesMap[selectedCategory].map(service => (
-                <div 
-                  key={service.id} 
-                  className={`bg-white border p-6 transition-all cursor-pointer hover:shadow-2xl ${selectedService?.id === service.id ? 'border-[#D4AF37] shadow-lg' : 'border-gray-200'}`} 
-                  onClick={() => handleServiceSelect(service)}
-                >
-                  {service.popular && (
-                    <Badge className="mb-3 bg-[#D4AF37] text-white border-none">Most Popular</Badge>
-                  )}
-                  <h3 className="font-black text-xl mb-2">{service.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{service.desc}</p>
-                  <div className="flex justify-between items-center">
-                    <Badge>{service.duration}</Badge>
-                    <span className="font-black text-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>₹{service.price}</span>
-                  </div>
-                  {selectedService?.id === service.id && (
-                    <div className="mt-4 text-right">
-                      <Check className="inline text-[#D4AF37] w-5 h-5"/>
+        </div>
+
+        {/* Services & Booking Grid */}
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-px bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="ritual-menu">
+          {/* Left: Ritual Menu */}
+          <div className="p-8 md:p-12 bg-white space-y-10">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37] mb-2 block">OUR COLLECTION</span>
+                <h2 className="text-3xl font-black serif uppercase tracking-tight">Ritual Menu</h2>
+              </div>
+              <Badge variant="outline" className="border-[#D4AF37]/30 text-[#D4AF37] rounded-none">{selectedCategory}</Badge>
+            </div>
+            
+            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+              {currentServices.map((service: any) => {
+                const isSelected = selectedServices.find(s => s.id === service.id);
+                return (
+                  <motion.div 
+                    key={service.id}
+                    className={`group p-5 border transition-all cursor-pointer flex items-center gap-6 ${isSelected ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-border/5 hover:border-[#D4AF37]/30 bg-muted/5'}`}
+                  >
+                    <div className="size-24 overflow-hidden border border-[#D4AF37]/10 shrink-0" onClick={() => handleServiceToggle(service)}>
+                      <img src={service.image} alt={service.name} className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
                     </div>
-                  )}
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-black text-sm uppercase tracking-tight" onClick={() => handleServiceToggle(service)}>{service.name}</h4>
+                        <span className="font-black text-[#D4AF37]">₹{service.price}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground font-medium leading-relaxed" onClick={() => handleServiceToggle(service)}>{service.description}</p>
+                      <div className="flex items-center gap-6 text-[9px] font-black uppercase text-[#D4AF37]/60">
+                        <span className="flex items-center gap-1"><Clock className="size-3" /> {service.duration}</span>
+                        <span className="flex items-center gap-1"><Star className="size-3 fill-[#D4AF37]/60" /> {service.rating}</span>
+                        <button 
+                          onClick={() => { setSelectedDetailService(service); setShowDetailModal(true); }}
+                          className="flex items-center gap-1 text-black hover:text-[#D4AF37] transition-colors"
+                        >
+                          <Eye className="size-3" /> View Ritual
+                        </button>
+                      </div>
+                    </div>
+                    <div 
+                      onClick={() => handleServiceToggle(service)}
+                      className={`size-5 border flex items-center justify-center transition-all ${isSelected ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-border/20 group-hover:border-[#D4AF37]/50'}`}
+                    >
+                      {isSelected && <Check className="size-3 text-white" />}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Specialists & Finalize */}
+          <div className="p-8 md:p-16 bg-[#FDFBF7] flex flex-col justify-between border-l border-[#D4AF37]/10">
+            <div className="space-y-12">
+              <div className="space-y-8">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Select Wellness Therapist</h3>
+                <div className="grid grid-cols-1 gap-4">
+                  {THERAPISTS.map((therapist) => (
+                    <button 
+                      key={therapist.id}
+                      onClick={() => setSelectedTherapist(therapist)}
+                      className={`p-5 border transition-all flex items-center justify-between ${selectedTherapist?.id === therapist.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10 hover:border-[#D4AF37]/30'}`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="size-12 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
+                          <User className="size-6 text-[#D4AF37]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-black text-xs uppercase tracking-tight">{therapist.name}</div>
+                          <div className="text-[9px] font-bold text-muted-foreground uppercase">{therapist.speciality}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] font-black text-[#D4AF37]">
+                        <Star className="size-3 fill-[#D4AF37]" /> {therapist.rating}
+                      </div>
+                    </button>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div className="space-y-8">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">II. Select Ritual Time</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {TIME_SLOTS.map((time) => (
+                    <button 
+                      key={time}
+                      onClick={() => setSelectedTime(time)}
+                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-white border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-12 border-t border-[#D4AF37]/20">
+                <div className="flex justify-between items-end mb-8">
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Estimated Investment</div>
+                    <div className="text-4xl font-black serif">₹{finalTotal.toLocaleString()}</div>
+                  </div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">
+                    {selectedServices.length} Rituals Selected
+                  </div>
+                </div>
+                <Button 
+                  className="w-full h-16 rounded-none bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-[0.2em] text-[11px] shadow-xl shadow-[#D4AF37]/20"
+                  onClick={handleBookingClick}
+                >
+                  Schedule Your Escape <ArrowRight className="ml-2 size-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Why Choose Us Section */}
+        <section className="max-w-7xl mx-auto px-6 space-y-16">
+          <div className="text-center space-y-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">WHY KOVAIS SPA</span>
+            <h2 className="text-4xl md:text-6xl font-black serif uppercase tracking-tight">The Mastery of <span className="text-[#D4AF37]">Healing</span></h2>
+            <p className="text-muted-foreground text-sm font-medium max-w-xl mx-auto">We combine expertise, premium organic products, and personalized care to deliver results that exceed expectations.</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {WHY_CHOOSE_SPA.map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="p-10 border border-[#D4AF37]/10 bg-white hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
+              >
+                <div className="text-[#D4AF37] flex justify-center scale-125">{item.icon}</div>
+                <div className="space-y-3">
+                  <h4 className="font-black text-xs uppercase tracking-widest">{item.title}</h4>
+                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Featured Amenities Section */}
+        <div className="max-w-7xl mx-auto px-6 py-24 border-t border-[#D4AF37]/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+            <div className="text-center space-y-4 group">
+              <div className="size-24 mx-auto rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-hover:bg-[#D4AF37]/5 transition-all">
+                <Droplets className="size-10 text-[#D4AF37]" />
+              </div>
+              <h4 className="font-black text-xs uppercase tracking-widest">Organic Oils</h4>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Pure Botanical Essences</p>
+            </div>
+            <div className="text-center space-y-4 group">
+              <div className="size-24 mx-auto rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-hover:bg-[#D4AF37]/5 transition-all">
+                <Leaf className="size-10 text-[#D4AF37]" />
+              </div>
+              <h4 className="font-black text-xs uppercase tracking-widest">Natural Care</h4>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Eco-Certified Products</p>
+            </div>
+            <div className="text-center space-y-4 group">
+              <div className="size-24 mx-auto rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-hover:bg-[#D4AF37]/5 transition-all">
+                <Sparkles className="size-10 text-[#D4AF37]" />
+              </div>
+              <h4 className="font-black text-xs uppercase tracking-widest">Zen Spaces</h4>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Meditative Ambiance</p>
+            </div>
+            <div className="text-center space-y-4 group">
+              <div className="size-24 mx-auto rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-hover:bg-[#D4AF37]/5 transition-all">
+                <Award className="size-10 text-[#D4AF37]" />
+              </div>
+              <h4 className="font-black text-xs uppercase tracking-widest">Mastery</h4>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Expert Wellness Artisans</p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+
+      {/* --- Service Detail Modal --- */}
+      <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
+        <DialogContent className="max-w-3xl p-0 overflow-hidden bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+          {selectedDetailService && (
+            <div className="flex flex-col md:flex-row h-full">
+              <div className="md:w-1/2 relative h-64 md:h-auto">
+                <img src={selectedDetailService.image} className="size-full object-cover" />
+                <div className="absolute top-6 left-6 bg-[#D4AF37] text-white px-4 py-1.5 text-[9px] font-black uppercase tracking-widest">
+                  {selectedCategory} Ritual
+                </div>
+              </div>
+              <div className="md:w-1/2 p-10 space-y-8">
+                <DialogHeader className="space-y-2">
+                  <div className="flex items-center justify-between text-[#D4AF37]">
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={12} fill={i < Math.floor(selectedDetailService.rating) ? "currentColor" : "none"} />
+                      ))}
+                    </div>
+                    <span className="text-[10px] font-black">{selectedDetailService.rating}/5.0</span>
+                  </div>
+                  <DialogTitle className="text-3xl font-black serif uppercase tracking-tight">{selectedDetailService.name}</DialogTitle>
+                  <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">{selectedDetailService.fullDescription}</p>
+                </DialogHeader>
+
+                <div className="grid grid-cols-2 gap-4 border-y border-[#D4AF37]/10 py-6">
+                  <div>
+                    <div className="text-[9px] font-black uppercase opacity-40 mb-1">Investment</div>
+                    <div className="text-xl font-black serif text-[#D4AF37]">₹{selectedDetailService.price}</div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] font-black uppercase opacity-40 mb-1">Ritual Duration</div>
+                    <div className="text-xl font-black serif text-[#D4AF37]">{selectedDetailService.duration}</div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h6 className="text-[10px] font-black uppercase tracking-widest">What's Included</h6>
+                  <div className="grid grid-cols-1 gap-2">
+                    {selectedDetailService.features.map((f: string, i: number) => (
+                      <div key={i} className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
+                        <Check className="size-3 text-[#D4AF37]" /> {f}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={() => {
+                    handleServiceToggle(selectedDetailService);
+                    setShowDetailModal(false);
+                  }}
+                  className="w-full h-14 bg-black hover:bg-[#D4AF37] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-500"
+                >
+                  {selectedServices.find(s => s.id === selectedDetailService.id) ? "Remove from Journey" : "Add to Journey Ritual"}
+                </Button>
+              </div>
             </div>
           )}
-        </div>
-        
-        {/* Booking Stepper */}
-        {selectedService && (
-          <div className="bg-white border-t border-b border-[#D4AF37]/20 py-12 mt-8">
-            <div className="max-w-3xl mx-auto px-6">
-              <div className="flex justify-between mb-10 text-xs font-black uppercase text-muted-foreground">
-                <div className={bookingStep >= 1 ? "text-[#D4AF37]" : ""}>Step 1: Treatment</div>
-                <div className={bookingStep >= 2 ? "text-[#D4AF37]" : ""}>Step 2: Therapist</div>
-                <div className={bookingStep >= 3 ? "text-[#D4AF37]" : ""}>Step 3: Date & Time</div>
-                <div className={bookingStep >= 4 ? "text-[#D4AF37]" : ""}>Step 4: Details</div>
-              </div>
-              {renderStepContent()}
-            </div>
-          </div>
-        )}
-        
-        {/* Spa Amenities */}
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-black" style={{ fontFamily: "'Playfair Display', serif" }}>The Spa Experience</h2>
-            <div className="w-20 h-0.5 bg-[#D4AF37] mx-auto mt-2"/>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center p-6"><Droplets className="mx-auto w-12 h-12 text-[#D4AF37] mb-3"/><p className="font-bold">Aromatherapy</p></div>
-            <div className="text-center p-6"><Massage className="mx-auto w-12 h-12 text-[#D4AF37] mb-3"/><p className="font-bold">Deep Tissue</p></div>
-            <div className="text-center p-6"><Leaf className="mx-auto w-12 h-12 text-[#D4AF37] mb-3"/><p className="font-bold">Organic Products</p></div>
-            <div className="text-center p-6"><Wind className="mx-auto w-12 h-12 text-[#D4AF37] mb-3"/><p className="font-bold">Steam & Sauna</p></div>
-          </div>
-        </div>
-        
-        {/* Testimonial */}
-        <div className="bg-[#1A1A1A] text-white py-20 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <Quote className="w-12 h-12 text-[#D4AF37] mx-auto mb-6"/>
-            <p className="text-2xl md:text-3xl font-serif italic">"The most relaxing spa experience I've ever had. The therapists are truly experts and the ambiance is heavenly."</p>
-            <p className="mt-6 font-bold">— Priya Sharma</p>
-            <div className="flex justify-center gap-1 mt-4">
-              {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-[#D4AF37] text-[#D4AF37]"/>)}
-            </div>
-          </div>
-        </div>
-        
-        {/* Footer */}
-        <footer className="bg-black text-white/70 py-12 px-6 text-center text-xs">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6">
-            <div>
-              <Flower2 className="text-[#D4AF37] mb-2 mx-auto"/>
-              <p className="font-bold">KOVAIS SPA & WELLNESS</p>
-              <p>097, SH 15, Gobichettipalayam, Tamil Nadu</p>
-            </div>
-            <div>
-              <p>© 2025 KOVAIS SPA. All Rights Reserved.</p>
-              <p>Contact: 9234567891 | info@kovaisspa.com</p>
-            </div>
-          </div>
-        </footer>
-      </main>
-      
-      {/* Info Dialog */}
-      <Dialog open={showInfo} onClose={() => setShowInfo(false)}>
-        <div className="p-8">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-black">Book Your Spa Experience</h3>
-            <button onClick={() => setShowInfo(false)}><X/></button>
-          </div>
-          <p className="mb-6">Select your preferred category (Women/Men/Couples), choose a treatment, and follow the booking steps. Our expert therapists await to pamper you!</p>
-          <Button onClick={() => setShowInfo(false)} className="w-full">Begin Your Journey</Button>
-        </div>
+        </DialogContent>
       </Dialog>
-      
-      <style>{`
-        @keyframes fadeSlide { 
-          0% { opacity: 0; transform: translateY(20px); } 
-          100% { opacity: 1; transform: translateY(0); } 
-        }
-        .animate-fade { animation: fadeSlide 0.8s ease-out; }
-      `}</style>
+
+      {/* --- Login Modal --- */}
+      <Dialog open={showLogin} onOpenChange={setShowLogin}>
+        <DialogContent className="max-w-md p-8 bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-black tracking-tight serif uppercase">Wellness Access</h2>
+              <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">
+                {isNewUser ? "Join our wellness circle" : "Verify your identity"}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+              </div>
+              {isNewUser && (
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                  <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                </div>
+              )}
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+              </div>
+              
+              <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
+                {loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
+              </Button>
+
+              <div className="text-center">
+                <button className="text-[10px] font-black uppercase text-[#D4AF37] hover:underline" onClick={() => setIsNewUser(!isNewUser)}>
+                  {isNewUser ? "Member already? Login" : "New here? Begin journey"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* --- Booking Modal --- */}
+      <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
+        <DialogContent className="max-w-2xl p-0 overflow-hidden bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+          <div className="p-8 bg-white border-b border-[#D4AF37]/10">
+            <div className="flex items-center gap-3">
+              <Flower2 className="size-5 text-[#D4AF37]" />
+              <h2 className="text-2xl font-black tracking-tight serif uppercase">Confirm Ritual Journey</h2>
+            </div>
+          </div>
+          
+          <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
+            <div className="p-6 bg-white border border-border/5 space-y-4">
+              {selectedServices.map(s => (
+                <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
+                  <div className="font-black text-[10px] uppercase tracking-tight">{s.name}</div>
+                  <div className="font-black text-sm serif">₹{s.price}</div>
+                </div>
+              ))}
+              <div className="pt-2 flex items-center justify-between">
+                <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                  <CalendarIcon className="size-3" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Select date"} · {selectedTime}
+                </div>
+                <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#D4AF37]/5 border border-[#D4AF37]/20 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
+                  <span className="text-xs font-black uppercase tracking-tight">Redeem Rewards</span>
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
+              </div>
+              <div className="flex gap-4">
+                <input className="flex-1 h-12 px-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
+                <Button className="h-12 bg-black text-white px-8 rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Redeem</Button>
+              </div>
+              {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('offline')}>
+                  <Clock className="size-6 text-[#D4AF37]" />
+                  <div>
+                    <div className="font-black text-xs uppercase tracking-tight">At Sanctuary</div>
+                    <div className="text-[9px] font-bold opacity-60">Pay after ritual</div>
+                  </div>
+                </div>
+                <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('online')}>
+                  <Zap className="size-6 text-[#D4AF37]" />
+                  <div>
+                    <div className="font-black text-xs uppercase tracking-tight">Instant Pay</div>
+                    <div className="text-[9px] font-bold opacity-60">Priority confirmation</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8 bg-white border-t border-border/10">
+            <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
+              {loading ? "Registering Journey..." : `Confirm Journey · ₹${finalTotal.toLocaleString()}`}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

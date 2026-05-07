@@ -23,6 +23,7 @@ export const bookingLinks = [
 ];
 
 export const infoLinks = [
+  { label: "About Us", href: "/about", icon: <FileText className="size-4" />, description: "Our story and mission." },
   { label: "Contact Us", href: "/contact", icon: <Mail className="size-4" />, description: "Get in touch." },
   { label: "Privacy", href: "/privacy", icon: <ShieldCheck className="size-4" />, description: "Our privacy policy." },
   { label: "Terms", href: "/terms", icon: <FileText className="size-4" />, description: "Usage terms." },

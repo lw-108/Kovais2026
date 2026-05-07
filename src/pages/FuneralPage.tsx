@@ -1,122 +1,728 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Row, Col } from 'react-bootstrap';
-import { Heart, Shield, Anchor } from "lucide-react";
+"use client";
+import { useState, useEffect } from "react";
+import { 
+  Star, 
+  Clock, 
+  User, 
+  Calendar as CalendarIcon, 
+  Heart,
+  Shield,
+  Check,
+  Lock,
+  Phone,
+  Eye,
+  ArrowRight,
+  Sparkles,
+  Award,
+  Home,
+  Scissors,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
+  MapPin,
+  Trash2
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Swal from "sweetalert2";
 
-import { HALLS, bookingService } from "@/lib/data-service";
-import { PaymentPage, ConfirmationPage } from "../components/Payment";
+import { Button } from "@/components/ui/button";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 
-const FuneralPage = ({ points }: any) => {
-  const [selectedHall, setSelectedHall] = useState<any>(null);
-  const [showPayment, setShowPayment] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [amount, setAmount] = useState(0);
+import { userService, bookingService } from "@/lib/data-service";
 
-  const values = [
-    { icon: <Heart size={24} />, title: "Compassion", desc: "Respectful guidance during difficult times." },
-    { icon: <Shield size={24} />, title: "Dignity", desc: "Honoring every legacy with absolute grace." },
-    { icon: <Anchor size={24} />, title: "Support", desc: "Comprehensive care for every detail." }
-  ];
+const HERO_SLIDES = [
+  {
+    image: "https://plus.unsplash.com/premium_photo-1661544108210-3a11648ecfd9?auto=format&fit=crop&q=80",
+    title: "Respectful",
+    titleHighlight: "Preparation",
+    desc: "Memorial grooming services delivered with the utmost dignity and care for your loved ones."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1740457029931-ad544487454f?auto=format&fit=crop&q=80",
+    title: "Master",
+    titleHighlight: "Craftsmen",
+    desc: "Our senior stylists specialize in final preparations, ensuring a peaceful and dignified appearance."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1740457026779-4c156694231c?auto=format&fit=crop&q=80",
+    title: "Compassionate",
+    titleHighlight: "Care",
+    desc: "Providing comfort and support through meticulous attention to detail during difficult times."
+  }
+];
 
-  const handleSelect = (hall: any) => {
-    setSelectedHall(hall);
-    setAmount(hall.price);
-    setShowPayment(true);
+const FUNERAL_SERVICES = [
+  {
+    id: 'f1',
+    category: 'Funeral',
+    name: 'Memorial Grooming',
+    description: 'Respectful final preparation service including hair and grooming.',
+    price: 500,
+    image: 'https://images.unsplash.com/photo-1675746435874-e72d846bdca5?auto=format&fit=crop&q=80',
+    duration: '60 min'
+  }
+];
+
+const SPECIALISTS = [
+  {
+    id: 'emp4',
+    name: 'Isabella',
+    speciality: 'Senior Stylist',
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
+    categories: ['Funeral']
+  }
+];
+
+const TIME_SLOTS = [
+  '09:00 AM', '10:00 AM', '11:00 AM',
+  '12:00 PM', '02:00 PM', '03:00 PM',
+  '04:00 PM', '05:00 PM', '06:00 PM',
+];
+
+const STATS = [
+  { icon: <Star size={20} />, value: "4.9", label: "Rating" },
+  { icon: <Clock size={20} />, value: "25+", label: "Years" },
+  { icon: <Award size={20} />, value: "500+", label: "Families Served" },
+];
+
+export default function FuneralPage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [user, setUser] = useState<any>(null);
+  const [points, setPoints] = useState(0);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [loginData, setLoginData] = useState({ username: "", password: "", phone: "" });
+
+  // Booking Flow State
+  const [currentStep, setCurrentStep] = useState(0);
+  const [booking, setBooking] = useState({
+    services: [] as any[],
+    location: 'Door Step',
+    employee: null as any,
+    date: '',
+    time: null as any,
+    customerInfo: {
+      name: '',
+      phone: '',
+      email: '',
+      notes: ''
+    }
+  });
+
+  const [pointsInput, setPointsInput] = useState("");
+  const [usedPoints, setUsedPoints] = useState(0);
+  const [payType, setPayType] = useState<"online" | "offline">("offline");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("loggedInUser");
+    if (savedUser) {
+      try {
+        const u = JSON.parse(savedUser);
+        if (u && u.user_id) {
+          setUser(u);
+          setPoints(userService.getPoints(u.user_id));
+        }
+      } catch (e) {}
+    }
+  }, []);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const u = await userService.login(loginData.username, loginData.password);
+      setUser(u);
+      setPoints(u.points);
+      setShowLogin(false);
+      Swal.fire({ icon: 'success', title: 'Welcome', text: "Verification successful." });
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Error', text: "Invalid credentials" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignup = async () => {
+    setLoading(true);
+    try {
+      await userService.signup(loginData.username, loginData.phone, loginData.password);
+      setIsNewUser(false);
+      Swal.fire({ icon: 'success', title: 'Success', text: "Account created! Please login." });
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Error', text: "Signup failed." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleServiceSelect = (service: any) => {
+    const isSelected = booking.services.find(s => s.id === service.id);
+    if (isSelected) {
+      setBooking(prev => ({
+        ...prev,
+        services: prev.services.filter(s => s.id !== service.id)
+      }));
+    } else {
+      setBooking(prev => ({
+        ...prev,
+        services: [...prev.services, service]
+      }));
+    }
+  };
+
+  const calculateTotal = () => {
+    const serviceTotal = booking.services.reduce((sum, s) => sum + s.price, 0);
+    const doorstepCharge = booking.location === 'Door Step' ? 250 : 0;
+    const discount = usedPoints * 0.10;
+    return Math.max(0, serviceTotal + doorstepCharge - discount);
+  };
+
+  const handleApplyPoints = () => {
+    const pts = parseInt(pointsInput);
+    if (isNaN(pts) || pts <= 0) return;
+    if (pts > points) {
+      Swal.fire({ icon: 'error', title: 'Insufficient Points', text: `You have ${points} points.` });
+      return;
+    }
+    setUsedPoints(pts);
+    Swal.fire({ icon: 'success', title: 'Points Applied', text: `₹${(pts * 0.1).toFixed(2)} savings applied!` });
+  };
+
+  const handleConfirmBooking = async () => {
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await bookingService.createFuneralBooking({
+        user_id: user.user_id,
+        services: booking.services.map(s => s.name).join(", "),
+        amount: calculateTotal(),
+        date: booking.date,
+        time: booking.time,
+        payment_type: payType,
+        points_used: usedPoints,
+        location: booking.location,
+        specialist: booking.employee?.name,
+        customer_phone: booking.customerInfo.phone
+      });
+
+      if (usedPoints > 0) {
+        const newPoints = points - usedPoints;
+        userService.updatePoints(user.user_id, newPoints);
+        setPoints(newPoints);
+      }
+
+      Swal.fire({ 
+        icon: 'success', 
+        title: 'Booking Confirmed', 
+        text: "Our team will contact you shortly to coordinate the service." 
+      });
+      setCurrentStep(0);
+      setBooking({
+        services: [],
+        location: 'Door Step',
+        employee: null,
+        date: '',
+        time: null,
+        customerInfo: { name: '', phone: '', email: '', notes: '' }
+      });
+      setUsedPoints(0);
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Error', text: "Booking failed. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isStepValid = (step: number) => {
+    switch(step) {
+      case 0: return booking.services.length > 0;
+      case 1: return booking.employee !== null;
+      case 2: return booking.date !== '' && booking.time !== null;
+      case 3: return booking.customerInfo.name && booking.customerInfo.phone;
+      default: return true;
+    }
   };
 
   return (
-    <div className="funeral-page bg-onyx text-ivory min-h-screen pt-24 pb-20">
-      {/* Serene Hero */}
-      <section className="container mb-32 text-center">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }}>
-            <span className="text-gold/50 uppercase tracking-[0.5em] text-xs mb-6 block">Kovais Memorial Services</span>
-            <h1 className="text-6xl md:text-8xl serif-font mb-10 font-light italic">Serenity & <span className="text-gold">Legacy</span></h1>
-            <div className="max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent mb-12" />
-            <p className="text-muted text-lg leading-relaxed max-w-xl mx-auto mb-20 font-light">Honoring lives with the utmost dignity. Our memorial halls provide a peaceful sanctuary for reflection, remembrance, and the celebration of cherished legacies.</p>
-        </motion.div>
-        
-        <motion.div 
-            initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1 }}
-            className="aspect-[21/9] w-full bg-charcoal border border-glass-border overflow-hidden"
-        >
-            <img src="https://images.unsplash.com/photo-1518116518337-14e9185a5369?auto=format&fit=crop&q=80" alt="Serenity" className="w-full h-full object-cover grayscale brightness-50" />
-        </motion.div>
-      </section>
+    <div className="min-h-screen bg-[#FDFDFD]">
+      <Header />
 
-      {/* Memorial Hall Selection */}
-      <section className="container mb-32">
-        <Row className="justify-content-center">
-            {HALLS.filter(h => h.id === 'h2').map((hall) => (
-                <Col lg={8} key={hall.id}>
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="bg-charcoal border border-glass-border p-12 md:p-20 text-center relative overflow-hidden group"
-                    >
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gold/20" />
-                        <h2 className="serif-font text-4xl mb-8">{hall.type}</h2>
-                        <p className="text-muted leading-relaxed mb-12 max-w-lg mx-auto">{hall.description}</p>
-                        
-                        <div className="flex justify-center gap-16 mb-16 border-y border-glass-border py-8">
-                            <div className="text-center">
-                                <span className="text-[10px] uppercase tracking-widest opacity-40 block mb-2">Capacity</span>
-                                <span className="text-xl serif-font text-gold">{hall.capacity} People</span>
-                            </div>
-                            <div className="text-center">
-                                <span className="text-[10px] uppercase tracking-widest opacity-40 block mb-2">Formal Setting</span>
-                                <span className="text-xl serif-font text-gold">Premium</span>
-                            </div>
-                        </div>
+      <main className="pt-32 pb-24">
+        {/* Cinematic Hero */}
+        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6 rounded-3xl">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0"
+            >
+              <img src={HERO_SLIDES[currentSlide].image} className="size-full object-cover brightness-50" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            </motion.div>
+          </AnimatePresence>
 
+          <div className="relative h-full flex items-center justify-center text-center px-6">
+            <div className="max-w-4xl space-y-8">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center justify-center gap-3 text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase"
+              >
+                <div className="size-1.5 bg-[#D4AF37]" />
+                Kovais Memorial Sanctuary
+                <div className="size-1.5 bg-[#D4AF37]" />
+              </motion.div>
+
+              <motion.h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
+                {HERO_SLIDES[currentSlide].title} <br />
+                <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
+              </motion.h1>
+
+              <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto">
+                {HERO_SLIDES[currentSlide].desc}
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-6 pt-8">
+                {STATS.map((stat, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1 bg-white/5 backdrop-blur-md p-6 min-w-[140px] border border-white/10">
+                    <span className="text-[#D4AF37]">{stat.icon}</span>
+                    <span className="text-2xl font-black text-white">{stat.value}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/40">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Booking System */}
+        <section className="max-w-7xl mx-auto px-6 mt-24">
+          <div className="grid lg:grid-cols-3 gap-16">
+            {/* Left: Steps & Forms */}
+            <div className="lg:col-span-2 space-y-12">
+              <div className="flex justify-between items-center border-b border-black/5 pb-8">
+                <h2 className="serif-font text-4xl font-black uppercase tracking-tight">Memorial <span className="text-[#D4AF37]">Reservation</span></h2>
+                <div className="flex gap-2">
+                  {[0, 1, 2, 3, 4].map(s => (
+                    <div key={s} className={`size-2 rounded-full transition-all duration-500 ${s <= currentStep ? 'bg-[#D4AF37] w-6' : 'bg-black/10'}`} />
+                  ))}
+                </div>
+              </div>
+
+              <AnimatePresence mode="wait">
+                {currentStep === 0 && (
+                  <motion.div 
+                    key="step0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
+                  >
+                    <div className="space-y-6">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">01. Select Service Type</h4>
+                      <div className="grid grid-cols-2 gap-4">
                         <button 
-                            onClick={() => handleSelect(hall)}
-                            className="px-12 py-4 border border-gold/30 text-gold text-xs uppercase tracking-widest hover:bg-gold hover:text-onyx transition-all duration-700"
+                          onClick={() => setBooking({...booking, location: 'Door Step'})}
+                          className={`p-8 border text-left transition-all duration-500 ${booking.location === 'Door Step' ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5 hover:border-black/20'}`}
                         >
-                            Inquire for Reservation
+                          <Home className="mb-4 text-[#D4AF37]" size={32} />
+                          <div className="font-black text-xs uppercase tracking-widest">Doorstep Service</div>
+                          <div className="text-[10px] font-bold opacity-40 mt-1 uppercase">+ ₹250 Convenience Fee</div>
                         </button>
-                    </motion.div>
-                </Col>
-            ))}
-        </Row>
-      </section>
+                        <button 
+                          onClick={() => setBooking({...booking, location: 'Sanctuary'})}
+                          className={`p-8 border text-left transition-all duration-500 ${booking.location === 'Sanctuary' ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5 hover:border-black/20'}`}
+                        >
+                          <MapPin className="mb-4 text-[#D4AF37]" size={32} />
+                          <div className="font-black text-xs uppercase tracking-widest">At Sanctuary</div>
+                          <div className="text-[10px] font-bold opacity-40 mt-1 uppercase">No Extra Charge</div>
+                        </button>
+                      </div>
+                    </div>
 
-      {/* Values Section */}
-      <section className="container py-20">
-        <Row className="g-5">
-            {values.map((v, i) => (
-                <Col md={4} key={i}>
-                    <motion.div 
-                        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: i * 0.2 }}
-                        className="text-center p-10 border border-glass-border/30 hover:border-gold/20 transition-all"
+                    <div className="space-y-6">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">02. Choose Services</h4>
+                      <div className="grid gap-4">
+                        {FUNERAL_SERVICES.map(service => (
+                          <div 
+                            key={service.id}
+                            onClick={() => handleServiceSelect(service)}
+                            className={`flex items-center gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                          >
+                            <img src={service.image} className="size-20 object-cover" />
+                            <div className="flex-1">
+                              <h5 className="font-black text-sm uppercase tracking-tight">{service.name}</h5>
+                              <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
+                              <div className="flex gap-4 mt-3">
+                                <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest">{service.duration}</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest">₹{service.price}</span>
+                              </div>
+                            </div>
+                            <div className={`size-6 border flex items-center justify-center ${booking.services.find(s => s.id === service.id) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-black/20'}`}>
+                              {booking.services.find(s => s.id === service.id) && <Check size={14} className="text-white" />}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button 
+                      disabled={!isStepValid(0)}
+                      onClick={() => setCurrentStep(1)}
+                      className="w-full h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37] transition-all duration-500"
                     >
-                        <div className="text-gold/60 mb-6 flex justify-center">{v.icon}</div>
-                        <h4 className="serif-font text-2xl mb-4">{v.title}</h4>
-                        <p className="text-xs text-muted leading-relaxed">{v.desc}</p>
-                    </motion.div>
-                </Col>
+                      Continue to Specialist <ArrowRight className="ml-2" size={16} />
+                    </Button>
+                  </motion.div>
+                )}
+
+                {currentStep === 1 && (
+                  <motion.div 
+                    key="step1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="space-y-8"
+                  >
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">03. Select Senior Specialist</h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {SPECIALISTS.map(emp => (
+                        <div 
+                          key={emp.id}
+                          onClick={() => setBooking({...booking, employee: emp})}
+                          className={`p-8 border cursor-pointer text-center space-y-6 transition-all ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5'}`}
+                        >
+                          <div className="relative mx-auto size-24">
+                            <img src={emp.image} className="size-full object-cover rounded-full" />
+                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white text-[9px] font-black px-3 py-1 uppercase rounded-full flex items-center gap-1">
+                              <Star size={8} fill="white" /> {emp.rating}
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-black text-sm uppercase tracking-widest">{emp.name}</h5>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight mt-1">{emp.speciality}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(0)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                      <Button 
+                        disabled={!isStepValid(1)}
+                        onClick={() => setCurrentStep(2)}
+                        className="flex-[2] h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37]"
+                      >
+                        Choose Schedule
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {currentStep === 2 && (
+                  <motion.div 
+                    key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="space-y-12"
+                  >
+                    <div className="space-y-6">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">04. Select Date</h4>
+                      <input 
+                        type="date" 
+                        value={booking.date}
+                        onChange={e => setBooking({...booking, date: e.target.value})}
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full h-16 border-b-2 border-black/5 focus:border-[#D4AF37] bg-transparent outline-none serif-font text-2xl font-black uppercase"
+                      />
+                    </div>
+
+                    <div className="space-y-6">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">05. Select Time Slot</h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {TIME_SLOTS.map(slot => (
+                          <button 
+                            key={slot}
+                            onClick={() => setBooking({...booking, time: slot})}
+                            className={`h-12 border text-[10px] font-black uppercase tracking-widest transition-all ${booking.time === slot ? 'bg-black text-white border-black' : 'border-black/5 hover:border-black/20'}`}
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(1)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                      <Button 
+                        disabled={!isStepValid(2)}
+                        onClick={() => setCurrentStep(3)}
+                        className="flex-[2] h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37]"
+                      >
+                        Your Details
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {currentStep === 3 && (
+                  <motion.div 
+                    key="step3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="space-y-8"
+                  >
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">06. Contact Information</h4>
+                    <div className="grid gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Full Name</label>
+                        <input 
+                          value={booking.customerInfo.name}
+                          onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, name: e.target.value}})}
+                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          placeholder="Hon. Guest Name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Phone Number</label>
+                        <input 
+                          value={booking.customerInfo.phone}
+                          onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, phone: e.target.value}})}
+                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          placeholder="+91 00000 00000"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Email Address</label>
+                        <input 
+                          value={booking.customerInfo.email}
+                          onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, email: e.target.value}})}
+                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          placeholder="care@example.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(2)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                      <Button 
+                        disabled={!isStepValid(3)}
+                        onClick={() => setCurrentStep(4)}
+                        className="flex-[2] h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37]"
+                      >
+                        Review & Confirm
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {currentStep === 4 && (
+                  <motion.div 
+                    key="step4"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="space-y-8"
+                  >
+                    <div className="p-8 bg-black text-white space-y-6">
+                      <div className="flex items-center gap-3 border-b border-white/10 pb-6">
+                        <CheckCircle className="text-[#D4AF37]" size={24} />
+                        <h4 className="serif-font text-2xl font-black uppercase tracking-tight">Final Summary</h4>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                          <span>Specialist</span>
+                          <span className="text-white">{booking.employee?.name}</span>
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                          <span>Schedule</span>
+                          <span className="text-white">{booking.date} @ {booking.time}</span>
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                          <span>Location</span>
+                          <span className="text-white">{booking.location}</span>
+                        </div>
+                      </div>
+
+                      <div className="pt-6 border-t border-white/10 flex justify-between items-center">
+                        <span className="text-xs font-black uppercase tracking-widest">Total Honorarium</span>
+                        <span className="text-3xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div 
+                          onClick={() => setPayType('offline')}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                        >
+                          <div className="font-black text-[10px] uppercase tracking-widest">Pay at Location</div>
+                        </div>
+                        <div 
+                          onClick={() => setPayType('online')}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                        >
+                          <div className="font-black text-[10px] uppercase tracking-widest">Online Payment</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(3)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                      <Button 
+                        onClick={handleConfirmBooking}
+                        disabled={loading}
+                        className="flex-[2] h-16 bg-[#D4AF37] text-white font-black uppercase tracking-widest text-[11px] hover:bg-black"
+                      >
+                        {loading ? "Processing..." : "Complete Reservation"}
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Right: Summary & Points */}
+            <div className="space-y-8">
+              <div className="p-8 border border-black/5 bg-white space-y-6 sticky top-40">
+                <h5 className="font-black text-xs uppercase tracking-[0.2em] border-b border-black/5 pb-4">Booking Receipt</h5>
+                
+                <div className="space-y-4">
+                  {booking.services.map(s => (
+                    <div key={s.id} className="flex justify-between items-center">
+                      <div className="text-[10px] font-bold uppercase tracking-tight opacity-60">{s.name}</div>
+                      <div className="text-xs font-black">₹{s.price}</div>
+                    </div>
+                  ))}
+                  {booking.location === 'Door Step' && (
+                    <div className="flex justify-between items-center text-red-500">
+                      <div className="text-[10px] font-bold uppercase tracking-tight">Doorstep Fee</div>
+                      <div className="text-xs font-black">₹250</div>
+                    </div>
+                  )}
+                  {usedPoints > 0 && (
+                    <div className="flex justify-between items-center text-green-600">
+                      <div className="text-[10px] font-bold uppercase tracking-tight">Reward Discount</div>
+                      <div className="text-xs font-black">-₹{(usedPoints * 0.1).toFixed(2)}</div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-6 border-t border-black/5 flex justify-between items-center">
+                  <span className="text-[10px] font-black uppercase tracking-widest">Grand Total</span>
+                  <span className="text-2xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
+                </div>
+
+                {user && (
+                  <div className="mt-8 p-6 bg-black text-white space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[9px] font-black uppercase tracking-widest opacity-60">Your Credits</span>
+                      <span className="text-[#D4AF37] font-black">{points} Pts</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input 
+                        placeholder="Points" 
+                        value={pointsInput}
+                        onChange={e => setPointsInput(e.target.value)}
+                        className="flex-1 bg-white/10 border border-white/20 h-10 px-3 text-xs outline-none focus:border-[#D4AF37]" 
+                      />
+                      <Button onClick={handleApplyPoints} className="bg-[#D4AF37] hover:bg-white hover:text-black h-10 px-4 text-[9px] font-black uppercase tracking-widest">Apply</Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Section */}
+        <section className="max-w-7xl mx-auto px-6 mt-32 space-y-16">
+          <div className="text-center space-y-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">OUR ETHOS</span>
+            <h2 className="text-4xl md:text-6xl font-black serif uppercase tracking-tight">Dignity in <span className="text-[#D4AF37]">Farewell</span></h2>
+            <p className="text-muted-foreground text-sm font-medium max-w-xl mx-auto">We provide empathetic support and meticulous grooming to honor your loved one's final journey with absolute grace.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { icon: <Heart size={24} />, title: "Compassion", desc: "Respectful guidance during difficult times." },
+              { icon: <Shield size={24} />, title: "Dignity", desc: "Honoring every legacy with absolute grace." },
+              { icon: <Sparkles size={24} />, title: "Excellence", desc: "Meticulous preparation by senior specialists." }
+            ].map((item, i) => (
+              <div key={i} className="p-10 border border-black/5 bg-white text-center space-y-6">
+                <div className="text-[#D4AF37] flex justify-center">{item.icon}</div>
+                <h4 className="font-black text-xs uppercase tracking-widest">{item.title}</h4>
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight leading-relaxed">{item.desc}</p>
+              </div>
             ))}
-        </Row>
-      </section>
+          </div>
+        </section>
+      </main>
 
-      {/* Modals */}
-      <PaymentPage 
-        show={showPayment} 
-        onHide={() => setShowPayment(false)} 
-        bookingSummary={{ services: [{ name: selectedHall?.type }], date: "On Demand", time: "Flexible", amount }} 
-        onPaymentSuccess={async (result: any) => {
-            setShowPayment(false);
-            await bookingService.createHallBooking({ hall: selectedHall, amount, transactionId: result.transactionId });
-            setShowConfirmation(true);
-        }} 
-        onBookNowPayLater={() => { setShowPayment(false); setShowConfirmation(true); }} 
-        points={points} 
-        onUsePoints={(d:any) => setAmount(a => a - d)} 
-      />
+      <Footer />
 
-      <ConfirmationPage show={showConfirmation} onHide={() => setShowConfirmation(false)} amount={amount} onDone={() => setShowConfirmation(false)} />
+      {/* Login Dialog */}
+      <Dialog open={showLogin} onOpenChange={setShowLogin}>
+        <DialogContent className="max-w-md p-8 bg-[#FDFDFD] border-none shadow-2xl">
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-black tracking-tight serif uppercase">Memorial Access</h2>
+              <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">
+                {isNewUser ? "Register for assistance" : "Verify your identity"}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                <input className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+              </div>
+              {isNewUser && (
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                  <input className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                </div>
+              )}
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+              </div>
+              
+              <Button className="w-full h-12 bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-[#D4AF37]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
+                {loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
+              </Button>
+
+              <div className="text-center">
+                <button className="text-[10px] font-black uppercase text-[#D4AF37] hover:underline" onClick={() => setIsNewUser(!isNewUser)}>
+                  {isNewUser ? "Already have a profile? Login" : "New to Kovais? Register"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
-
-export default FuneralPage;
+}</div>
+  );
+}

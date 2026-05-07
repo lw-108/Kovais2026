@@ -16,13 +16,13 @@ const footerLinks = {
   services: [
     { name: "Hotel", href: "/hotel" },
     { name: "Spa", href: "/spa" },
-    { name: "Gym", href: "/fitness" },
-    { name: "Barber", href: "/grooming" },
+    { name: "Gym", href: "/gym" },
+    { name: "Barber", href: "/barber" },
     { name: "Funeral", href: "/funeral" },
-    { name: "Function", href: "/booking/function" },
+    { name: "Function", href: "/function" },
   ],
   company: [
-    { name: "About Us", href: "/#about" },
+    { name: "About Us", href: "/about" },
     { name: "Gallery", href: "/#gallery" },
     { name: "Contact", href: "/#contact" },
     { name: "Blog", href: "/blog" },

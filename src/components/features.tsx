@@ -22,7 +22,7 @@ const features = [
     title: "Master Grooming",
     description: "Precision cuts and styling for the modern gentleman, crafted with traditional care.",
     image: barberImg,
-    href: "/grooming",
+    href: "/barber",
     icon: Scissors
   },
   {
@@ -43,14 +43,14 @@ const features = [
     title: "Fitness Studio",
     description: "State-of-the-art equipment and personal training to elevate your peak performance.",
     image: gymImg,
-    href: "/fitness",
+    href: "/gym",
     icon: Dumbbell
   },
   {
     title: "Function Services",
     description: "Flawless grooming and events management for your special occasions.",
     image: functionImg,
-    href: "/booking/function",
+    href: "/function",
     icon: CalendarDays
   },
   {

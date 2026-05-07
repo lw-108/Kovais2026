@@ -6,48 +6,49 @@ import asciiArt from "@/assets/asciii-art.png";
 
 export const CTA = () => {
   return (
-    <div className="px-4 py-12 md:px-6 md:py-24 relative overflow-hidden">
-       {/* Background Glow */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[300px] md:size-[600px] bg-[#D4AF37]/10 blur-[80px] md:blur-[120px] rounded-full -z-10" />
+    <div className="px-4 py-8 md:px-6 md:py-16 relative overflow-hidden">
+       {/* Background Glow - Reduced blur for performance */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[250px] md:size-[500px] bg-[#D4AF37]/5 blur-[60px] md:blur-[100px] rounded-full -z-10" />
 
       <div className="relative mx-auto max-w-7xl overflow-hidden group">
-
-        <div className="relative aspect-[4/5] sm:aspect-video md:aspect-[21/9] flex items-center justify-center">
+        {/* Responsive container with height compromise */}
+        <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[400px] flex items-center justify-center">
             <img
             alt="Kovais Aesthetic"
-            className="absolute inset-0 size-full object-cover transition-transform duration-[20s] group-hover:scale-110"
+            className="absolute inset-0 size-full object-cover transition-transform duration-[20s] group-hover:scale-105 will-change-transform"
             src={asciiArt}
             />
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-[1px] md:bg-black/60" />
+            {/* Reduced backdrop blur for performance */}
+            <div className="absolute inset-0 bg-black/70 md:bg-black/60" />
             <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/40 to-transparent" />
 
-            <div className="relative z-10 w-full h-full flex flex-col justify-end md:justify-center px-6 sm:px-12 md:px-20 py-10 md:py-14 space-y-4 md:space-y-6">
+            <div className="relative z-10 w-full h-full flex flex-col justify-end md:justify-center px-6 sm:px-12 md:px-20 py-12 md:py-16 space-y-4 md:space-y-6">
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                     className="space-y-4 md:space-y-6 max-w-2xl"
                 >
                     <div className="flex items-center gap-3">
-                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">
+                        <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">
                             The Future of Wellness
                         </span>
-                        <div className="h-[1px] w-8 md:w-12 bg-[#D4AF37]/50" />
+                        <div className="h-[1px] w-6 md:w-12 bg-[#D4AF37]/50" />
                     </div>
 
-                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter leading-[0.9] serif">
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9] serif">
                         Step Into <br />
                         Something <span className="text-[#D4AF37] italic">Better</span>
                     </h2>
 
-                    <p className="max-w-md text-sm md:text-xl text-white/80 font-medium leading-relaxed">
+                    <p className="max-w-md text-xs sm:text-sm md:text-lg text-white/80 font-medium leading-relaxed">
                         Get seamless access to everything you need, right from your phone. 
                         Experience the Kovais digital concierge.
                     </p>
 
                     <Button
-                        className="h-12 md:h-14 px-6 md:px-8 bg-[#D4AF37] text-white hover:bg-[#B8962E] rounded-none font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-lg shadow-[#D4AF37]/20 transition-all hover:translate-x-2"
+                        className="h-10 md:h-14 px-5 md:px-8 bg-[#D4AF37] text-white hover:bg-[#B8962E] rounded-none font-black uppercase tracking-widest text-[8px] md:text-[10px] shadow-lg shadow-[#D4AF37]/10 transition-all hover:translate-x-1"
                         size="lg"
                     >
                         Download Now <ArrowUpRight className="ml-2 size-4" />
