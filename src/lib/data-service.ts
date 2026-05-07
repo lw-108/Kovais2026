@@ -72,6 +72,7 @@ export const userService = {
         };
         localStorage.setItem("loggedInUser", JSON.stringify(user));
         localStorage.setItem(`points_${user.user_id}`, JSON.stringify(user.points));
+        window.dispatchEvent(new Event("auth-change"));
         return user;
     },
     
@@ -87,6 +88,7 @@ export const userService = {
 
     updatePoints: (userId: number, newPoints: number) => {
         localStorage.setItem(`points_${userId}`, JSON.stringify(newPoints));
+        window.dispatchEvent(new Event("auth-change"));
     }
 };
 

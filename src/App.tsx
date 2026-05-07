@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import HotelPage from "./pages/HotelPage";
-import ShadowPage from "./pages/ShadowPage";
-import LuxuryBarber from "./pages/LuxuryBarber";
-import SpaPage from "./pages/SpaPage";
-import ParlourPage from "./pages/ParlourPage";
-import GymPage from "./pages/GymPage";
-import FunctionPage from "./pages/FunctionPage";
-import FuneralPage from "./pages/FuneralPage";
+
+// Lazy load pages for performance
+const HomePage = lazy(() => import("./pages/HomePage"));
+const HotelPage = lazy(() => import("./pages/HotelPage"));
+const ShadowPage = lazy(() => import("./pages/ShadowPage"));
+const LuxuryBarber = lazy(() => import("./pages/LuxuryBarber"));
+const SpaPage = lazy(() => import("./pages/SpaPage"));
+const ParlourPage = lazy(() => import("./pages/ParlourPage"));
+const GymPage = lazy(() => import("./pages/GymPage"));
+const FunctionPage = lazy(() => import("./pages/FunctionPage"));
+const FuneralPage = lazy(() => import("./pages/FuneralPage"));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="size-8 border-2 border-[#D4AF37] border-t-transparent animate-spin rounded-full" />
+  </div>
+);
 
 export function App() {
   const [user, setUser] = useState(null);
@@ -16,77 +25,79 @@ export function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/hotel" element={<HotelPage />} />
-        <Route path="/shadow" element={<ShadowPage />} />
-        <Route 
-          path="/barber" 
-          element={
-            <LuxuryBarber 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-        <Route 
-          path="/spa" 
-          element={
-            <SpaPage 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-        <Route 
-          path="/parlour" 
-          element={
-            <ParlourPage 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-        <Route 
-          path="/gym" 
-          element={
-            <GymPage 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-        <Route 
-          path="/function" 
-          element={
-            <FunctionPage 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-        <Route 
-          path="/funeral" 
-          element={
-            <FuneralPage 
-              user={user} 
-              setUser={setUser} 
-              points={points} 
-              setPoints={setPoints} 
-            />
-          } 
-        />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/hotel" element={<HotelPage />} />
+          <Route path="/shadow" element={<ShadowPage />} />
+          <Route 
+            path="/barber" 
+            element={
+              <LuxuryBarber 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+          <Route 
+            path="/spa" 
+            element={
+              <SpaPage 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+          <Route 
+            path="/parlour" 
+            element={
+              <ParlourPage 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+          <Route 
+            path="/gym" 
+            element={
+              <GymPage 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+          <Route 
+            path="/function" 
+            element={
+              <FunctionPage 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+          <Route 
+            path="/funeral" 
+            element={
+              <FuneralPage 
+                user={user} 
+                setUser={setUser} 
+                points={points} 
+                setPoints={setPoints} 
+              />
+            } 
+          />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -5,12 +5,9 @@ import {
   Menu as MenuIcon, 
   X as XIcon, 
   ChevronDown, 
-  Home, 
   User, 
   Calendar, 
-  Info, 
   Clock, 
-  Trophy, 
   LogOut, 
   LogIn,
   Scissors,
@@ -34,10 +31,10 @@ interface MobileNavProps {
     isHeaderScrolled?: boolean;
 }
 
-export function MobileNav({ isLoggedIn, setIsLoggedIn, isHeaderScrolled }: MobileNavProps) {
+export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 	const [open, setOpen] = useState(false);
     const [bookingOpen, setBookingOpen] = useState(true); // Default open for better visibility
-    const [infoOpen, setInfoOpen] = useState(false);
+
 
 	const toggleMenu = () => setOpen(!open);
 

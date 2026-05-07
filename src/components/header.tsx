@@ -36,9 +36,15 @@ export function Header() {
         };
 
         checkUser();
-        // Check for updates every second to keep header synced
-        const interval = setInterval(checkUser, 1000);
-        return () => clearInterval(interval);
+        
+        // Optimize: Listen for storage changes (multi-tab) and custom auth events
+        window.addEventListener("storage", checkUser);
+        window.addEventListener("auth-change", checkUser);
+        
+        return () => {
+            window.removeEventListener("storage", checkUser);
+            window.removeEventListener("auth-change", checkUser);
+        };
     }, []);
 
     const handleLogout = () => {

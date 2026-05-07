@@ -9,9 +9,7 @@ import {
   Mail,
   ShieldCheck,
   FileText,
-  CreditCard,
-  Home,
-  Info
+  CreditCard
 } from "lucide-react";
 
 export const bookingLinks = [
