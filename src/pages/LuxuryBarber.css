@@ -1,0 +1,181 @@
+.luxury-barber-page {
+  --gold: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.3);
+  --onyx: #0a0a0a;
+  --charcoal: #1a1a1a;
+  --ivory: #fcfcfc;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  background-color: var(--onyx);
+  color: var(--ivory);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+}
+
+.luxury-barber-page h1, 
+.luxury-barber-page h2, 
+.luxury-barber-page h3, 
+.luxury-barber-page .serif-font {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  transition: transform 1.5s ease-out;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.4), rgba(10,10,10,0.9));
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+.hero-tagline {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: rgba(253, 253, 253, 0.7);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+
+/* Luxury Card Enhancement */
+.luxury-card {
+  background: var(--charcoal);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  transition: var(--transition);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.luxury-card .card-img-top {
+  height: 250px;
+  object-cover: cover;
+  transition: var(--transition);
+  filter: grayscale(0.5);
+}
+
+.luxury-card:hover .card-img-top {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}
+
+/* Stepper Refinement */
+.booking-stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  position: relative;
+  padding: 0 10px;
+}
+
+@media (max-width: 576px) {
+  .booking-stepper {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-dot {
+  width: 32px;
+  height: 32px;
+  background: var(--charcoal);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--gold);
+  transition: var(--transition);
+}
+
+.step-item.active .step-dot {
+  background: var(--gold);
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  .section-padding {
+    padding: 60px 0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--onyx);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8860b;
+}

@@ -78,6 +78,8 @@
 @theme inline {
     --font-sans: 'Montserrat Variable', sans-serif;
     --font-heading: 'Public Sans Variable', sans-serif;
+    --font-serif: 'Instrument Serif', serif;
+    --font-instrument-serif: 'Instrument Serif', serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -131,4 +133,16 @@
   html {
     @apply font-sans;
     }
+}
+
+.instrument-serif, .serif {
+  font-family: "Instrument Serif", serif !important;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.instrument-serif-italic {
+  font-family: "Instrument Serif", serif !important;
+  font-weight: 400;
+  font-style: italic;
 }

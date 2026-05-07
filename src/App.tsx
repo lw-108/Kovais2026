@@ -1,21 +1,94 @@
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import HotelPage from "./pages/HotelPage";
+import ShadowPage from "./pages/ShadowPage";
+import LuxuryBarber from "./pages/LuxuryBarber";
+import SpaPage from "./pages/SpaPage";
+import ParlourPage from "./pages/ParlourPage";
+import GymPage from "./pages/GymPage";
+import FunctionPage from "./pages/FunctionPage";
+import FuneralPage from "./pages/FuneralPage";
 
 export function App() {
+  const [user, setUser] = useState(null);
+  const [points, setPoints] = useState(0);
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/hotel" element={<HotelPage />} />
+        <Route path="/shadow" element={<ShadowPage />} />
+        <Route 
+          path="/barber" 
+          element={
+            <LuxuryBarber 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+        <Route 
+          path="/spa" 
+          element={
+            <SpaPage 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+        <Route 
+          path="/parlour" 
+          element={
+            <ParlourPage 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+        <Route 
+          path="/gym" 
+          element={
+            <GymPage 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+        <Route 
+          path="/function" 
+          element={
+            <FunctionPage 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+        <Route 
+          path="/funeral" 
+          element={
+            <FuneralPage 
+              user={user} 
+              setUser={setUser} 
+              points={points} 
+              setPoints={setPoints} 
+            />
+          } 
+        />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
