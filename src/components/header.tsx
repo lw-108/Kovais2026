@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components/logo";
 import { useScroll } from "@/hooks/use-scroll";
 import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/desktop-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { Trophy, LogIn, LogOut, User as UserIcon } from "lucide-react";
+import { LogIn, LogOut, User as UserIcon } from "lucide-react";
 import { userService } from "@/lib/data-service";
 
 export function Header() {
@@ -61,73 +60,65 @@ export function Header() {
 					scrolled,
 			})}
 		>
-			<nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
-				<div className="flex items-center gap-8">
+			<nav className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 sm:px-8">
+				<div className="flex items-center gap-12">
 					<a
-						className={cn("flex items-center gap-2 rounded-2xl transition-all", hoverGold)}
+						className={cn("flex items-center gap-3 rounded-2xl transition-all", hoverGold)}
 						href="/"
 					>
-						<Logo className="h-5" />
-                        <span className="font-bold text-lg hidden sm:block">KovaisVite</span>
+						<img src="/logo.png" alt="KovaisVite" className="max-w-72 h-28 w-auto object-contain lg:max-w-80 lg:h-32 xl:max-w-96 xl:h-36" />
 					</a>
 					<DesktopNav />
 				</div>
 
-				<div className="flex items-center gap-3">
-                    {user && (
-                        <Button variant="ghost" size="sm" className={cn("gap-2 text-[#D4AF37] hover:bg-[#D4AF37]/10", hoverGold)}>
-                            <Trophy className="size-4" />
-                            <span className="hidden md:block font-medium">{points.toLocaleString()} Pts</span>
-                        </Button>
-                    )}
-
-                    <div className="h-6 w-px bg-border hidden md:block mx-1" />
-
-                    <div className="flex items-center gap-3">
-                        {user ? (
-                            <div className="hidden items-center gap-3 md:flex">
-                                <div className="flex items-center gap-2 pr-2">
-                                    <div className="size-8 rounded-full bg-gradient-to-tr from-[#D4AF37] to-amber-200 p-0.5 shadow-sm">
-                                        <div className="flex size-full items-center justify-center rounded-full bg-background">
-                                            {user.emblem_url ? (
-                                                <img src={user.emblem_url} alt="Avatar" className="size-full rounded-full" />
-                                            ) : (
-                                                <UserIcon className="size-4 text-[#D4AF37]" />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <span className="text-sm font-medium">{user.username}</span>
-                                </div>
-                                <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    onClick={handleLogout}
-                                    className={cn("gap-2", hoverGold)}
-                                >
-                                    <LogOut className="size-4" />
-                                    <span>Logout</span>
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="hidden md:block">
-                                <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    onClick={() => window.location.href = '/hotel'} // Redirect to booking page to login
-                                    className={cn("gap-2", hoverGold)}
-                                >
-                                    <LogIn className="size-4" />
-                                    <span>Login</span>
-                                </Button>
-                            </div>
-                        )}
-                        <MobileNav 
-                            isLoggedIn={!!user} 
-                            setIsLoggedIn={() => {}} 
-                            isHeaderScrolled={scrolled}
-                        />
-                    </div>
-                </div>
+				<div className="flex items-center gap-4">
+					{user && (
+						<div className="hidden items-center gap-3 md:flex">
+							<div className="flex items-center gap-2 pr-3">
+								<div className="size-9 rounded-full bg-gradient-to-tr from-[#D4AF37] to-amber-200 p-0.5 shadow-sm">
+									<div className="flex size-full items-center justify-center rounded-full bg-background">
+										{user.emblem_url ? (
+											<img src={user.emblem_url} alt="Avatar" className="size-full rounded-full" />
+										) : (
+											<UserIcon className="size-5 text-[#D4AF37]" />
+										)}
+								</div>
+							</div>
+							<div className="flex flex-col">
+								<span className="text-sm font-semibold">{user.username}</span>
+								<span className="text-xs text-[#D4AF37] font-medium">{points.toLocaleString()} Points</span>
+							</div>
+						</div>
+							<Button 
+								variant="ghost" 
+								size="sm" 
+								onClick={handleLogout}
+								className={cn("gap-2 px-4 py-2", hoverGold)}
+							>
+								<LogOut className="size-4" />
+								<span>Logout</span>
+							</Button>
+						</div>
+					)}
+					
+					{!user && (
+						<Button 
+							variant="outline" 
+							size="lg" 
+							onClick={() => window.location.href = '/hotel'}
+							className={cn("gap-2 px-6 py-3 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition-all duration-300", hoverGold)}
+						>
+							<LogIn className="size-4" />
+							<span className="font-semibold">Login</span>
+						</Button>
+					)}
+					
+					<MobileNav 
+						isLoggedIn={!!user} 
+						setIsLoggedIn={() => {}} 
+						isHeaderScrolled={scrolled}
+					/>
+				</div>
 			</nav>
 		</header>
 	);

@@ -84,13 +84,13 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                     <motion.div
                         initial={false}
                         animate={{ 
-                            rotate: open ? 0 : -90, 
-                            opacity: open ? 1 : 0, 
-                            scale: open ? 1 : 0.5 
+                            opacity: open ? 1 : 0,
+                            scale: open ? 1 : 0.8
                         }}
-                        className="absolute inset-0 flex items-center justify-center"
+                        transition={{ duration: 0.2 }}
+                        className="absolute inset-0 flex items-center justify-center z-[120]"
                     >
-                        <XIcon className="size-6" />
+                        <XIcon className="size-8 text-[#D4AF37] bg-background/90 rounded-full p-1.5 shadow-lg" />
                     </motion.div>
                 </div>
 			</Button>
