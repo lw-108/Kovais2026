@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 // Import images
 import img1 from "@/assets/1.jpg";
@@ -73,7 +74,7 @@ export function HeroSection() {
 				</p>
 
 				<div className="fade-in slide-in-from-bottom-10 flex w-fit animate-in items-center justify-center gap-3 fill-mode-backwards pt-4 delay-300 duration-500 ease-out">
-					<Button className="items-center flex rounded-sm justify-center border-[#D4AF37] bg-[#D4AF37] hover:bg-[#B8962E] text-white px-8 py-6 text-sm font-bold uppercase tracking-widest shadow-lg shadow-[#D4AF37]/20 transition-all hover:scale-105 active:scale-95">
+					<Button className="items-center flex rounded-sm justify-center border-[#D4AF37] bg-[#D4AF37] hover:bg-[#B8962E] text-white px-8 py-6 text-sm serif text-2xl  shadow-lg shadow-[#D4AF37]/20 transition-all hover:scale-105 active:scale-95">
 						Book a Service{" "}
 						<ArrowRight data-icon="inline-end" className="size-4 ml-2" />
 					</Button>
@@ -104,10 +105,10 @@ export function HeroSection() {
                                     transition={{ duration: 1, ease: "easeOut" }}
                                     className="h-full w-full"
                                 >
-                                    <img
+                                    <LazyImage
                                         src={images[currentIndex]}
                                         alt={`Slide ${currentIndex + 1}`}
-                                        className="h-full w-full object-cover"
+                                        className="h-full w-full"
                                     />
                                 </motion.div>
                             </AnimatePresence>

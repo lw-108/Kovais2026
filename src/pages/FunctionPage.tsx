@@ -38,56 +38,13 @@ import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import {
-  Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 import { userService, bookingService } from "@/lib/data-service";
 
-// --- Lazy Image Component (Requested) ---
-const LazyImage = ({ src, alt, className, style, ...props }: any) => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-    rootMargin: '50px 0px',
-  });
 
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [imageSrc, setImageSrc] = useState('');
-
-  useEffect(() => {
-    if (inView) {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        setImageSrc(src);
-        setIsLoaded(true);
-      };
-    }
-  }, [inView, src]);
-
-  return (
-    <div ref={ref} className={`lazy-image-container ${className}`}>
-      {inView && (
-        <img
-          src={imageSrc}
-          alt={alt}
-          className={`${isLoaded ? 'loaded' : 'loading'} size-full object-cover`}
-          style={{
-            ...style,
-            opacity: isLoaded ? 1 : 0,
-            transition: 'opacity 0.3s ease-in-out'
-          }}
-          onLoad={() => setIsLoaded(true)}
-          {...props}
-        />
-      )}
-      {!isLoaded && inView && (
-        <div className="image-placeholder animate-pulse bg-muted size-full" style={style} />
-      )}
-    </div>
-  );
-};
 
 // --- Essential Data (From Legacy) ---
 const SERVICES = [
@@ -159,7 +116,10 @@ const STATS = [
   { icon: Award, value: "500+", label: "Happy Clients" },
 ];
 
+import { useEffect } from "react";
+
 export default function FunctionPage() {
+
   const [selectedLocation, setSelectedLocation] = useState<"salon" | "doorstep">("doorstep");
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
@@ -741,7 +701,7 @@ export default function FunctionPage() {
       <Dialog open={showGalleryModal} onOpenChange={setShowGalleryModal}>
         <DialogContent className="max-w-5xl p-0 bg-black border-none overflow-hidden rounded-none">
           <div className="relative aspect-video flex items-center justify-center">
-            <img src={GALLERY[galleryIndex].image} alt="Gallery Work" className="size-full object-contain" />
+            <LazyImage src={GALLERY[galleryIndex].image} alt="Gallery Work" className="size-full" />
             <Button variant="ghost" size="icon" className="absolute top-4 right-4 text-white hover:bg-white/10" onClick={() => setShowGalleryModal(false)}>
               <X className="size-6" />
             </Button>

@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, ZoomIn, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 // Image Imports
 import funeralImg from "@/assets/funeral.png";
@@ -85,10 +86,10 @@ export function GalleryGrid() {
               <div className="absolute bottom-0 right-0 size-3 border-b border-r border-[#D4AF37] z-20 opacity-0 group-hover:opacity-100 transition-opacity" />
 
               <Card className="relative aspect-square overflow-hidden border-none bg-muted/20">
-                <motion.img
+                <LazyImage
                   src={image.url}
                   alt={image.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="h-full w-full transition-transform duration-700 group-hover:scale-110"
                 />
                 
                 {/* Overlay */}
@@ -153,10 +154,10 @@ export function GalleryGrid() {
                     <div className="absolute -bottom-1 -left-1 size-12 border-b-4 border-l-4 border-[#D4AF37]" />
                     <div className="absolute -bottom-1 -right-1 size-12 border-b-4 border-r-4 border-[#D4AF37]" />
                     
-                    <img
+                    <LazyImage
                         src={selectedImageData.url}
                         alt={selectedImageData.title}
-                        className="max-h-[70vh] md:max-h-[80vh] w-auto object-contain shadow-2xl"
+                        className="max-h-[70vh] md:max-h-[80vh] w-auto shadow-2xl"
                     />
                 </div>
 

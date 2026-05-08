@@ -60,6 +60,7 @@
     Dialog,
     DialogContent,
   } from "@/components/ui/dialog";
+  import { LazyImage } from "@/components/ui/lazy-image";
 
 
   import { userService, bookingService, ROOMS } from "@/lib/data-service";
@@ -69,7 +70,10 @@
   import gymImg from "@/assets/gym.jpeg";
   import barberImg from "@/assets/barber.jpeg";
 
+  // Removed duplicate useEffect import
+
   export default function HotelPage() {
+
     const [dateIn, setDateIn] = useState<Date>();
     const [dateOut, setDateOut] = useState<Date>();
     const [rooms, setRooms] = useState(1);
@@ -353,7 +357,7 @@
             {/* Left: Gallery */}
             <div className="p-6 bg-background border border-border/10">
               <div className="relative group overflow-hidden aspect-[4/3]">
-                  <img src={hotelImg} alt="Hotel Room" className="size-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <LazyImage src={hotelImg} alt="Hotel Room" className="size-full transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute top-4 left-4 flex gap-2">
                       <Badge className="bg-[#D4AF37] text-white rounded-none border-none text-[10px] uppercase font-black px-3"><Zap className="size-2 mr-1" /> Instant</Badge>
                       <Badge className="bg-white/90 text-black rounded-none border-none text-[10px] uppercase font-black px-3">Free Cancel</Badge>
@@ -367,7 +371,7 @@
               <div className="grid grid-cols-4 gap-4">
                   {[hotelImg, spaImg, gymImg, barberImg].map((img, i) => (
                       <div key={i} className="aspect-video relative group cursor-pointer overflow-hidden border border-border/10">
-                          <img src={img} alt="Thumbnail" className="size-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                          <LazyImage src={img} alt="Thumbnail" className="size-full opacity-60 group-hover:opacity-100 transition-opacity" />
                       </div>
                   ))}
               </div>
@@ -632,7 +636,7 @@
               </Button>
             </div>
             <div className="relative aspect-video mx-4">
-              <img src={hotelImg} alt="Tour View" className="w-full h-full object-cover rounded-xl" />
+              <LazyImage src={hotelImg} alt="Tour View" className="w-full h-full rounded-xl" />
               <div className="absolute bottom-6 left-6 flex gap-4">
                 <Button size="icon" variant="secondary" className="rounded-full size-12 bg-white/80 backdrop-blur-md" onClick={() => setIsPlaying(!isPlaying)}>
                   {isPlaying ? <Pause className="size-6" /> : <Play className="size-6 ml-1" />}

@@ -10,17 +10,16 @@ import {
   Check,
   Lock,
   Sparkles,
-  Filter,
   Heart,
   Shield,
   Eye,
-  ChevronRight,
   ArrowRight,
   Building,
   Home
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+
 import Swal from "sweetalert2";
 
 import { Button } from "@/components/ui/button";
@@ -39,6 +38,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -145,7 +145,10 @@ const WHY_CHOOSE_PARLOUR = [
   { icon: <Shield size={24} />, title: 'Hygiene First', desc: 'Sterilized tools, disposable supplies, and sanitized workstations — always.' },
 ];
 
+
+
 export default function ParlourPage() {
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState<"salon" | "doorstep">("salon");
   const [selectedCategory, setSelectedCategory] = useState<string>("Hair Care");
@@ -311,7 +314,7 @@ export default function ParlourPage() {
               transition={{ duration: 1.5 }}
               className="absolute inset-0"
             >
-              <img src={HERO_SLIDES[currentSlide].image} className="size-full object-cover grayscale brightness-50" />
+              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full grayscale brightness-50" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </motion.div>
           </AnimatePresence>
@@ -481,7 +484,7 @@ export default function ParlourPage() {
                     className={`group p-5 border transition-all cursor-pointer flex items-center gap-6 ${isSelected ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-border/5 hover:border-[#D4AF37]/30 bg-muted/5'}`}
                   >
                     <div className="size-24 overflow-hidden border border-[#D4AF37]/10 shrink-0" onClick={() => handleServiceToggle(service)}>
-                      <img src={service.image} alt={service.name} className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <LazyImage src={service.image} alt={service.name} className="size-full transition-transform duration-700 group-hover:scale-110" />
                     </div>
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center justify-between">
@@ -636,7 +639,7 @@ export default function ParlourPage() {
           {selectedDetailService && (
             <div className="flex flex-col md:flex-row h-full">
               <div className="md:w-1/2 relative h-64 md:h-auto">
-                <img src={selectedDetailService.image} className="size-full object-cover" />
+                <LazyImage src={selectedDetailService.image} alt={selectedDetailService.name} className="size-full" />
                 <div className="absolute top-6 left-6 bg-[#D4AF37] text-white px-4 py-1.5 text-[9px] font-black uppercase tracking-widest">
                   {selectedCategory} Ritual
                 </div>

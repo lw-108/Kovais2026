@@ -6,23 +6,33 @@ import {
   MapPin, 
   Home, 
   User, 
-  Calendar as CalendarIcon, 
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  Camera,
-  X,
   Phone,
-  Mail,
   Zap,
   Check,
-  Lock
+  Lock,
+  Calendar as CalendarIcon,
+  Camera,
+  Mail,
+  X,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+
 import Swal from "sweetalert2";
 
 import { Button } from "@/components/ui/button";
+
+
+
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -30,12 +40,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -68,7 +73,10 @@ const GALLERY = [
   { id: 4, image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80", category: "haircuts", title: "Modern Style" },
 ];
 
+
+
 export default function LuxuryBarber() {
+
   const [selectedLocation, setSelectedLocation] = useState<"salon" | "doorstep">("salon");
   const [selectedCategory, setSelectedCategory] = useState<string>("Men");
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
@@ -347,7 +355,7 @@ export default function LuxuryBarber() {
                     className={`group p-4 border transition-all cursor-pointer flex items-center gap-4 ${isSelected ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-border/10 hover:border-[#D4AF37]/30 bg-muted/20'}`}
                   >
                     <div className="size-20 overflow-hidden border border-border/10 shrink-0">
-                      <img src={service.image} alt={service.name} className="size-full object-cover transition-transform group-hover:scale-110" />
+                      <LazyImage src={service.image} alt={service.name} className="size-full transition-transform group-hover:scale-110" />
                     </div>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between">
@@ -438,7 +446,7 @@ export default function LuxuryBarber() {
                 onClick={() => { setGalleryIndex(i); setShowGalleryModal(true); }}
                 className="aspect-[4/5] bg-card border border-border/10 overflow-hidden group cursor-pointer relative"
               >
-                <img src={item.image} alt={item.title} className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <LazyImage src={item.image} alt={item.title} className="size-full transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 text-center">
                   <span className="text-[10px] font-black uppercase text-[#D4AF37] mb-2">{item.category}</span>
                   <h4 className="text-white font-black uppercase tracking-tight">{item.title}</h4>
@@ -597,7 +605,7 @@ export default function LuxuryBarber() {
       <Dialog open={showGalleryModal} onOpenChange={setShowGalleryModal}>
         <DialogContent className="max-w-4xl p-0 bg-black border-none overflow-hidden rounded-none">
           <div className="relative aspect-[4/5] md:aspect-video flex items-center justify-center">
-            <img src={GALLERY[galleryIndex].image} alt="Gallery Work" className="size-full object-contain" />
+            <LazyImage src={GALLERY[galleryIndex].image} alt="Gallery Work" className="size-full" />
             <Button variant="ghost" size="icon" className="absolute top-4 right-4 text-white hover:bg-white/10" onClick={() => setShowGalleryModal(false)}>
               <X className="size-6" />
             </Button>

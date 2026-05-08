@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { 
+import { useEffect, useRef } from "react";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import{
   Zap, 
   Gem, 
   Shield, 
@@ -15,13 +15,13 @@ import {
   Clock, 
   Star, 
   Check,
-  ArrowRight,
   Quote
 } from "lucide-react";
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 // --- Animated Counter Component ---
 function AnimatedCounter({ value, suffix = "", isFloat = false }: { value: number, suffix?: string, isFloat?: boolean }) {
@@ -84,6 +84,7 @@ const TESTIMONIALS = [
 const MARQUEE = ["Luxury Hotels", "Rejuvenating Spas", "Modern Gyms", "Premium Salons", "Instant Booking", "Trusted by 10,000+", "24/7 Support"];
 
 export default function AboutPage() {
+
   return (
     <div className="min-h-screen bg-transparent">
       <Header />
@@ -200,7 +201,7 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   className="group relative aspect-[3/4] overflow-hidden"
                 >
-                  <img src={s.img} alt={s.title} className="size-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
+                  <LazyImage src={s.img} alt={s.title} className="size-full grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
                   <div className="absolute inset-0 p-8 flex flex-col justify-end space-y-4 translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                     <span className="text-[#D4AF37] font-black serif text-4xl opacity-40">{s.number}</span>
@@ -253,12 +254,12 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-24 items-center">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4 pt-12">
-                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="aspect-[3/4] object-cover border border-[#D4AF37]/20" />
-                <img src="https://images.unsplash.com/photo-1544161515-4af6b1d4640b?auto=format&fit=crop&q=80" className="aspect-square object-cover border border-[#D4AF37]/20" />
+                <LazyImage src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" alt="About 1" className="aspect-[3/4] border border-[#D4AF37]/20" />
+                                <LazyImage src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80" alt="About 2" className="aspect-square border border-[#D4AF37]/20" />
               </div>
               <div className="space-y-4">
-                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80" className="aspect-square object-cover border border-[#D4AF37]/20" />
-                <img src="https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80" className="aspect-[3/4] object-cover border border-[#D4AF37]/20" />
+                <LazyImage src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80" alt="About 3" className="aspect-square border border-[#D4AF37]/20" />
+                <LazyImage src="https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80" alt="About 4" className="aspect-[3/4] border border-[#D4AF37]/20" />
               </div>
             </div>
             

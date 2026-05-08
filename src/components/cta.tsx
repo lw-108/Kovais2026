@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import asciiArt from "@/assets/asciii-art.png";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 export const CTA = () => {
   return (
@@ -13,10 +14,10 @@ export const CTA = () => {
       <div className="relative mx-auto max-w-7xl overflow-hidden group">
         {/* Responsive container with height compromise */}
         <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[400px] flex items-center justify-center">
-            <img
-            alt="Kovais Aesthetic"
-            className="absolute inset-0 size-full object-cover transition-transform duration-[20s] group-hover:scale-105 will-change-transform"
-            src={asciiArt}
+            <LazyImage
+              src={asciiArt}
+              alt="Kovais Aesthetic"
+              className="absolute inset-0 size-full transition-transform duration-[20s] group-hover:scale-105 will-change-transform"
             />
             {/* Reduced backdrop blur for performance */}
             <div className="absolute inset-0 bg-black/70 md:bg-black/60" />

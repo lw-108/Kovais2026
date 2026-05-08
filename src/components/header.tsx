@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/desktop-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { LogIn, LogOut, User as UserIcon } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { userService } from "@/lib/data-service";
 
 export function Header() {
@@ -15,11 +16,15 @@ export function Header() {
     const [points, setPoints] = useState(0);
 
     useEffect(() => {
+        let lastUserStr = "";
         const checkUser = () => {
-            const savedUser = localStorage.getItem("loggedInUser");
-            if (savedUser) {
+            const savedUserStr = localStorage.getItem("loggedInUser") || "";
+            if (savedUserStr === lastUserStr) return;
+            lastUserStr = savedUserStr;
+
+            if (savedUserStr) {
                 try {
-                    const u = JSON.parse(savedUser);
+                    const u = JSON.parse(savedUserStr);
                     if (u && u.user_id) {
                         setUser(u);
                         setPoints(userService.getPoints(u.user_id));
@@ -36,7 +41,6 @@ export function Header() {
 
         checkUser();
         
-        // Optimize: Listen for storage changes (multi-tab) and custom auth events
         window.addEventListener("storage", checkUser);
         window.addEventListener("auth-change", checkUser);
         
@@ -72,28 +76,29 @@ export function Header() {
 				</div>
 
 				<div className="flex items-center gap-4">
+					<ThemeToggle />
 					{user && (
 						<div className="hidden items-center gap-3 md:flex">
-							<div className="flex items-center gap-2 pr-3">
-								<div className="size-9 rounded-full bg-gradient-to-tr from-[#D4AF37] to-amber-200 p-0.5 shadow-sm">
-									<div className="flex size-full items-center justify-center rounded-full bg-background">
+							<div className="flex items-center gap-2 pr-3 border-r border-[#D4AF37]/20">
+								<div className="size-10 bg-[#D4AF37] p-0.5 shadow-lg">
+									<div className="flex size-full items-center justify-center bg-white">
 										{user.emblem_url ? (
-											<img src={user.emblem_url} alt="Avatar" className="size-full rounded-full" />
+											<img src={user.emblem_url} alt="Avatar" className="size-full object-cover" />
 										) : (
 											<UserIcon className="size-5 text-[#D4AF37]" />
 										)}
+									</div>
 								</div>
 							</div>
 							<div className="flex flex-col">
-								<span className="text-sm font-semibold">{user.username}</span>
-								<span className="text-xs text-[#D4AF37] font-medium">{points.toLocaleString()} Points</span>
+								<span className="text-sm font-bold text-black">{user.username}</span>
+								<span className="text-xs text-[#D4AF37] font-black uppercase tracking-widest">{points.toLocaleString()} Points</span>
 							</div>
-						</div>
 							<Button 
 								variant="ghost" 
 								size="sm" 
 								onClick={handleLogout}
-								className={cn("gap-2 px-4 py-2", hoverGold)}
+								className="gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300"
 							>
 								<LogOut className="size-4" />
 								<span>Logout</span>
@@ -106,10 +111,10 @@ export function Header() {
 							variant="outline" 
 							size="lg" 
 							onClick={() => window.location.href = '/hotel'}
-							className={cn("gap-2 px-6 py-3 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition-all duration-300", hoverGold)}
+							className="gap-2 px-6 py-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300 border-none shadow-lg shadow-[#D4AF37]/20"
 						>
 							<LogIn className="size-4" />
-							<span className="font-semibold">Login</span>
+							<span>Login</span>
 						</Button>
 					)}
 					

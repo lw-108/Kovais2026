@@ -118,15 +118,18 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 
                                 {/* User Info if logged in */}
                                 {isLoggedIn && (
-                                    <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/50 border">
-                                        <div className="size-10 rounded-full bg-gradient-to-tr from-[#D4AF37] to-amber-200 p-0.5 shadow-sm">
-                                            <div className="flex size-full items-center justify-center rounded-full bg-background">
+                                    <div className="flex items-center gap-3 p-4 bg-[#D4AF37] shadow-lg border-2 border-[#D4AF37]">
+                                        <div className="size-10 bg-white p-0.5">
+                                            <div className="flex size-full items-center justify-center">
                                                 <User className="size-5 text-[#D4AF37]" />
                                             </div>
                                         </div>
-                                        <div className="flex flex-col text-left">
-                                            <span className="font-bold text-sm">Lingen</span>
-                                            <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Premium Member</span>
+                                        <div className="flex flex-col text-left flex-1">
+                                            <span className="font-bold text-sm text-white">Lingen</span>
+                                            <span className="text-[10px] text-white/80 uppercase tracking-widest font-black">Premium Member</span>
+                                        </div>
+                                        <div className="text-white text-xs font-black uppercase tracking-widest">
+                                            2.5K Points
                                         </div>
                                     </div>
                                 )}
@@ -199,7 +202,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                 <div className="mt-auto pt-6 flex flex-col gap-3">
                                     {isLoggedIn ? (
                                         <Button 
-                                            className="w-full h-14 gap-3 hover:bg-destructive/10 hover:text-destructive rounded-2xl" 
+                                            className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20" 
                                             variant="ghost"
                                             onClick={() => {
                                                 setIsLoggedIn(false);
@@ -207,18 +210,18 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                             }}
                                         >
                                             <LogOut className="size-5" />
-                                            <span className="font-bold">Logout Session</span>
+                                            <span>Logout</span>
                                         </Button>
                                     ) : (
                                         <Button 
-                                            className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl shadow-lg shadow-[#D4AF37]/20"
+                                            className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20"
                                             onClick={() => {
                                                 setIsLoggedIn(true);
                                                 setOpen(false);
                                             }}
                                         >
                                             <LogIn className="size-5" />
-                                            <span className="font-bold uppercase tracking-widest text-xs">Login to Account</span>
+                                            <span>Login</span>
                                         </Button>
                                     )}
                                 </div>

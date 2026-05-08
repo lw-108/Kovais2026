@@ -1,5 +1,6 @@
 "use client";
 import { Star, Quote } from "lucide-react";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 const testimonials = [
   {
@@ -67,7 +68,7 @@ export function Testimonials() {
 
                 <div className="mt-auto flex items-center gap-4">
                   <div className="size-12 rounded-full border-2 border-[#D4AF37] p-0.5 overflow-hidden">
-                    <img src={t.avatar} alt={t.name} className="size-full object-cover rounded-full bg-muted" />
+                    <LazyImage src={t.avatar} alt={t.name} className="size-full rounded-full bg-muted" />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-foreground text-sm uppercase tracking-wider serif">{t.name}</span>

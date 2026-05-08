@@ -59,7 +59,7 @@ export function Recognition() {
               <div className="absolute -bottom-1 -right-1 size-10 border-b-2 border-r-2 border-[#D4AF37] transition-all duration-500 group-hover:size-12" />
 
               <div className="h-full p-12 flex flex-col items-center text-center bg-card/40 backdrop-blur-md border border-[#D4AF37]/10 transition-all duration-500 group-hover:bg-[#D4AF37]/10 group-hover:border-[#D4AF37]/30 shadow-2xl">
-                <div className="mb-10 p-5 rounded-full bg-[#D4AF37]/10 group-hover:bg-[#D4AF37]/20 transition-all duration-500 group-hover:scale-110">
+                <div className="mb-10 p-5 rounded-full transition-all duration-500 group-hover:scale-110">
                     <item.icon className="size-10 text-[#D4AF37]" />
                 </div>
                 

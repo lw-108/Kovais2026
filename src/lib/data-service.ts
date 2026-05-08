@@ -12,7 +12,7 @@
  * 3. Ensure your production backend returns matching schemas.
  */
 
-const API_BASE_URL = "https://api.kovais.in/v1"; // Example Production URL
+
 
 // --- Shared Types ---
 export interface User {
@@ -83,7 +83,7 @@ export const HALLS = [
 export const userService = {
     login: async (username: string, _password: string): Promise<User> => {
         // PRODUCTION: return axios.post(`${API_BASE_URL}/auth/login`, { username, password });
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise(r => setTimeout(r, 400));
         const user = {
             user_id: 101,
             username: username || "Guest",
@@ -98,7 +98,7 @@ export const userService = {
     
     signup: async (_name: string, _phone: string, _password: string) => {
         // PRODUCTION: return axios.post(`${API_BASE_URL}/auth/signup`, { name, phone, password });
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 500));
         return { message: "Account Created Successfully" };
     },
 
@@ -117,7 +117,7 @@ export const userService = {
 export const bookingService = {
     createGenericBooking: async (type: string, bookingData: any) => {
         // PRODUCTION: return axios.post(`${API_BASE_URL}/bookings/${type}`, bookingData);
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 600));
         const history = JSON.parse(localStorage.getItem(`${type}_history`) || "[]");
         const newBooking = { 
             id: "BK-" + Math.random().toString(36).substr(2, 9).toUpperCase(), 

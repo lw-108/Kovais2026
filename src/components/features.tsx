@@ -5,9 +5,9 @@ import {
   CalendarDays, 
   Hotel as HotelIcon, 
   Sparkles, 
-  Dumbbell,
   Clock,
 } from "lucide-react";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 // Image Imports
 import funeralImg from "@/assets/funeral.png";
@@ -88,10 +88,10 @@ const Features = () => {
               key={feature.title}
             >
               <div className="relative mb-6 aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 group-hover:shadow-[#D4AF37]/10">
-                <img
-                  alt={feature.title}
-                  className="size-full bg-muted object-cover transition-transform duration-700 group-hover:scale-110"
+                <LazyImage
                   src={feature.image}
+                  alt={feature.title}
+                  className="size-full bg-muted transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 transition-opacity group-hover:opacity-80" />
                 

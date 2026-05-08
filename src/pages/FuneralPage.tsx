@@ -4,23 +4,17 @@ import {
   Star, 
   Clock, 
   User, 
-  Calendar as CalendarIcon, 
   Heart,
   Shield,
   Check,
   Lock,
   Phone,
-  Eye,
   ArrowRight,
   Sparkles,
   Award,
   Home,
-  Scissors,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle,
   MapPin,
-  Trash2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
@@ -32,6 +26,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
+import { LazyImage } from "@/components/ui/lazy-image";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -91,7 +86,10 @@ const STATS = [
   { icon: <Award size={20} />, value: "500+", label: "Families Served" },
 ];
 
+
+
 export default function FuneralPage() {
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [user, setUser] = useState<any>(null);
   const [points, setPoints] = useState(0);
@@ -276,7 +274,7 @@ export default function FuneralPage() {
               transition={{ duration: 1.5 }}
               className="absolute inset-0"
             >
-              <img src={HERO_SLIDES[currentSlide].image} className="size-full object-cover brightness-50" />
+              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full brightness-50" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
             </motion.div>
           </AnimatePresence>
@@ -369,7 +367,7 @@ export default function FuneralPage() {
                             onClick={() => handleServiceSelect(service)}
                             className={`flex items-center gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
                           >
-                            <img src={service.image} className="size-20 object-cover" />
+                            <LazyImage src={service.image} alt={service.name} className="size-20" />
                             <div className="flex-1">
                               <h5 className="font-black text-sm uppercase tracking-tight">{service.name}</h5>
                               <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
@@ -412,7 +410,7 @@ export default function FuneralPage() {
                           className={`p-5 border transition-all flex items-center justify-between ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                         >
                           <div className="relative mx-auto size-24">
-                            <img src={emp.image} className="size-full object-cover rounded-full" />
+                            <LazyImage src={emp.image} alt={emp.name} className="size-full rounded-full" />
                             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white text-[9px] font-black px-3 py-1 uppercase rounded-full flex items-center gap-1">
                               <Star size={8} fill="white" /> {emp.rating}
                             </div>

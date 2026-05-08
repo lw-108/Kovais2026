@@ -207,9 +207,9 @@ export default function AboutSection3() {
                 animationNum={12}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="text-[#D4AF37] text-3xl font-black mb-1 tracking-tighter"
+                className="text-[#D4AF37] text-6xl italic font-light serif mb-1 tracking-tighter"
               >
-                KOVAIS VITE
+                KOVAIS
               </TimelineContent>
 
               <TimelineContent

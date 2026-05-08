@@ -28,7 +28,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   const isHomePage = location.pathname === "/";
 
   return (
-    <div className={!isHomePage ? "noir-background dark" : ""}>
+    <div className={!isHomePage ? "noir-background" : ""}>
       {children}
     </div>
   );

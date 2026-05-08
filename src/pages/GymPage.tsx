@@ -11,19 +11,14 @@ import {
   Lock,
   Phone,
   Dumbbell,
-  Shield,
   Trophy,
   Activity,
-  Heart,
-  Sparkles,
   Award,
-  Calendar as CalendarIcon,
-  ChevronRight,
-  ChevronLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Swal from "sweetalert2";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
+
 
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header";
@@ -33,11 +28,9 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { LazyImage } from "@/components/ui/lazy-image";
+
+
 
 import { userService, bookingService, GYM_PLANS } from "@/lib/data-service";
 
@@ -114,6 +107,7 @@ const AGE_GROUPS = [
 ];
 
 export default function GymPage() {
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
@@ -263,7 +257,7 @@ export default function GymPage() {
               transition={{ duration: 1.5 }}
               className="absolute inset-0"
             >
-              <img src={HERO_SLIDES[currentSlide].image} className="size-full object-cover grayscale brightness-50" />
+              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full grayscale brightness-50" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </motion.div>
           </AnimatePresence>
@@ -382,7 +376,7 @@ export default function GymPage() {
                 }}
                 className={`relative aspect-[16/10] overflow-hidden border cursor-pointer transition-all duration-500 ${selectedGender === g.id ? 'border-[#D4AF37] shadow-2xl' : 'border-[#D4AF37]/10 grayscale hover:grayscale-0'}`}
               >
-                <img src={g.image} alt={g.label} className="size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                <LazyImage src={g.image} alt={g.label} className="size-full transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-8 left-8">
                   <h3 className="text-3xl font-black text-white uppercase tracking-tight">{g.label}</h3>
@@ -410,7 +404,7 @@ export default function GymPage() {
                 }}
                 className={`relative aspect-square overflow-hidden border cursor-pointer transition-all duration-500 ${selectedAge === a.id ? 'border-[#D4AF37] shadow-2xl' : 'border-[#D4AF37]/10 grayscale hover:grayscale-0'}`}
               >
-                <img src={a.image} alt={a.label} className="size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                <LazyImage src={a.image} alt={a.label} className="size-full transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-8 left-8">
                   <h3 className="text-2xl font-black text-white uppercase tracking-tight">{a.label}</h3>
@@ -433,9 +427,10 @@ export default function GymPage() {
               <Calendar 
                 mode="single" 
                 selected={selectedDate} 
-                onSelect={setSelectedDate} 
+                onSelect={(date: any) => setSelectedDate(date)} 
+                initialFocus 
                 className="rounded-none border-none scale-110 origin-top-left"
-                disabled={(date) => date < new Date()}
+                disabled={(date: Date) => date < new Date()}
               />
             </div>
             <div className="space-y-8">
@@ -562,7 +557,7 @@ export default function GymPage() {
                 className="bg-background border border-[#D4AF37]/10 p-10 space-y-6 hover:shadow-2xl transition-all"
               >
                 <div className="relative aspect-square overflow-hidden mb-6">
-                  <img src={story.image} alt={story.name} className="size-full object-cover grayscale brightness-75" />
+                  <LazyImage src={story.image} alt={story.name} className="size-full grayscale brightness-75" />
                   <div className="absolute top-4 right-4 bg-[#D4AF37] text-white px-3 py-1 text-[8px] font-black uppercase tracking-widest">{story.achievement}</div>
                 </div>
                 <div className="space-y-4 text-center">
