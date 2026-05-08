@@ -216,7 +216,7 @@ export default function LuxuryBarber() {
   const availableEmployees = EMPLOYEES.filter(e => e.categories.includes(selectedCategory));
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto space-y-20">
@@ -585,7 +585,7 @@ export default function LuxuryBarber() {
             </div>
           </div>
 
-          <div className="p-8 bg-white border-t border-border/10">
+          <div className="p-8 bg-background border-t border-border/10">
             <Button className="w-full h-14 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
               {loading ? "Registering Ritual..." : `Confirm Ritual · ₹${finalTotal.toLocaleString()}`}
             </Button>

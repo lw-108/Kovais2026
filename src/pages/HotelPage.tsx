@@ -237,7 +237,7 @@
     ];
 
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-transparent">
         <Header />
         
         <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto space-y-8">
@@ -351,7 +351,7 @@
           {/* Main Content Card */}
           <div className="grid lg:grid-cols-2 gap-1 px-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20">
             {/* Left: Gallery */}
-            <div className="p-6 bg-background space-y-4">
+            <div className="p-6 bg-background border border-border/10">
               <div className="relative group overflow-hidden aspect-[4/3]">
                   <img src={hotelImg} alt="Hotel Room" className="size-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute top-4 left-4 flex gap-2">
@@ -374,7 +374,7 @@
             </div>
 
             {/* Right: Info & Booking */}
-            <div className="p-8 md:p-12 bg-background flex flex-col justify-between">
+            <div className="p-8 md:p-12 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
               <div className="space-y-8">
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
@@ -502,7 +502,7 @@
 
         {/* --- Login Modal --- */}
         <Dialog open={showLogin} onOpenChange={setShowLogin}>
-          <DialogContent className="max-w-md p-8 bg-[#F2F2EB] border-none rounded-2xl">
+          <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
               <div className="space-y-8">
                   <div className="text-center">
                       <h2 className="text-3xl font-black tracking-tight serif uppercase">Welcome to Kovais</h2>
@@ -541,7 +541,7 @@
 
         {/* --- Booking Modal --- */}
         <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-          <DialogContent className="max-w-2xl p-0 overflow-hidden bg-[#F2F2EB] border-none rounded-2xl">
+          <DialogContent className="max-w-2xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
               <div className="p-8 bg-white/40 border-b border-border/10">
                   <div className="flex items-center gap-3">
                       <Zap className="size-5 text-[#D4AF37]" />
@@ -551,7 +551,7 @@
               
               <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
                   {/* Summary */}
-                  <div className="p-6 bg-white border border-border/10 flex items-center justify-between">
+                  <div className="p-6 bg-card border border-border/10 flex items-center justify-between">
                       <div>
                           <div className="font-black text-sm uppercase">{room.title}</div>
                           <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase mt-1">
@@ -564,7 +564,7 @@
                   {/* Purpose */}
                   <div className="space-y-3">
                       <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Purpose of Visit</label>
-                      <input className="w-full h-12 px-4 bg-white border border-border/10 rounded-none" placeholder="Business, Leisure, Family..." value={purpose} onChange={e => setPurpose(e.target.value)} />
+                      <input className="w-full h-12 px-4 bg-background border border-border/10 rounded-none" placeholder="Business, Leisure, Family..." value={purpose} onChange={e => setPurpose(e.target.value)} />
                   </div>
 
                   {/* Rewards */}
@@ -621,7 +621,7 @@
 
         {/* --- Other Modals (Tour, Reviews) same as before --- */}
         <Dialog open={showTour} onOpenChange={setShowTour}>
-          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-[#F2F2EB] border-none rounded-2xl">
+          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
             <div className="p-6 flex items-center justify-between bg-transparent">
               <div className="flex items-center gap-3">
                 <Camera className="size-5 text-[#B8962E]" />
@@ -655,7 +655,7 @@
         </Dialog>
 
         <Dialog open={showReviews} onOpenChange={setShowReviews}>
-          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-[#F2F2EB] border-none rounded-2xl">
+          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
             <div className="p-6 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Star className="size-5 text-[#B8962E]" />

@@ -332,7 +332,7 @@ export default function SpaPage() {
   const currentServices = (SPA_SERVICES as any)[selectedCategory] || [];
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 space-y-24">
@@ -432,11 +432,11 @@ export default function SpaPage() {
 
         {/* Ritual Configuration */}
         <div className="max-w-7xl mx-auto px-6 space-y-1">
-          <div className="p-4 bg-white/60 backdrop-blur-2xl border border-[#D4AF37]/10 shadow-2xl relative">
+          <div className="p-4 bg-background border border-[#D4AF37]/10 shadow-2xl relative">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Service Type</label>
-                <div className="grid grid-cols-2 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                <div className="grid grid-cols-2 gap-1 p-1 bg-background border border-border/5">
                   <button 
                     onClick={() => setSelectedLocation("salon")}
                     className={`flex items-center justify-center gap-2 h-11 text-[10px] font-black uppercase transition-all ${selectedLocation === 'salon' ? 'bg-[#D4AF37] text-white' : 'hover:bg-[#D4AF37]/5 text-muted-foreground'}`}
@@ -454,7 +454,7 @@ export default function SpaPage() {
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Target Category</label>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                <div className="grid grid-cols-3 gap-1 p-1 bg-background border border-border/5">
                   {['Women', 'Men', 'Couples'].map(cat => (
                     <button 
                       key={cat}
@@ -474,7 +474,7 @@ export default function SpaPage() {
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Preferred Date</label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-[#FDFBF7]">
+                    <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-background">
                       <CalendarIcon className="mr-2 h-4 w-4 text-[#D4AF37]" />
                       {selectedDate ? format(selectedDate, "PPP") : "Select date"}
                     </Button>
@@ -487,7 +487,7 @@ export default function SpaPage() {
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Therapist Preference</label>
-                <div className="flex items-center gap-2 p-3 bg-[#FDFBF7] border border-border/5 h-11 font-bold text-sm">
+                <div className="flex items-center gap-2 p-3 bg-background border border-border/5 h-11 font-bold text-sm">
                   <User className="size-4 text-[#D4AF37]" />
                   {selectedTherapist ? selectedTherapist.name : "Choose below"}
                 </div>
@@ -499,7 +499,7 @@ export default function SpaPage() {
         {/* Services & Booking Grid */}
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-px bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="ritual-menu">
           {/* Left: Ritual Menu */}
-          <div className="p-8 md:p-12 bg-white space-y-10">
+          <div className="p-8 md:p-12 bg-background space-y-10">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37] mb-2 block">OUR COLLECTION</span>
@@ -549,7 +549,7 @@ export default function SpaPage() {
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-16 bg-[#FDFBF7] flex flex-col justify-between border-l border-[#D4AF37]/10">
+          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
             <div className="space-y-12">
               <div className="space-y-8">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Select Wellness Therapist</h3>
@@ -558,7 +558,7 @@ export default function SpaPage() {
                     <button 
                       key={therapist.id}
                       onClick={() => setSelectedTherapist(therapist)}
-                      className={`p-5 border transition-all flex items-center justify-between ${selectedTherapist?.id === therapist.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10 hover:border-[#D4AF37]/30'}`}
+                      className={`p-5 border transition-all flex items-center justify-between ${selectedTherapist?.id === therapist.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                     >
                       <div className="flex items-center gap-4">
                         <div className="size-12 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
@@ -584,7 +584,7 @@ export default function SpaPage() {
                     <button 
                       key={time}
                       onClick={() => setSelectedTime(time)}
-                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-white border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
+                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-background border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
                     >
                       {time}
                     </button>
@@ -629,7 +629,7 @@ export default function SpaPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 border border-[#D4AF37]/10 bg-white hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
+                className="p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
               >
                 <div className="text-[#D4AF37] flex justify-center scale-125">{item.icon}</div>
                 <div className="space-y-3">

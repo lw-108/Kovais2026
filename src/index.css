@@ -151,3 +151,33 @@
   background-color: var(--primary);
   color: white;
 }
+
+.noir-background {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('./assets/bg-light.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+.dark.noir-background,
+.dark .noir-background {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('./assets/bg-dark.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Ensure components are transparent with blur */
+.noir-background .bg-background,
+.noir-background .bg-card,
+.noir-background .bg-muted {
+  @apply bg-transparent backdrop-blur-sm;
+}
+
+.noir-background main {
+  @apply bg-transparent;
+}
+
+.noir-background .border {
+  @apply border-white/5;
+}

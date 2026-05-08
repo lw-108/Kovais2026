@@ -261,7 +261,7 @@ export default function FuneralPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD]">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24">
@@ -343,7 +343,7 @@ export default function FuneralPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <button 
                           onClick={() => setBooking({...booking, location: 'Door Step'})}
-                          className={`p-8 border text-left transition-all duration-500 ${booking.location === 'Door Step' ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5 hover:border-black/20'}`}
+                          className={`group p-6 border transition-all cursor-pointer flex items-center gap-6 ${booking.location === 'Door Step' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                         >
                           <Home className="mb-4 text-[#D4AF37]" size={32} />
                           <div className="font-black text-xs uppercase tracking-widest">Doorstep Service</div>
@@ -351,7 +351,7 @@ export default function FuneralPage() {
                         </button>
                         <button 
                           onClick={() => setBooking({...booking, location: 'Sanctuary'})}
-                          className={`p-8 border text-left transition-all duration-500 ${booking.location === 'Sanctuary' ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5 hover:border-black/20'}`}
+                          className={`group p-6 border transition-all cursor-pointer flex items-center gap-6 ${booking.location === 'Sanctuary' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                         >
                           <MapPin className="mb-4 text-[#D4AF37]" size={32} />
                           <div className="font-black text-xs uppercase tracking-widest">At Sanctuary</div>
@@ -367,7 +367,7 @@ export default function FuneralPage() {
                           <div 
                             key={service.id}
                             onClick={() => handleServiceSelect(service)}
-                            className={`flex items-center gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                            className={`flex items-center gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
                           >
                             <img src={service.image} className="size-20 object-cover" />
                             <div className="flex-1">
@@ -409,7 +409,7 @@ export default function FuneralPage() {
                         <div 
                           key={emp.id}
                           onClick={() => setBooking({...booking, employee: emp})}
-                          className={`p-8 border cursor-pointer text-center space-y-6 transition-all ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-xl' : 'border-black/5'}`}
+                          className={`p-5 border transition-all flex items-center justify-between ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                         >
                           <div className="relative mx-auto size-24">
                             <img src={emp.image} className="size-full object-cover rounded-full" />
@@ -563,9 +563,11 @@ export default function FuneralPage() {
                         </div>
                       </div>
 
-                      <div className="pt-6 border-t border-white/10 flex justify-between items-center">
-                        <span className="text-xs font-black uppercase tracking-widest">Total Honorarium</span>
-                        <span className="text-3xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
+                      <div className="bg-background border border-border/10 p-8 space-y-8">
+                        <div className="pt-6 border-t border-black/5 flex justify-between items-center">
+                          <span className="text-xs font-black uppercase tracking-widest">Total Honorarium</span>
+                          <span className="text-3xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
+                        </div>
                       </div>
                     </div>
 
@@ -574,13 +576,13 @@ export default function FuneralPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <div 
                           onClick={() => setPayType('offline')}
-                          className={`p-6 border cursor-pointer transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
                         >
                           <div className="font-black text-[10px] uppercase tracking-widest">Pay at Location</div>
                         </div>
                         <div 
                           onClick={() => setPayType('online')}
-                          className={`p-6 border cursor-pointer transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-black/5'}`}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
                         >
                           <div className="font-black text-[10px] uppercase tracking-widest">Online Payment</div>
                         </div>
@@ -604,7 +606,7 @@ export default function FuneralPage() {
 
             {/* Right: Summary & Points */}
             <div className="space-y-8">
-              <div className="p-8 border border-black/5 bg-white space-y-6 sticky top-40">
+              <div className="bg-background border border-[#D4AF37]/10 p-12 space-y-12 shadow-2xl relative backdrop-blur-sm">
                 <h5 className="font-black text-xs uppercase tracking-[0.2em] border-b border-black/5 pb-4">Booking Receipt</h5>
                 
                 <div className="space-y-4">
@@ -669,7 +671,7 @@ export default function FuneralPage() {
               { icon: <Shield size={24} />, title: "Dignity", desc: "Honoring every legacy with absolute grace." },
               { icon: <Sparkles size={24} />, title: "Excellence", desc: "Meticulous preparation by senior specialists." }
             ].map((item, i) => (
-              <div key={i} className="p-10 border border-black/5 bg-white text-center space-y-6">
+              <div key={i} className="p-10 border border-[#D4AF37]/10 bg-background text-center space-y-6">
                 <div className="text-[#D4AF37] flex justify-center">{item.icon}</div>
                 <h4 className="font-black text-xs uppercase tracking-widest">{item.title}</h4>
                 <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight leading-relaxed">{item.desc}</p>
@@ -683,7 +685,7 @@ export default function FuneralPage() {
 
       {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-[#FDFDFD] border-none shadow-2xl">
+        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl font-black tracking-tight serif uppercase">Memorial Access</h2>
@@ -722,7 +724,5 @@ export default function FuneralPage() {
         </DialogContent>
       </Dialog>
     </div>
-  );
-}</div>
   );
 }

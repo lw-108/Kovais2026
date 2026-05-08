@@ -311,7 +311,7 @@ export default function FunctionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 space-y-24">
@@ -497,7 +497,7 @@ export default function FunctionPage() {
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-16 bg-[#FDFBF7] flex flex-col justify-between border-l border-[#D4AF37]/10">
+          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
             <div className="space-y-12">
               <div className="space-y-8">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Choose Specialist</h3>
@@ -506,7 +506,7 @@ export default function FunctionPage() {
                     <button 
                       key={emp.id}
                       onClick={() => setSelectedEmployee(emp)}
-                      className={`p-5 border transition-all flex items-center justify-between ${selectedEmployee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10 hover:border-[#D4AF37]/30'}`}
+                      className={`p-5 border transition-all flex items-center justify-between ${selectedEmployee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
                     >
                       <div className="flex items-center gap-4">
                         <div className="size-12 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
@@ -532,7 +532,7 @@ export default function FunctionPage() {
                     <button 
                       key={time}
                       onClick={() => setSelectedTime(time)}
-                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-white border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
+                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-background border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
                     >
                       {time}
                     </button>

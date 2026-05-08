@@ -296,7 +296,7 @@ export default function ParlourPage() {
   const currentServices = PARLOUR_SERVICES.filter(s => s.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 space-y-24">
@@ -396,11 +396,11 @@ export default function ParlourPage() {
 
         {/* Ritual Configuration */}
         <div className="max-w-7xl mx-auto px-6 space-y-1">
-          <div className="p-4 bg-white/60 backdrop-blur-2xl border border-[#D4AF37]/10 shadow-2xl relative">
+          <div className="p-4 bg-background border border-[#D4AF37]/10 shadow-2xl relative">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Service Type</label>
-                <div className="grid grid-cols-2 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                <div className="grid grid-cols-2 gap-1 p-1 bg-background border border-border/5">
                   <button 
                     onClick={() => setSelectedLocation("salon")}
                     className={`flex items-center justify-center gap-2 h-11 text-[10px] font-black uppercase transition-all ${selectedLocation === 'salon' ? 'bg-[#D4AF37] text-white' : 'hover:bg-[#D4AF37]/5 text-muted-foreground'}`}
@@ -417,8 +417,8 @@ export default function ParlourPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Category</label>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-[#FDFBF7] border border-border/5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Target Category</label>
+                <div className="grid grid-cols-3 gap-1 p-1 bg-background border border-border/5">
                   {CATEGORIES.map(cat => (
                     <button 
                       key={cat}
@@ -438,7 +438,7 @@ export default function ParlourPage() {
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Preferred Date</label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-[#FDFBF7]">
+                    <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-background">
                       <CalendarIcon className="mr-2 h-4 w-4 text-[#D4AF37]" />
                       {selectedDate ? format(selectedDate, "PPP") : "Select date"}
                     </Button>
@@ -451,7 +451,7 @@ export default function ParlourPage() {
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Artisan Preference</label>
-                <div className="flex items-center gap-2 p-3 bg-[#FDFBF7] border border-border/5 h-11 font-bold text-sm">
+                <div className="flex items-center gap-2 p-3 bg-background border border-border/5 h-11 font-bold text-sm">
                   <User className="size-4 text-[#D4AF37]" />
                   {selectedArtisan ? selectedArtisan.name : "Choose below"}
                 </div>
@@ -463,7 +463,7 @@ export default function ParlourPage() {
         {/* Services & Booking Grid */}
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-px bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="ritual-menu">
           {/* Left: Ritual Menu */}
-          <div className="p-8 md:p-12 bg-white space-y-10">
+          <div className="p-8 md:p-12 bg-background space-y-10">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37] mb-2 block">AESTHETIC MENU</span>
@@ -513,7 +513,7 @@ export default function ParlourPage() {
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-16 bg-[#FDFBF7] flex flex-col justify-between border-l border-[#D4AF37]/10">
+          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
             <div className="space-y-12">
               <div className="space-y-8">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Select Beauty Artisan</h3>
@@ -593,7 +593,7 @@ export default function ParlourPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 border border-[#D4AF37]/10 bg-white hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
+                className="p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
               >
                 <div className="text-[#D4AF37] flex justify-center scale-125">{item.icon}</div>
                 <div className="space-y-3">
@@ -632,7 +632,7 @@ export default function ParlourPage() {
 
       {/* --- Service Detail Modal --- */}
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
-        <DialogContent className="max-w-3xl p-0 overflow-hidden bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+        <DialogContent className="max-w-3xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
           {selectedDetailService && (
             <div className="flex flex-col md:flex-row h-full">
               <div className="md:w-1/2 relative h-64 md:h-auto">
@@ -694,7 +694,7 @@ export default function ParlourPage() {
 
       {/* --- Login Modal --- */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl font-black tracking-tight serif uppercase">Aesthetic Access</h2>
@@ -735,7 +735,7 @@ export default function ParlourPage() {
 
       {/* --- Booking Modal --- */}
       <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-        <DialogContent className="max-w-2xl p-0 overflow-hidden bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+        <DialogContent className="max-w-2xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
           <div className="p-8 bg-white border-b border-[#D4AF37]/10">
             <div className="flex items-center gap-3">
               <Sparkles className="size-5 text-[#D4AF37]" />
@@ -744,7 +744,7 @@ export default function ParlourPage() {
           </div>
           
           <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
-            <div className="p-6 bg-white border border-border/5 space-y-4">
+            <div className="p-6 bg-card border border-border/5 space-y-4">
               {selectedServices.map(s => (
                 <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
                   <div className="font-black text-[10px] uppercase tracking-tight">{s.name}</div>
@@ -795,7 +795,7 @@ export default function ParlourPage() {
             </div>
           </div>
 
-          <div className="p-8 bg-white border-t border-border/10">
+          <div className="p-8 bg-background border-t border-border/10">
             <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
               {loading ? "Registering Ritual..." : `Confirm Transformation · ₹${finalTotal.toLocaleString()}`}
             </Button>

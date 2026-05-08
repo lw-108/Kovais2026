@@ -85,7 +85,7 @@ const MARQUEE = ["Luxury Hotels", "Rejuvenating Spas", "Modern Gyms", "Premium S
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 space-y-32">
@@ -165,7 +165,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 border border-[#D4AF37]/10 bg-white hover:border-[#D4AF37]/30 transition-all duration-500 space-y-6 group"
+                className="p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 space-y-6 group"
               >
                 <div className="text-[#D4AF37] group-hover:scale-110 transition-transform duration-500">{f.icon}</div>
                 <div className="space-y-3">
@@ -233,7 +233,7 @@ export default function AboutPage() {
                 {i < STEPS.length - 1 && (
                   <div className="hidden md:block absolute top-12 left-1/2 w-full h-px border-t border-dashed border-[#D4AF37]/20" />
                 )}
-                <div className="size-24 mx-auto bg-white border border-[#D4AF37]/20 rounded-full flex items-center justify-center relative z-10 group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
+                <div className="size-24 mx-auto bg-background border border-[#D4AF37]/20 rounded-full flex items-center justify-center relative z-10 group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
                   <div className="text-[#D4AF37] group-hover:text-white transition-colors">{step.icon}</div>
                   <div className="absolute -top-2 -right-2 size-8 bg-black text-[#D4AF37] text-[10px] font-black flex items-center justify-center rounded-full border border-[#D4AF37]/20">
                     0{i+1}
@@ -292,7 +292,7 @@ export default function AboutPage() {
         </section>
 
         {/* 7. Stats Section */}
-        <section className="bg-white border-y border-[#D4AF37]/10 py-32">
+        <section className="bg-background border-y border-[#D4AF37]/10 py-32">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-16">
             {[
               { icon: <Users />, value: 10000, suffix: "+", label: "Happy Clients" },
@@ -330,7 +330,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 bg-white border border-[#D4AF37]/10 flex flex-col justify-between space-y-10 group"
+                className="p-10 bg-background border border-[#D4AF37]/10 flex flex-col justify-between space-y-10 group"
               >
                 <div className="space-y-6">
                   <div className="flex items-center gap-1 text-[#D4AF37]">

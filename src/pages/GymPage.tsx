@@ -248,7 +248,7 @@ export default function GymPage() {
   const finalTotal = selectedPlan ? Math.max(0, selectedPlan.price - discount) : 0;
 
   return (
-    <div className="min-h-screen bg-[#F7F7F7]">
+    <div className="min-h-screen bg-transparent">
       <Header />
 
       <main className="pt-32 pb-24 space-y-24">
@@ -356,7 +356,7 @@ export default function GymPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-white border border-[#D4AF37]/10 p-10 text-center hover:border-[#D4AF37]/30 transition-all shadow-sm"
+              className="bg-background border border-[#D4AF37]/10 p-10 text-center hover:border-[#D4AF37]/30 transition-all shadow-sm"
             >
               <div className="text-[#D4AF37] mb-6 flex justify-center scale-125">{stat.icon}</div>
               <div className="text-4xl font-black serif mb-2">{stat.value}</div>
@@ -427,7 +427,7 @@ export default function GymPage() {
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">STEP THREE</span>
             <h2 className="serif-font text-4xl md:text-6xl font-black uppercase tracking-tight">Choose Your <span className="text-[#D4AF37] italic">Schedule</span></h2>
           </div>
-          <div className="grid lg:grid-cols-2 gap-12 bg-white border border-[#D4AF37]/10 p-12">
+          <div className="grid lg:grid-cols-2 gap-12 bg-background border border-[#D4AF37]/10 p-12">
             <div className="space-y-8">
               <h4 className="text-xl font-black serif uppercase tracking-tight border-b border-[#D4AF37]/20 pb-4">1. Select Start Date</h4>
               <Calendar 
@@ -479,7 +479,7 @@ export default function GymPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`group relative bg-white border ${idx === 3 ? 'border-[#D4AF37] scale-105 z-10 p-10 shadow-2xl' : 'border-[#D4AF37]/10 p-8 hover:border-[#D4AF37]/30'} transition-all duration-500 flex flex-col`}
+                className={`group relative bg-background border ${idx === 3 ? 'border-[#D4AF37] scale-105 z-10 p-10 shadow-2xl' : 'border-[#D4AF37]/10 p-8 hover:border-[#D4AF37]/30'} transition-all duration-500 flex flex-col`}
               >
                 {idx === 3 && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white px-6 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] shadow-lg">
@@ -532,7 +532,7 @@ export default function GymPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 border border-[#D4AF37]/10 bg-white hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
+                className="p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 text-center space-y-6"
               >
                 <div className="text-[#D4AF37] flex justify-center scale-125">{item.icon}</div>
                 <div className="space-y-3">
@@ -559,7 +559,7 @@ export default function GymPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white border border-[#D4AF37]/10 p-10 space-y-6 hover:shadow-2xl transition-all"
+                className="bg-background border border-[#D4AF37]/10 p-10 space-y-6 hover:shadow-2xl transition-all"
               >
                 <div className="relative aspect-square overflow-hidden mb-6">
                   <img src={story.image} alt={story.name} className="size-full object-cover grayscale brightness-75" />
