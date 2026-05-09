@@ -98,7 +98,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase border border-[#D4AF37]/20 px-4 py-2"
           >
-            <div className="size-1.5 bg-[#D4AF37] rounded-full animate-pulse" />
+            <div className="size-1.5 bg-[#D4AF37] rounded-none animate-pulse" />
             Premium Services Platform
           </motion.div>
           
@@ -130,11 +130,11 @@ export default function AboutPage() {
             transition={{ delay: 0.3 }}
             className="flex justify-center"
           >
-            <div className="size-12 border border-[#D4AF37]/20 flex items-center justify-center rounded-full">
+            <div className="size-12 border border-[#D4AF37]/20 flex items-center justify-center rounded-none">
               <motion.div 
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="size-1.5 bg-[#D4AF37] rounded-full" 
+                className="size-1.5 bg-[#D4AF37] rounded-none" 
               />
             </div>
           </motion.div>
@@ -239,9 +239,9 @@ export default function AboutPage() {
                 {i < STEPS.length - 1 && (
                   <div className="hidden md:block absolute top-12 left-1/2 w-full h-px border-t border-dashed border-[#D4AF37]/20" />
                 )}
-                <div className="size-24 mx-auto bg-background border border-[#D4AF37]/20 rounded-full flex items-center justify-center relative z-10 group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
+                <div className="size-24 mx-auto bg-background border border-[#D4AF37]/20 rounded-none flex items-center justify-center relative z-10 group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
                   <div className="text-[#D4AF37] group-hover:text-white transition-colors">{step.icon}</div>
-                  <div className="absolute -top-2 -right-2 size-8 bg-black text-[#D4AF37] text-[10px] font-black flex items-center justify-center rounded-full border border-[#D4AF37]/20">
+                  <div className="absolute -top-2 -right-2 size-8 bg-black text-[#D4AF37] text-[10px] font-black flex items-center justify-center rounded-none border border-[#D4AF37]/20">
                     0{i+1}
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export default function AboutPage() {
                   "Transparent pricing with no hidden charges"
                 ].map((point, i) => (
                   <div key={i} className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-black dark:text-white">
-                    <div className="size-5 rounded-full border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
+                    <div className="size-5 rounded-none border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
                       <Check className="size-3" />
                     </div>
                     {point}
@@ -307,7 +307,7 @@ export default function AboutPage() {
               { icon: <Clock />, value: 3, suffix: " Min", label: "Avg. Booking Time" },
             ].map((stat, i) => (
               <div key={i} className="text-center space-y-6 group">
-                <div className="size-16 mx-auto rounded-full border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
+                <div className="size-16 mx-auto rounded-none border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-500">
                   {stat.icon}
                 </div>
                 <div className="space-y-1">
@@ -349,7 +349,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="size-12 rounded-full bg-black text-[#D4AF37] font-black flex items-center justify-center text-xs">
+                  <div className="size-12 rounded-none bg-black text-[#D4AF37] font-black flex items-center justify-center text-xs">
                     {t.initial}
                   </div>
                   <div>
