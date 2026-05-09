@@ -160,6 +160,13 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Massive Branding Background Text */}
+      <div className="absolute -bottom-[12vw] left-0 right-0 flex justify-center pointer-events-none select-none">
+        <h1 className="text-[30vw] font-black uppercase tracking-tighter serif text-[#D4AF37]/5 leading-none translate-y-[10%]">
+          Kovais
+        </h1>
+      </div>
     </footer>
   );
 }

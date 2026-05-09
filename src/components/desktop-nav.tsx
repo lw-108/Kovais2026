@@ -34,6 +34,15 @@ export function DesktopNav() {
 					</NavigationMenuLink>
 				</NavigationMenuItem>
 
+                {/* Services */}
+				<NavigationMenuItem>
+					<NavigationMenuLink asChild>
+						<a className={cn("rounded-md px-4 py-2 text-sm font-medium", hoverGold)} href="/services">
+							Services
+						</a>
+					</NavigationMenuLink>
+				</NavigationMenuItem>
+
                 {/* Booking Dropdown */}
 				<NavigationMenuItem>
 					<NavigationMenuTrigger className={cn("bg-transparent", hoverGold)}>

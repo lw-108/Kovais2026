@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import asciiArt from "@/assets/asciii-art.png";
 import { LazyImage } from "@/components/ui/lazy-image";
 
+import { Link } from "react-router-dom";
+
 export const CTA = () => {
   return (
     <div className="px-4 py-8 md:px-6 md:py-16 relative overflow-hidden">
@@ -33,27 +35,28 @@ export const CTA = () => {
                 >
                     <div className="flex items-center gap-3">
                         <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">
-                            The Future of Wellness
+                            Your Journey Starts Here
                         </span>
                         <div className="h-[1px] w-6 md:w-12 bg-[#D4AF37]/50" />
                     </div>
 
                     <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9] serif">
-                        Step Into <br />
-                        Something <span className="text-[#D4AF37] italic">Better</span>
+                        Ready to Experience <br />
+                        True <span className="text-[#D4AF37] italic"> Kovais</span> Luxury?
                     </h2>
 
                     <p className="max-w-md text-xs sm:text-sm md:text-lg text-white/80 font-medium leading-relaxed">
-                        Get seamless access to everything you need, right from your phone. 
-                        Experience the Kovais digital concierge.
+                        Join thousands of guests who trust Kovais for their wellness and hospitality needs.
                     </p>
 
-                    <Button
-                        className="h-10 md:h-14 px-5 md:px-8 bg-[#D4AF37] text-white hover:bg-[#B8962E] rounded-none font-black uppercase tracking-widest text-[8px] md:text-[10px] shadow-lg shadow-[#D4AF37]/10 transition-all hover:translate-x-1"
-                        size="lg"
-                    >
-                        Download Now <ArrowUpRight className="ml-2 size-4" />
-                    </Button>
+                    <Link to="/services">
+                      <Button
+                          className="h-10 md:h-14 px-5 md:px-8 bg-[#D4AF37] text-white hover:bg-[#B8962E] rounded-none font-black uppercase tracking-widest text-[8px] md:text-[10px] shadow-lg shadow-[#D4AF37]/10 transition-all hover:translate-x-1"
+                          size="lg"
+                      >
+                          Book a Service<ArrowUpRight className="ml-2 size-4" />
+                      </Button>
+                    </Link>
                 </motion.div>
             </div>
         </div>

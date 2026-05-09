@@ -46,13 +46,13 @@ import { userService, bookingService } from "@/lib/data-service";
 
 // --- Data ---
 const SERVICES = [
-  { id: 'm1', category: 'Men', name: 'Classic Gentleman HairCut', description: 'Traditional scissor cut with styling', price: 45, image: 'https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80', duration: '45 min' },
+  { id: 'm1', category: 'Men', name: 'Classic Gentleman HairCut', description: 'Traditional scissor cut with styling', price: 45, image: 'https://images.unsplash.com/photo-1599351431613-18ef1fdd27e1?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', duration: '45 min' },
   { id: 'm2', category: 'Men', name: 'Hair Color', description: 'Professional hair coloring for men', price: 35, image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80', duration: '30 min' },
   { id: 'm3', category: 'Men', name: 'Shave & Beard Trim', description: 'Precision shave and expert grooming', price: 55, image: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&q=80', duration: '60 min' },
   { id: 'w1', category: 'Women', name: 'Signature Cut & Style', description: 'Precision cut with professional blow-dry', price: 75, image: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&q=80', duration: '90 min' },
   { id: 'w2', category: 'Women', name: 'Color Treatment', description: 'Full color service with conditioning', price: 120, image: 'https://images.unsplash.com/photo-1600948836101-f9ffda59d250?auto=format&fit=crop&q=80', duration: '180 min' },
   { id: 'w3', category: 'Women', name: 'Bridal Package', description: 'Complete wedding day styling', price: 200, image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80', duration: '240 min' },
-  { id: 'k1', category: 'Kids', name: 'Kids Haircut & Style', description: 'Special experience for little ones', price: 25, image: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80', duration: '30 min' },
+  { id: 'k1', category: 'Kids', name: 'Kids Haircut & Style', description: 'Special experience for little ones', price: 25, image: 'https://images.unsplash.com/photo-1524503033411-c9566986fc8f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', duration: '30 min' },
 ];
 
 const EMPLOYEES = [
@@ -67,10 +67,10 @@ const TIME_SLOTS = [
 ];
 
 const GALLERY = [
-  { id: 1, image: "https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80", category: "haircuts", title: "Classic Cut" },
+  { id: 1, image: "https://images.unsplash.com/photo-1599351431613-18ef1fdd27e1?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", category: "haircuts", title: "Classic Cut" },
   { id: 2, image: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80", category: "beards", title: "Beard Styling" },
   { id: 3, image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&q=80", category: "shaves", title: "Traditional Shave" },
-  { id: 4, image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80", category: "haircuts", title: "Modern Style" },
+  { id: 4, image: "https://images.unsplash.com/photo-1618049049816-43a00d5b0c3d?q=80&w=680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", category: "haircuts", title: "Modern Style" },
 ];
 
 
@@ -88,6 +88,20 @@ export default function LuxuryBarber() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+
+  const HERO_IMAGES = [
+    "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=2074&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1599351431613-18ef1fdd27e1?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=2070&auto=format&fit=crop"
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const [user, setUser] = useState<any>(null);
   const [points, setPoints] = useState(0);
@@ -227,22 +241,71 @@ export default function LuxuryBarber() {
     <div className="min-h-screen bg-transparent">
       <Header />
 
-      <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto space-y-20">
-        {/* Hero Section */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2 text-[#D4AF37] font-bold tracking-[0.2em] text-[10px] uppercase">
-            <div className="size-1 bg-[#D4AF37]" />
-            EST. 1995 - MASTER CRAFTSMANSHIP
+      <main className="pb-24 max-w-7xl mx-auto space-y-20 px-6 md:px-12">
+        {/* Hero Section with Dynamic Carousel (Desktop Only) */}
+        <section className="relative -mx-6 md:-mx-12 md:h-[80vh] flex flex-col justify-center md:justify-end px-6 md:px-12 pt-20 md:pt-0 pb-10 md:pb-20 overflow-hidden group">
+          {/* Background Carousel - Hidden on Mobile */}
+          <div className="absolute inset-0 z-0 hidden md:block">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={heroImageIndex}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <img 
+                  src={HERO_IMAGES[heroImageIndex]} 
+                  alt="Barber Background" 
+                  className="size-full object-cover" 
+                />
+              </motion.div>
+            </AnimatePresence>
+            
+            {/* Immersive Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent z-10" />
+            <div className="absolute inset-0 bg-black/40 z-10" />
           </div>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter serif leading-[0.9]">
-            Luxury <span className="text-[#D4AF37] italic">Barbering</span> & <br />
-            Personal <span className="text-[#D4AF37] italic">Grooming</span>
-          </h1>
-          <p className="text-muted-foreground font-medium text-lg max-w-xl">
-            Experience the finest in traditional barbering with modern techniques. 
-            Transform your look in our sanctuary of style.
-          </p>
-        </div>
+
+          <div className="relative z-20 space-y-6 max-w-4xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 text-[#D4AF37] font-black tracking-[0.3em] text-[10px] uppercase md:bg-black/40 md:backdrop-blur-md md:px-4 md:py-2 w-fit border-l-2 border-[#D4AF37]"
+            >
+              EST. 1995 - MASTER CRAFTSMANSHIP
+            </motion.div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter serif leading-[0.85] text-foreground md:text-white drop-shadow-2xl"
+            >
+              Luxury <span className="text-[#D4AF37] italic">Barbering</span> <br />
+              <span className="md:text-white">&</span> Personal <span className="text-[#D4AF37] italic">Grooming</span>
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-muted-foreground md:text-white/80 font-medium text-base md:text-xl max-w-2xl leading-relaxed drop-shadow-lg"
+            >
+              Experience the finest in traditional barbering with modern techniques. 
+              Transform your look in our sanctuary of style.
+            </motion.p>
+          </div>
+
+          {/* Carousel Progress Indicators - Hidden on Mobile */}
+          <div className="absolute bottom-10 right-12 z-30 hidden md:flex gap-2">
+            {HERO_IMAGES.map((_, i) => (
+              <div 
+                key={i} 
+                className={`h-1 transition-all duration-500 ${i === heroImageIndex ? 'w-12 bg-[#D4AF37]' : 'w-4 bg-white/20'}`} 
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Ritual Selection Bar */}
         <div className="space-y-1">
@@ -345,12 +408,15 @@ export default function LuxuryBarber() {
               <Badge variant="outline" className="border-[#D4AF37]/30 text-[#D4AF37] rounded-none">{selectedCategory}</Badge>
             </div>
             
-            <div className="grid gap-4 h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="grid gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar h-auto">
               {filteredServices.map((service) => {
                 const isSelected = selectedServices.find(s => s.id === service.id);
                 return (
                   <motion.div 
                     key={service.id}
+                    layout
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
                     onClick={() => handleServiceToggle(service)}
                     className={`group p-4 border transition-all cursor-pointer flex items-center gap-4 ${isSelected ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-border/10 hover:border-[#D4AF37]/30 bg-muted/20'}`}
                   >
@@ -381,21 +447,29 @@ export default function LuxuryBarber() {
             <div className="space-y-10">
               <div className="space-y-6">
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#D4AF37]">1. Select Specialist</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {availableEmployees.map((emp) => (
                     <button 
                       key={emp.id}
                       onClick={() => setSelectedEmployee(emp)}
-                      className={`p-4 border transition-all flex items-center gap-4 ${selectedEmployee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-border/10 hover:border-[#D4AF37]/30'}`}
+                      className={`p-5 md:p-6 border transition-all flex items-center gap-5 ${selectedEmployee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5 shadow-lg shadow-[#D4AF37]/5' : 'border-border/10 hover:border-[#D4AF37]/30 bg-muted/5'}`}
                     >
-                      <div className="size-10 rounded-full bg-[#D4AF37]/10 flex items-center justify-center">
-                        <User className="size-5 text-[#D4AF37]" />
+                      <div className="size-12 md:size-14 shrink-0 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
+                        <User className="size-6 text-[#D4AF37]" />
                       </div>
-                      <div className="text-left">
-                        <div className="font-black text-xs uppercase">{emp.name}</div>
-                        <div className="flex items-center gap-1 text-[9px] font-bold text-[#D4AF37]">
-                          <Star className="size-2 fill-[#D4AF37]" /> {emp.rating}
+                      <div className="text-left min-w-0 flex-1 space-y-1">
+                        <div className="font-black text-xs md:text-sm uppercase tracking-tight truncate">{emp.name}</div>
+                        <div className="flex items-center gap-2 text-[10px] font-black text-[#D4AF37]">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="size-2.5 fill-[#D4AF37]" />
+                            <Star className="size-2.5 fill-[#D4AF37]" />
+                            <Star className="size-2.5 fill-[#D4AF37]" />
+                            <Star className="size-2.5 fill-[#D4AF37]" />
+                            <Star className="size-2.5 fill-[#D4AF37]" />
+                          </div>
+                          <span>{emp.rating}</span>
                         </div>
+                        <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">{emp.speciality}</div>
                       </div>
                     </button>
                   ))}

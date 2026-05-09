@@ -16,10 +16,10 @@ export const LazyImage = ({ src, alt, className, style, ...props }: LazyImagePro
   });
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && src) {
       const img = new Image();
       img.src = src;
       img.onload = () => {
@@ -31,7 +31,7 @@ export const LazyImage = ({ src, alt, className, style, ...props }: LazyImagePro
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
-      {inView && (
+      {inView && imageSrc && (
         <img
           src={imageSrc}
           alt={alt}

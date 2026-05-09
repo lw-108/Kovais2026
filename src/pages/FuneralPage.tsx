@@ -291,7 +291,7 @@ export default function FuneralPage() {
                 <div className="size-1.5 bg-[#D4AF37]" />
               </motion.div>
 
-              <motion.h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
+              <motion.h1 className="text-4xl sm:text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.9] sm:leading-[0.85]">
                 {HERO_SLIDES[currentSlide].title} <br />
                 <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
               </motion.h1>
@@ -318,11 +318,11 @@ export default function FuneralPage() {
           <div className="grid lg:grid-cols-3 gap-16">
             {/* Left: Steps & Forms */}
             <div className="lg:col-span-2 space-y-12">
-              <div className="flex justify-between items-center border-b border-black/5 pb-8">
-                <h2 className="serif-font text-4xl font-black uppercase tracking-tight">Memorial <span className="text-[#D4AF37]">Reservation</span></h2>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-8 gap-6">
+                <h2 className="serif-font text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">Memorial <span className="text-[#D4AF37]">Reservation</span></h2>
                 <div className="flex gap-2">
                   {[0, 1, 2, 3, 4].map(s => (
-                    <div key={s} className={`size-2 rounded-full transition-all duration-500 ${s <= currentStep ? 'bg-[#D4AF37] w-6' : 'bg-black/10'}`} />
+                    <div key={s} className={`h-1 rounded-full transition-all duration-500 ${s <= currentStep ? 'bg-[#D4AF37] w-8' : 'bg-white/10 w-4'}`} />
                   ))}
                 </div>
               </div>
@@ -338,22 +338,26 @@ export default function FuneralPage() {
                   >
                     <div className="space-y-6">
                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">01. Select Service Type</h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <button 
                           onClick={() => setBooking({...booking, location: 'Door Step'})}
-                          className={`group p-6 border transition-all cursor-pointer flex items-center gap-6 ${booking.location === 'Door Step' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
+                          className={`group p-6 border transition-all cursor-pointer flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden ${booking.location === 'Door Step' ? 'border-[#D4AF37] bg-[#D4AF37]/10 backdrop-blur-xl' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/30'}`}
                         >
-                          <Home className="mb-4 text-[#D4AF37]" size={32} />
-                          <div className="font-black text-xs uppercase tracking-widest">Doorstep Service</div>
-                          <div className="text-[10px] font-bold opacity-40 mt-1 uppercase">+ ₹250 Convenience Fee</div>
+                          <Home className="text-[#D4AF37] shrink-0" size={32} />
+                          <div className="text-center sm:text-left space-y-1">
+                            <div className="font-black text-xs uppercase tracking-widest text-white">Doorstep Service</div>
+                            <div className="text-[9px] font-bold text-[#D4AF37]/60 uppercase tracking-tight">+ ₹250 Convenience Fee</div>
+                          </div>
                         </button>
                         <button 
                           onClick={() => setBooking({...booking, location: 'Sanctuary'})}
-                          className={`group p-6 border transition-all cursor-pointer flex items-center gap-6 ${booking.location === 'Sanctuary' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
+                          className={`group p-6 border transition-all cursor-pointer flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden ${booking.location === 'Sanctuary' ? 'border-[#D4AF37] bg-[#D4AF37]/10 backdrop-blur-xl' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/30'}`}
                         >
-                          <MapPin className="mb-4 text-[#D4AF37]" size={32} />
-                          <div className="font-black text-xs uppercase tracking-widest">At Sanctuary</div>
-                          <div className="text-[10px] font-bold opacity-40 mt-1 uppercase">No Extra Charge</div>
+                          <MapPin className="text-[#D4AF37] shrink-0" size={32} />
+                          <div className="text-center sm:text-left space-y-1">
+                            <div className="font-black text-xs uppercase tracking-widest text-white">At Sanctuary</div>
+                            <div className="text-[9px] font-bold text-[#D4AF37]/60 uppercase tracking-tight">No Extra Charge</div>
+                          </div>
                         </button>
                       </div>
                     </div>
@@ -365,18 +369,20 @@ export default function FuneralPage() {
                           <div 
                             key={service.id}
                             onClick={() => handleServiceSelect(service)}
-                            className={`flex items-center gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
+                            className={`flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 border cursor-pointer transition-all ${booking.services.find(s => s.id === service.id) ? 'border-[#D4AF37] bg-[#D4AF37]/10 backdrop-blur-xl' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/20'}`}
                           >
-                            <LazyImage src={service.image} alt={service.name} className="size-20" />
-                            <div className="flex-1">
-                              <h5 className="font-black text-sm uppercase tracking-tight">{service.name}</h5>
-                              <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
-                              <div className="flex gap-4 mt-3">
-                                <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest">{service.duration}</span>
-                                <span className="text-[10px] font-black uppercase tracking-widest">₹{service.price}</span>
+                            <div className="size-24 sm:size-20 shrink-0 border border-white/10 overflow-hidden">
+                              <LazyImage src={service.image} alt={service.name} className="size-full object-cover" />
+                            </div>
+                            <div className="flex-1 text-center sm:text-left space-y-2">
+                              <h5 className="font-black text-sm uppercase tracking-tight text-white">{service.name}</h5>
+                              <p className="text-[10px] text-white/50 leading-relaxed uppercase tracking-tight">{service.description}</p>
+                              <div className="flex justify-center sm:justify-start gap-4 pt-1">
+                                <span className="text-[9px] font-black text-[#D4AF37] uppercase tracking-widest bg-[#D4AF37]/10 px-2 py-1">{service.duration}</span>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-white/80 py-1">₹{service.price}</span>
                               </div>
                             </div>
-                            <div className={`size-6 border flex items-center justify-center ${booking.services.find(s => s.id === service.id) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-black/20'}`}>
+                            <div className={`size-6 border shrink-0 flex items-center justify-center transition-colors ${booking.services.find(s => s.id === service.id) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20'}`}>
                               {booking.services.find(s => s.id === service.id) && <Check size={14} className="text-white" />}
                             </div>
                           </div>
@@ -387,7 +393,7 @@ export default function FuneralPage() {
                     <Button 
                       disabled={!isStepValid(0)}
                       onClick={() => setCurrentStep(1)}
-                      className="w-full h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37] transition-all duration-500"
+                      className="w-full h-16 bg-[#D4AF37] text-white font-black uppercase tracking-[0.2em] text-[11px] hover:bg-white hover:text-black transition-all duration-500 rounded-none shadow-xl"
                     >
                       Continue to Specialist <ArrowRight className="ml-2" size={16} />
                     </Button>
@@ -407,17 +413,17 @@ export default function FuneralPage() {
                         <div 
                           key={emp.id}
                           onClick={() => setBooking({...booking, employee: emp})}
-                          className={`p-5 border transition-all flex items-center justify-between ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30'}`}
+                          className={`p-6 border transition-all flex flex-col sm:flex-row items-center gap-6 cursor-pointer ${booking.employee?.id === emp.id ? 'border-[#D4AF37] bg-[#D4AF37]/10 backdrop-blur-xl' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/30'}`}
                         >
-                          <div className="relative mx-auto size-24">
-                            <LazyImage src={emp.image} alt={emp.name} className="size-full rounded-full" />
-                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white text-[9px] font-black px-3 py-1 uppercase rounded-full flex items-center gap-1">
+                          <div className="relative size-24 shrink-0">
+                            <LazyImage src={emp.image} alt={emp.name} className="size-full rounded-full grayscale hover:grayscale-0 transition-all duration-500" />
+                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white text-[8px] font-black px-3 py-1 uppercase rounded-none flex items-center gap-1 shadow-lg">
                               <Star size={8} fill="white" /> {emp.rating}
                             </div>
                           </div>
-                          <div>
-                            <h5 className="font-black text-sm uppercase tracking-widest">{emp.name}</h5>
-                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight mt-1">{emp.speciality}</p>
+                          <div className="text-center sm:text-left space-y-1">
+                            <h5 className="font-black text-sm uppercase tracking-[0.2em] text-white">{emp.name}</h5>
+                            <p className="text-[10px] font-bold text-[#D4AF37]/60 uppercase tracking-widest">{emp.speciality}</p>
                           </div>
                         </div>
                       ))}
@@ -441,7 +447,7 @@ export default function FuneralPage() {
                     key="step2"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="space-y-12"
+                    className="space-y-12 bg-white/5 backdrop-blur-xl p-8 border border-white/10"
                   >
                     <div className="space-y-6">
                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">04. Select Date</h4>
@@ -450,18 +456,18 @@ export default function FuneralPage() {
                         value={booking.date}
                         onChange={e => setBooking({...booking, date: e.target.value})}
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full h-16 border-b-2 border-black/5 focus:border-[#D4AF37] bg-transparent outline-none serif-font text-2xl font-black uppercase"
+                        className="w-full h-16 border-b border-white/20 focus:border-[#D4AF37] bg-transparent outline-none serif-font text-3xl font-black uppercase text-white transition-colors"
                       />
                     </div>
 
                     <div className="space-y-6">
                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">05. Select Time Slot</h4>
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {TIME_SLOTS.map(slot => (
                           <button 
                             key={slot}
                             onClick={() => setBooking({...booking, time: slot})}
-                            className={`h-12 border text-[10px] font-black uppercase tracking-widest transition-all ${booking.time === slot ? 'bg-black text-white border-black' : 'border-black/5 hover:border-black/20'}`}
+                            className={`h-12 border text-[10px] font-black uppercase tracking-widest transition-all ${booking.time === slot ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'border-white/10 text-white/60 hover:border-[#D4AF37]/50'}`}
                           >
                             {slot}
                           </button>
@@ -469,12 +475,12 @@ export default function FuneralPage() {
                       </div>
                     </div>
 
-                    <div className="flex gap-4">
-                      <Button variant="outline" onClick={() => setCurrentStep(1)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(1)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px] border-white/20 text-white hover:bg-white/10">Back</Button>
                       <Button 
                         disabled={!isStepValid(2)}
                         onClick={() => setCurrentStep(3)}
-                        className="flex-[2] h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37]"
+                        className="flex-[2] h-16 bg-[#D4AF37] text-white font-black uppercase tracking-[0.2em] text-[11px] hover:bg-white hover:text-black rounded-none shadow-xl"
                       >
                         Your Details
                       </Button>
@@ -487,45 +493,45 @@ export default function FuneralPage() {
                     key="step3"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="space-y-8"
+                    className="space-y-8 bg-white/5 backdrop-blur-xl p-8 border border-white/10"
                   >
                     <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#D4AF37]">06. Contact Information</h4>
                     <div className="grid gap-6">
                       <div className="space-y-2">
-                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Full Name</label>
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">Full Name</label>
                         <input 
                           value={booking.customerInfo.name}
                           onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, name: e.target.value}})}
-                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          className="w-full h-14 border-b border-white/20 focus:border-[#D4AF37] outline-none font-bold text-sm bg-transparent text-white placeholder:text-white/20" 
                           placeholder="Hon. Guest Name"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Phone Number</label>
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">Phone Number</label>
                         <input 
                           value={booking.customerInfo.phone}
                           onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, phone: e.target.value}})}
-                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          className="w-full h-14 border-b border-white/20 focus:border-[#D4AF37] outline-none font-bold text-sm bg-transparent text-white placeholder:text-white/20" 
                           placeholder="+91 00000 00000"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[9px] font-black uppercase tracking-[0.2em] opacity-40">Email Address</label>
+                        <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">Email Address</label>
                         <input 
                           value={booking.customerInfo.email}
                           onChange={e => setBooking({...booking, customerInfo: {...booking.customerInfo, email: e.target.value}})}
-                          className="w-full h-14 border-b border-black/10 focus:border-[#D4AF37] outline-none font-bold text-sm" 
+                          className="w-full h-14 border-b border-white/20 focus:border-[#D4AF37] outline-none font-bold text-sm bg-transparent text-white placeholder:text-white/20" 
                           placeholder="care@example.com"
                         />
                       </div>
                     </div>
 
-                    <div className="flex gap-4">
-                      <Button variant="outline" onClick={() => setCurrentStep(2)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(2)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px] border-white/20 text-white hover:bg-white/10">Back</Button>
                       <Button 
                         disabled={!isStepValid(3)}
                         onClick={() => setCurrentStep(4)}
-                        className="flex-[2] h-16 bg-black text-white font-black uppercase tracking-widest text-[11px] hover:bg-[#D4AF37]"
+                        className="flex-[2] h-16 bg-[#D4AF37] text-white font-black uppercase tracking-[0.2em] text-[11px] hover:bg-white hover:text-black rounded-none shadow-xl"
                       >
                         Review & Confirm
                       </Button>
@@ -538,32 +544,32 @@ export default function FuneralPage() {
                     key="step4"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="space-y-8"
+                    className="space-y-8 bg-white/5 backdrop-blur-xl p-8 border border-white/10"
                   >
-                    <div className="p-8 bg-black text-white space-y-6">
+                    <div className="p-8 bg-[#D4AF37]/10 space-y-6 relative border border-[#D4AF37]/20">
                       <div className="flex items-center gap-3 border-b border-white/10 pb-6">
                         <CheckCircle className="text-[#D4AF37]" size={24} />
-                        <h4 className="serif-font text-2xl font-black uppercase tracking-tight">Final Summary</h4>
+                        <h4 className="serif-font text-2xl font-black uppercase tracking-tight text-white">Final Summary</h4>
                       </div>
                       
                       <div className="space-y-4">
-                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-white/40">
                           <span>Specialist</span>
                           <span className="text-white">{booking.employee?.name}</span>
                         </div>
-                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-white/40">
                           <span>Schedule</span>
                           <span className="text-white">{booking.date} @ {booking.time}</span>
                         </div>
-                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-white/40">
                           <span>Location</span>
                           <span className="text-white">{booking.location}</span>
                         </div>
                       </div>
 
-                      <div className="bg-background border border-border/10 p-8 space-y-8">
-                        <div className="pt-6 border-t border-black/5 flex justify-between items-center">
-                          <span className="text-xs font-black uppercase tracking-widest">Total Honorarium</span>
+                      <div className="bg-white/5 border border-white/10 p-8 space-y-8">
+                        <div className="pt-6 border-t border-white/10 flex justify-between items-center">
+                          <span className="text-xs font-black uppercase tracking-widest text-white">Total Honorarium</span>
                           <span className="text-3xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
                         </div>
                       </div>
@@ -571,28 +577,28 @@ export default function FuneralPage() {
 
                     <div className="space-y-4">
                       <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div 
                           onClick={() => setPayType('offline')}
-                          className={`p-6 border cursor-pointer transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/30'}`}
                         >
-                          <div className="font-black text-[10px] uppercase tracking-widest">Pay at Location</div>
+                          <div className="font-black text-[10px] uppercase tracking-widest text-white">Pay at Location</div>
                         </div>
                         <div 
                           onClick={() => setPayType('online')}
-                          className={`p-6 border cursor-pointer transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`}
+                          className={`p-6 border cursor-pointer transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 backdrop-blur-md border-white/10 hover:border-[#D4AF37]/30'}`}
                         >
-                          <div className="font-black text-[10px] uppercase tracking-widest">Online Payment</div>
+                          <div className="font-black text-[10px] uppercase tracking-widest text-white">Online Payment</div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex gap-4">
-                      <Button variant="outline" onClick={() => setCurrentStep(3)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px]">Back</Button>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button variant="outline" onClick={() => setCurrentStep(3)} className="flex-1 h-16 rounded-none uppercase font-black tracking-widest text-[10px] border-white/20 text-white hover:bg-white/10">Back</Button>
                       <Button 
                         onClick={handleConfirmBooking}
                         disabled={loading}
-                        className="flex-[2] h-16 bg-[#D4AF37] text-white font-black uppercase tracking-widest text-[11px] hover:bg-black"
+                        className="flex-[2] h-16 bg-[#D4AF37] text-white font-black uppercase tracking-[0.2em] text-[11px] hover:bg-white hover:text-black rounded-none shadow-xl"
                       >
                         {loading ? "Processing..." : "Complete Reservation"}
                       </Button>
@@ -603,9 +609,12 @@ export default function FuneralPage() {
             </div>
 
             {/* Right: Summary & Points */}
-            <div className="space-y-8">
-              <div className="bg-background border border-[#D4AF37]/10 p-12 space-y-12 shadow-2xl relative backdrop-blur-sm">
-                <h5 className="font-black text-xs uppercase tracking-[0.2em] border-b border-black/5 pb-4">Booking Receipt</h5>
+            <div className="lg:sticky lg:top-32 space-y-8">
+              <div className="bg-white/5 backdrop-blur-xl border border-[#D4AF37]/20 p-8 sm:p-12 space-y-10 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 size-2 border-t border-l border-[#D4AF37]" />
+                <div className="absolute bottom-0 right-0 size-2 border-b border-r border-[#D4AF37]" />
+                
+                <h5 className="font-black text-[10px] uppercase tracking-[0.4em] border-b border-white/10 pb-6 text-[#D4AF37]">Reservation Summary</h5>
                 
                 <div className="space-y-4">
                   {booking.services.map(s => (
@@ -628,9 +637,9 @@ export default function FuneralPage() {
                   )}
                 </div>
 
-                <div className="pt-6 border-t border-black/5 flex justify-between items-center">
-                  <span className="text-[10px] font-black uppercase tracking-widest">Grand Total</span>
-                  <span className="text-2xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
+                <div className="pt-8 border-t border-white/10 flex justify-between items-center">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Grand Total</span>
+                  <span className="text-3xl serif-font font-black text-[#D4AF37]">₹{calculateTotal()}</span>
                 </div>
 
                 {user && (
@@ -669,10 +678,10 @@ export default function FuneralPage() {
               { icon: <Shield size={24} />, title: "Dignity", desc: "Honoring every legacy with absolute grace." },
               { icon: <Sparkles size={24} />, title: "Excellence", desc: "Meticulous preparation by senior specialists." }
             ].map((item, i) => (
-              <div key={i} className="p-10 border border-[#D4AF37]/10 bg-background text-center space-y-6">
-                <div className="text-[#D4AF37] flex justify-center">{item.icon}</div>
-                <h4 className="font-black text-xs uppercase tracking-widest">{item.title}</h4>
-                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight leading-relaxed">{item.desc}</p>
+              <div key={i} className="p-10 border border-[#D4AF37]/10 bg-white/5 backdrop-blur-xl text-center space-y-6 group hover:border-[#D4AF37]/40 transition-all duration-500">
+                <div className="text-[#D4AF37] flex justify-center group-hover:scale-110 transition-transform duration-500">{item.icon}</div>
+                <h4 className="font-black text-xs uppercase tracking-[0.2em] text-white">{item.title}</h4>
+                <p className="text-[10px] text-white/50 font-medium uppercase tracking-tight leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -683,11 +692,11 @@ export default function FuneralPage() {
 
       {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
+        <DialogContent className="max-w-md p-8 bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#D4AF37]/20 rounded-none shadow-2xl">
           <div className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl font-black tracking-tight serif uppercase">Memorial Access</h2>
-              <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">
+              <h2 className="text-3xl font-black tracking-tight serif uppercase text-white">Memorial Access</h2>
+              <p className="text-[#D4AF37]/60 text-xs font-bold uppercase tracking-widest mt-2">
                 {isNewUser ? "Register for assistance" : "Verify your identity"}
               </p>
             </div>
@@ -695,20 +704,20 @@ export default function FuneralPage() {
             <div className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+                <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 focus:border-[#D4AF37] outline-none text-sm font-bold text-white transition-all" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
               </div>
               {isNewUser && (
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                  <input className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                  <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 focus:border-[#D4AF37] outline-none text-sm font-bold text-white transition-all" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
                 </div>
               )}
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white border border-black/5 focus:border-[#D4AF37] outline-none text-sm font-bold" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 focus:border-[#D4AF37] outline-none text-sm font-bold text-white transition-all" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
               </div>
               
-              <Button className="w-full h-12 bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-[#D4AF37]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
+              <Button className="w-full h-12 bg-[#D4AF37] text-white font-black uppercase tracking-widest text-[10px] hover:bg-white hover:text-black transition-all rounded-none" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
                 {loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
               </Button>
 

@@ -70,6 +70,11 @@
   import gymImg from "@/assets/gym.jpeg";
   import barberImg from "@/assets/barber.jpeg";
 
+  import room1 from "@/assets/hotelImages/1.png";
+  import room2 from "@/assets/hotelImages/2.png";
+  import room3 from "@/assets/hotelImages/3.png";
+  import room4 from "@/assets/hotelImages/4.png";
+
   // Removed duplicate useEffect import
 
   export default function HotelPage() {
@@ -97,6 +102,16 @@
     const [tourProgress, setTourProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+    const roomImages = [room1, room2, room3, room4];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setActiveImageIndex((prev) => (prev + 1) % roomImages.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [roomImages.length]);
 
     const room = ROOMS[0];
     const pricePerNight = room.price;
@@ -241,10 +256,10 @@
     ];
 
     return (
-      <div className="min-h-screen bg-transparent">
+      <div className="min-h-screen bg-transparent overflow-x-hidden">
         <Header />
         
-        <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto space-y-8">
+        <main className="pt-32 pb-24 px-4 md:px-6 max-w-7xl mx-auto space-y-8 overflow-hidden">
           {/* Hero Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-[#D4AF37] font-bold tracking-[0.2em] text-[10px] uppercase">
@@ -268,14 +283,14 @@
                           exit={{ height: 0, opacity: 0 }}
                           className="overflow-hidden"
                       >
-                          <div className="bg-[#D4AF37] text-white px-8 py-3 flex items-center justify-between font-black uppercase tracking-[0.1em] text-[11px]">
-                              <div className="flex items-center gap-6">
+                          <div className="bg-[#D4AF37] text-white px-4 md:px-8 py-4 md:py-3 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 font-black uppercase tracking-[0.1em] text-[10px] md:text-[11px] text-center md:text-left">
+                              <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
                                   <span className="flex items-center gap-2"><CalendarIcon className="size-3" /> {format(dateIn, "EEE, dd MMM")} — {format(dateOut, "EEE, dd MMM")}</span>
                                   <span className="bg-black/20 px-3 py-1">{nights} Nights</span>
                               </div>
-                              <div className="flex items-center gap-8">
+                              <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-8">
                                   <span>Rate: ₹{pricePerNight.toLocaleString()} / Night</span>
-                                  <span className="text-lg">Total Bill: <span className="text-black ml-2">₹{finalTotal.toLocaleString()}</span></span>
+                                  <span className="text-base md:text-lg">Total Bill: <span className="text-white ml-2">₹{finalTotal.toLocaleString()}</span></span>
                               </div>
                           </div>
                       </motion.div>
@@ -340,45 +355,107 @@
           </div>
 
           {/* Status Bar */}
-          <div className="flex flex-wrap items-center justify-between py-4 px-6 bg-muted/30 border border-border/5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2"><Sun className="size-3 text-[#D4AF37]" /> 24°C Sunny</div>
-              <div className="flex items-center gap-2"><LocateFixed className="size-3 text-[#D4AF37]" /> 4 nearby</div>
-              <div className="flex items-center gap-2"><RefreshCw className="size-3 text-[#D4AF37]" /> Updated 2 min ago</div>
-            </div>
-            <div className="text-[#D4AF37] flex items-center gap-2">
-              <div className="size-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
-              10 rooms left
+          {/* Status Bar - Super Ultimate Alignment Edition */}
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 relative group overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 lg:h-full lg:w-1 bg-[#D4AF37]" />
+            
+            <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+              {/* Weather */}
+              <div className="flex-1 flex items-center gap-6 px-8 py-6 md:px-10">
+                <div className="size-12 shrink-0 bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
+                  <Sun className="size-6 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-2xl font-black serif text-white leading-none">24°C</div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">Clear Skies</div>
+                </div>
+              </div>
+
+              {/* Nearby */}
+              <div className="flex-1 flex items-center gap-6 px-8 py-6 md:px-10">
+                <div className="size-12 shrink-0 bg-white/5 flex items-center justify-center border border-white/10">
+                  <LocateFixed className="size-6 text-white/40" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-base font-black text-white leading-none">4 NEARBY</div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Attractions</div>
+                </div>
+              </div>
+
+              {/* Updated */}
+              <div className="flex-1 flex items-center gap-6 px-8 py-6 md:px-10">
+                <div className="size-12 shrink-0 bg-white/5 flex items-center justify-center border border-white/10">
+                  <RefreshCw className="size-6 text-white/40" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-base font-black text-white leading-none">UPDATED</div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">2 Min Ago</div>
+                </div>
+              </div>
+
+              {/* Remaining Rooms - Integrated for Ultimate Balance */}
+              <div className="bg-[#D4AF37] px-10 py-8 flex flex-col items-center justify-center gap-2 shadow-2xl relative min-w-[240px]">
+                <div className="flex items-center gap-3">
+                  <div className="size-2 rounded-full bg-white animate-pulse" />
+                  <span className="text-white text-base font-black serif">10 ROOMS</span>
+                </div>
+                <span className="text-black/60 text-[9px] font-black uppercase tracking-[0.3em]">REMAINING TONIGHT</span>
+              </div>
             </div>
           </div>
 
           {/* Main Content Card */}
-          <div className="grid lg:grid-cols-2 gap-1 px-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20">
+          <div className="w-full overflow-hidden bg-[#D4AF37]/10 border border-[#D4AF37]/20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px">
             {/* Left: Gallery */}
-            <div className="p-6 bg-background border border-border/10">
-              <div className="relative group overflow-hidden aspect-[4/3]">
-                  <LazyImage src={hotelImg} alt="Hotel Room" className="size-full transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute top-4 left-4 flex gap-2">
-                      <Badge className="bg-[#D4AF37] text-white rounded-none border-none text-[10px] uppercase font-black px-3"><Zap className="size-2 mr-1" /> Instant</Badge>
-                      <Badge className="bg-white/90 text-black rounded-none border-none text-[10px] uppercase font-black px-3">Free Cancel</Badge>
+            <div className="w-full min-w-0 p-1 md:p-1.5 bg-background border-b lg:border-b-0 lg:border-r border-border/10">
+              <div className="relative group overflow-hidden aspect-video md:aspect-[1.4/1] bg-muted/20">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImageIndex}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 1 }}
+                    className="size-full"
+                  >
+                    <LazyImage src={roomImages[activeImageIndex]} alt="Hotel Room" className="size-full object-cover" />
+                  </motion.div>
+                </AnimatePresence>
+                
+                <div className="absolute top-3 left-3 md:top-6 md:left-6 flex flex-col gap-2 md:gap-3">
+                  <Badge className="bg-[#D4AF37] text-white rounded-none border-none text-[8px] md:text-[9px] uppercase font-black px-2 md:px-4 py-1 md:py-1.5 shadow-lg w-fit"><Zap className="size-2.5 md:size-3 mr-1.5 md:mr-2" /> Instant</Badge>
+                  <Badge className="bg-white text-black rounded-none border-none text-[8px] md:text-[9px] uppercase font-black px-2 md:px-4 py-1 md:py-1.5 shadow-lg w-fit">Free Cancellation</Badge>
+                </div>
+
+                <div className="absolute bottom-3 left-3 md:bottom-10 md:left-10 space-y-0 md:space-y-1 bg-white/80 backdrop-blur-lg p-2 rounded-md">
+                  <div className="text-2xl sm:text-3xl md:text-5xl font-black serif text-black drop-shadow-2xl">
+                    ₹{pricePerNight.toLocaleString()}
                   </div>
-                  <div className="absolute bottom-6 left-6 text-white drop-shadow-lg">
-                      <span className="text-4xl font-black serif">₹{pricePerNight.toLocaleString()}</span>
-                      <span className="text-xs font-bold uppercase tracking-widest ml-2 opacity-80">/ night</span>
-                  </div>
-                  <div className="absolute bottom-6 right-6 text-white text-[10px] font-black tracking-widest bg-black/40 px-3 py-1 backdrop-blur-md">1/4</div>
+                  <div className="text-[7px] md:text-[10px] font-black uppercase tracking-[0.1em] md:tracking-[0.4em] text-black">Per Night · Deluxe</div>
+                </div>
+
+                <div className="absolute bottom-4 right-4 md:bottom-10 md:right-10 flex items-end gap-1">
+                  <span className="text-2xl md:text-4xl font-black text-white/20 serif leading-none">{activeImageIndex + 1}</span>
+                  <span className="text-[10px] font-bold text-white/10 pb-0.5 md:pb-1">/ {roomImages.length}</span>
+                </div>
               </div>
-              <div className="grid grid-cols-4 gap-4">
-                  {[hotelImg, spaImg, gymImg, barberImg].map((img, i) => (
-                      <div key={i} className="aspect-video relative group cursor-pointer overflow-hidden border border-border/10">
-                          <LazyImage src={img} alt="Thumbnail" className="size-full opacity-60 group-hover:opacity-100 transition-opacity" />
+              
+              <div className="grid grid-cols-4 gap-1 md:gap-1.5 mt-1 md:mt-1.5">
+                  {roomImages.map((img, i) => (
+                      <div 
+                        key={i} 
+                        onClick={() => setActiveImageIndex(i)}
+                        className={`aspect-video relative group cursor-pointer overflow-hidden transition-all duration-500 ${activeImageIndex === i ? 'border-2 border-[#D4AF37]' : 'border border-white/10 grayscale hover:grayscale-0'}`}
+                      >
+                          <LazyImage src={img} alt="Thumbnail" className="size-full object-cover" />
                       </div>
                   ))}
               </div>
             </div>
 
             {/* Right: Info & Booking */}
-            <div className="p-8 md:p-12 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
+            <div className="w-full min-w-0 p-6 sm:p-8 md:p-12 bg-background flex flex-col justify-between">
               <div className="space-y-8">
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
@@ -435,21 +512,39 @@
                   </div>
                 </div>
 
-                {/* Action Bar */}
-                <div className="flex flex-col md:flex-row gap-4 pt-6">
-                  <Button variant="outline" className="flex-1 h-14 rounded-none border-[#D4AF37]/20 font-black uppercase tracking-widest text-[10px] hover:bg-[#D4AF37]/5" onClick={() => setShowTour(true)}>
-                      <Eye className="mr-2 size-4 text-[#D4AF37]" /> Tour
+                {/* Action Bar - Re-engineered for Symmetry and Elegance */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pt-10">
+                  <Button 
+                    variant="outline" 
+                    className="h-16 md:h-20 rounded-none border-white/10 bg-white/5 backdrop-blur-xl font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px] text-white hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/5 transition-all duration-500 group flex flex-col items-center justify-center gap-2" 
+                    onClick={() => setShowTour(true)}
+                  >
+                    <Eye className="size-4 md:size-5 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" />
+                    <span>360° Tour</span>
                   </Button>
-                  <Button variant="outline" className="flex-1 h-14 rounded-none border-[#D4AF37]/20 font-black uppercase tracking-widest text-[10px] hover:bg-[#D4AF37]/5" onClick={() => setShowReviews(true)}>
-                      <MessageSquare className="mr-2 size-4 text-[#D4AF37]" /> Reviews
+
+                  <Button 
+                    variant="outline" 
+                    className="h-16 md:h-20 rounded-none border-white/10 bg-white/5 backdrop-blur-xl font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px] text-white hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/5 transition-all duration-500 group flex flex-col items-center justify-center gap-2" 
+                    onClick={() => setShowReviews(true)}
+                  >
+                    <MessageSquare className="size-4 md:size-5 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" />
+                    <span>Guest Reviews</span>
                   </Button>
-                  <Button className="flex-[2] h-14 rounded-none bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleBookingClick}>
-                      Book Now <ArrowRight className="ml-2 size-4" />
+
+                  <Button 
+                    className="h-16 md:h-20 sm:col-span-2 lg:col-span-1 rounded-none bg-[#D4AF37] hover:bg-white text-white hover:text-[#D4AF37] font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px] shadow-2xl transition-all duration-700 relative overflow-hidden group flex flex-col items-center justify-center gap-2" 
+                    onClick={handleBookingClick}
+                  >
+                    <ArrowRight className="size-4 md:size-5 relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
+                    <span className="relative z-10">Book Now</span>
+                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
                   </Button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
           {/* Nearby Attractions */}
           <section className="space-y-10">
@@ -478,23 +573,23 @@
           {/* Map Section */}
           <div className="relative h-[600px] border border-[#D4AF37]/20 group overflow-hidden">
               <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d18554.56633963675!2d77.502998!3d11.442899!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba93fe75defff09%3A0x57385b9e1e3130cf!2sKOVAIS%20LODGE%20A%2Fc%20Rooms!5e1!3m2!1sen!2sus!4v1778110263590!5m2!1sen!2sus" width="100%" height="100%" style={{ border:0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="grayscale group-hover:grayscale-0 transition-all duration-1000"></iframe>
-              <div className="absolute bottom-6 left-6 right-6 p-10 bg-black/80 backdrop-blur-xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 group-hover:border-[#D4AF37]/30 transition-all">
-                  <div className="space-y-4 flex-1">
-                      <h5 className="text-2xl font-black tracking-tight text-[#D4AF37] serif">Kovais (AC) Hotel</h5>
-                      <p className="text-white/60 text-xs font-medium leading-relaxed max-w-sm">
+              <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 p-6 md:p-10 bg-black/80 backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 group-hover:border-[#D4AF37]/30 transition-all">
+                  <div className="space-y-2 md:space-y-4 flex-1 text-center lg:text-left">
+                      <h5 className="text-xl md:text-2xl font-black tracking-tight text-[#D4AF37] serif">Kovais (AC) Hotel</h5>
+                      <p className="text-white/60 text-[10px] md:text-xs font-medium leading-relaxed max-w-sm mx-auto lg:mx-0">
                           097, SH 15, Otthekkuthirai, Gobichettipalayam, Tamil Nadu 638455
                       </p>
                   </div>
-                  <div className="flex flex-col md:flex-row gap-10">
+                  <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
                       <div className="flex items-center gap-4 text-white">
                           <Phone className="size-4 text-[#D4AF37]" />
-                          <span className="text-sm font-bold tracking-tight">9234567891</span>
+                          <span className="text-xs md:text-sm font-bold tracking-tight">9234567891</span>
                       </div>
                       <div className="flex items-center gap-4 text-white">
                           <Mail className="size-4 text-[#D4AF37]" />
-                          <span className="text-sm font-bold tracking-tight">info@kovaisbeauty.com</span>
+                          <span className="text-xs md:text-sm font-bold tracking-tight">info@kovaisbeauty.com</span>
                       </div>
-                      <Button variant="outline" className="rounded-none border-white/20 text-white hover:bg-white/10 font-black uppercase tracking-widest text-[10px]">
+                      <Button variant="outline" className="w-full md:w-auto rounded-none border-white/20 text-white hover:bg-white/10 font-black uppercase tracking-widest text-[9px] md:text-[10px] h-10 px-6">
                           Open Maps
                       </Button>
                   </div>

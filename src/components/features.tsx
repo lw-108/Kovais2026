@@ -6,6 +6,7 @@ import {
   Hotel as HotelIcon, 
   Sparkles, 
   Clock,
+  Dumbbell,
 } from "lucide-react";
 import { LazyImage } from "@/components/ui/lazy-image";
 

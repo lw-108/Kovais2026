@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
 import{
   Zap, 
@@ -63,9 +64,9 @@ const FEATURES = [
 
 const SERVICES = [
   { img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80", title: "Luxury AC Room", desc: "Experience world-class hospitality with premium AC rooms, offering unmatched comfort.", number: "01" },
-  { img: "https://images.unsplash.com/photo-1544161515-4af6b1d4640b?auto=format&fit=crop&q=80", title: "Relaxing Spa", desc: "Rejuvenate your body and mind with our expert spa treatments, crafted for deep relaxation.", number: "02" },
+  { img: "https://plus.unsplash.com/premium_photo-1683134294916-473fc738750b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", title: "Relaxing Spa", desc: "Rejuvenate your body and mind with our expert spa treatments, crafted for deep relaxation.", number: "02" },
   { img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80", title: "Modern Gym", desc: "Train with state-of-the-art equipment in our fully-equipped modern gym.", number: "03" },
-  { img: "https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80", title: "Premium Salon", desc: "Get styled by expert professionals in our premium salon, offering trending cuts.", number: "04" },
+  { img: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=626&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", title: "Premium Salon", desc: "Get styled by expert professionals in our premium salon, offering trending cuts.", number: "04" },
 ];
 
 const STEPS = [
@@ -140,11 +141,11 @@ export default function AboutPage() {
         </section>
 
         {/* 2. Marquee Track */}
-        <div className="py-8 bg-black overflow-hidden border-y border-[#D4AF37]/20">
-          <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
+        <div className="py-8 bg-transparent backdrop-blur-xl overflow-hidden border-none">
+          <div className="flex animate-marquee-right whitespace-nowrap gap-16 items-center">
             {[...MARQUEE, ...MARQUEE].map((item, i) => (
-              <span key={i} className="text-white/40 text-[10px] font-black tracking-[0.5em] flex items-center gap-4 uppercase">
-                <span className="text-[#D4AF37]">◆</span> {item}
+              <span key={i} className="text-foreground/40 text-lg font-normal tracking-[0.3em] flex items-center gap-4 uppercase serif">
+                <span className="text-[#D4AF37] mr-8">●</span> {item}
               </span>
             ))}
           </div>
@@ -158,7 +159,7 @@ export default function AboutPage() {
             <p className="text-muted-foreground text-sm font-medium max-w-xl mx-auto">Every detail is crafted to deliver a premium, luxury experience from start to finish.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="flex flex-wrap justify-center gap-8">
             {FEATURES.map((f, i) => (
               <motion.div 
                 key={i}
@@ -166,7 +167,11 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 space-y-6 group"
+                className={cn(
+                  "p-10 border border-[#D4AF37]/10 bg-background hover:border-[#D4AF37]/30 transition-all duration-500 space-y-6 group flex-1",
+                  "min-w-[280px]", // Minimum width before stacking
+                  i < 3 ? "basis-[calc(33.33%-2rem)]" : "basis-[calc(45%-2rem)] max-w-[500px]"
+                )}
               >
                 <div className="text-[#D4AF37] group-hover:scale-110 transition-transform duration-500">{f.icon}</div>
                 <div className="space-y-3">
@@ -179,14 +184,14 @@ export default function AboutPage() {
         </section>
 
         {/* 4. Curated Services */}
-        <section className="bg-black py-32 text-white">
+        <section className=" py-32 text-white">
           <div className="max-w-7xl mx-auto px-6 space-y-20">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div className="space-y-4">
                 <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#D4AF37]">OUR SERVICES</span>
                 <h2 className="text-4xl md:text-6xl font-black serif uppercase tracking-tight">Curated <br /> <span className="text-[#D4AF37]">Experiences</span></h2>
               </div>
-              <p className="text-white/40 text-sm font-medium max-w-md">
+              <p className="text-black dark:text-white text-sm font-medium max-w-md">
                 Discover our handpicked range of premium services, each designed to exceed your expectations of modern luxury.
               </p>
             </div>
@@ -259,7 +264,7 @@ export default function AboutPage() {
               </div>
               <div className="space-y-4">
                 <LazyImage src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80" alt="About 3" className="aspect-square border border-[#D4AF37]/20" />
-                <LazyImage src="https://images.unsplash.com/photo-1503951914875-3c0c13e4d5f6?auto=format&fit=crop&q=80" alt="About 4" className="aspect-[3/4] border border-[#D4AF37]/20" />
+                <LazyImage src="https://images.unsplash.com/photo-1647140655214-e4a2d914971f?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="About 4" className="aspect-[3/4] border border-[#D4AF37]/20" />
               </div>
             </div>
             
@@ -273,14 +278,14 @@ export default function AboutPage() {
                 At Kovais, we believe in making luxury accessible. Our platform bridges the gap between you and the finest services, ensuring a seamless, delightful booking experience every time.
               </p>
 
-              <div className="space-y-4">
+              <div className="space-y-4 text-white">
                 {[
                   "Curated selection of verified premium service providers",
                   "Real-time availability with instant confirmation",
                   "Personalised recommendations powered by smart algorithms",
                   "Transparent pricing with no hidden charges"
                 ].map((point, i) => (
-                  <div key={i} className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-black/60">
+                  <div key={i} className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-black dark:text-white">
                     <div className="size-5 rounded-full border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
                       <Check className="size-3" />
                     </div>

@@ -12,6 +12,7 @@ const GymPage = lazy(() => import("./pages/GymPage"));
 const FunctionPage = lazy(() => import("./pages/FunctionPage"));
 const FuneralPage = lazy(() => import("./pages/FuneralPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -26,9 +27,10 @@ import { useLocation } from "react-router-dom";
 function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isServicesPage = location.pathname === "/services";
 
   return (
-    <div className={!isHomePage ? "noir-background" : ""}>
+    <div className={(!isHomePage || isServicesPage) ? "noir-background" : ""}>
       {children}
     </div>
   );
@@ -50,6 +52,7 @@ export function App() {
             <Route path="/function" element={<FunctionPage />} />
             <Route path="/funeral" element={<FuneralPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
           </Routes>
         </Suspense>
       </AppLayout>

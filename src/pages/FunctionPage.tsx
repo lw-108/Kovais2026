@@ -38,6 +38,7 @@ import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import {
+  Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
 import { LazyImage } from "@/components/ui/lazy-image";

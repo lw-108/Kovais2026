@@ -62,37 +62,14 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 			<Button
 				aria-label="Toggle menu"
 				className={cn(
-                    "relative z-[110] border-none bg-transparent hover:bg-transparent transition-all",
-                    open ? "text-[#D4AF37] scale-110" : "text-foreground"
+                    "relative z-[110] rounded-full p-2 border border-border bg-background hover:bg-muted transition-colors flex items-center justify-center w-10 h-10",
+                    open && "opacity-0 pointer-events-none"
                 )}
 				onClick={toggleMenu}
 				size="icon"
 				variant="ghost"
 			>
-                <div className="relative size-6">
-                    <motion.div
-                        initial={false}
-                        animate={{ 
-                            rotate: open ? 90 : 0, 
-                            opacity: open ? 0 : 1, 
-                            scale: open ? 0.5 : 1 
-                        }}
-                        className="absolute inset-0 flex items-center justify-center"
-                    >
-                        <MenuIcon className="size-6" />
-                    </motion.div>
-                    <motion.div
-                        initial={false}
-                        animate={{ 
-                            opacity: open ? 1 : 0,
-                            scale: open ? 1 : 0.8
-                        }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute inset-0 flex items-center justify-center z-[120]"
-                    >
-                        <XIcon className="size-8 text-[#D4AF37] bg-background/90 rounded-full p-1.5 shadow-lg" />
-                    </motion.div>
-                </div>
+				<MenuIcon className="size-5 text-foreground" />
 			</Button>
 
 			<AnimatePresence>
@@ -107,13 +84,28 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed inset-y-0 right-0 w-[85%] max-w-sm bg-background border-l shadow-2xl overflow-y-auto pt-20 pb-10 flex flex-col"
+                            className="fixed inset-y-0 right-0 w-[85%] max-w-sm bg-background border-l shadow-2xl overflow-y-auto pt-6 pb-10 flex flex-col"
                         >
+                            {/* Explicit Close Button Inside Panel */}
+                            <div className="absolute top-4 right-4 z-[150]">
+                                <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    onClick={() => setOpen(false)}
+                                    className="size-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-full shadow-2xl transition-all duration-300"
+                                >
+                                    <XIcon className="size-6" />
+                                </Button>
+                            </div>
+
                             <div className="flex flex-col gap-y-6 px-6">
-                                {/* Brand Label */}
-                                <div className="flex items-center gap-2 mb-2">
-                                    <LayoutGrid className="size-5 text-[#D4AF37]" />
-                                    <span className="font-black uppercase tracking-[0.3em] text-[10px]">Kovais Menu</span>
+                                {/* Brand Identity */}
+                                <div className="flex items-center justify-center py-6 border-b border-white/5 mb-6">
+                                    <img 
+                                        src="/logo.png" 
+                                        alt="Kovais" 
+                                        className="h-32 w-auto object-contain drop-shadow-2xl" 
+                                    />
                                 </div>
 
                                 {/* User Info if logged in */}
@@ -216,12 +208,12 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                         <Button 
                                             className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20"
                                             onClick={() => {
-                                                setIsLoggedIn(true);
+                                                window.location.href = '/hotel';
                                                 setOpen(false);
                                             }}
                                         >
                                             <LogIn className="size-5" />
-                                            <span>Login</span>
+                                            <span>Login to Kovais</span>
                                         </Button>
                                     )}
                                 </div>

@@ -111,7 +111,7 @@ export function Header() {
 							variant="outline" 
 							size="lg" 
 							onClick={() => window.location.href = '/hotel'}
-							className="gap-2 px-6 py-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300 border-none shadow-lg shadow-[#D4AF37]/20"
+							className="hidden md:flex gap-2 px-6 py-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300 border-none shadow-lg shadow-[#D4AF37]/20"
 						>
 							<LogIn className="size-4" />
 							<span>Login</span>
