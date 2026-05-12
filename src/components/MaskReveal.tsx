@@ -2,67 +2,99 @@ import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// Import the favicon to use as the scaling mask
+import favicon from '/favicon.png';
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface MaskRevealProps {
-  // No children needed for standalone intro
+  children: React.ReactNode;
 }
 
-export const MaskReveal: React.FC<MaskRevealProps> = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
+export const MaskReveal: React.FC<MaskRevealProps> = ({ children }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<SVGImageElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const maskTimeline = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: triggerRef.current,
+          trigger: containerRef.current,
           start: 'top top',
-          end: '+=200%', 
+          end: '+=1500', 
           scrub: 1,
           pin: true,
           anticipatePin: 1,
         }
       });
 
-      maskTimeline
-        .to('.masked-content', { 
-           scale: 1.5, 
-           maskSize: '12000%', 
-           webkitMaskSize: '12000%',
-           duration: 3,
-           ease: "power2.in",
-           onComplete: () => {
-             gsap.set('.masked-content', { maskImage: 'none', webkitMaskImage: 'none' });
-           }
-        })
-        .to(triggerRef.current, {
-           backgroundColor: 'rgba(0,0,0,0)',
-           duration: 0.5,
-           ease: "power1.inOut"
-        }, "-=0.5")
-        .to(triggerRef.current, {
-           opacity: 0,
-           display: 'none',
-           duration: 0.5,
-        }, "+=0.1");
-    }, sectionRef);
+      // 1. Expand the mask hole
+      tl.to(maskRef.current, {
+        attr: {
+          x: -2500,
+          y: -2500,
+          width: 5000,
+          height: 5000
+        },
+        ease: "power2.in",
+      })
+      // 2. Completely remove the overlay from the layout
+      .to(overlayRef.current, {
+        opacity: 0,
+        display: 'none', // Critical for preventing layout blocking
+        pointerEvents: 'none',
+        duration: 0.3
+      });
+
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative z-[50]">
-      <div 
-        ref={triggerRef} 
-        id="art"
-        className="relative h-screen w-full overflow-hidden bg-black"
-      >
-        {/* The Luxury Image to be revealed */}
-        <div 
-          className="masked-content masked-img relative z-10 w-full h-full bg-[url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center"
-        />
+    <div ref={containerRef} className="relative w-full h-screen">
+      {/* Background content layer: Transparent and stable */}
+      <div className="absolute inset-0 z-0 bg-transparent">
+        {children}
       </div>
-    </section>
+
+      {/* Dark Premium Mask Overlay */}
+      <div 
+        ref={overlayRef}
+        className="absolute inset-0 z-50 pointer-events-auto overflow-hidden"
+      >
+        <svg 
+          className="w-full h-full"
+          viewBox="0 0 100 100" 
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <mask id="reveal-mask">
+              <rect x="-50" y="-50" width="200" height="200" fill="white" />
+              <image 
+                ref={maskRef}
+                href={favicon} 
+                x="45" y="45" 
+                width="10" height="10" 
+                style={{ filter: 'brightness(0)' }} 
+              />
+            </mask>
+          </defs>
+          <rect 
+            x="-50" y="-50" width="200" height="200" 
+            fill="#0a0a0a" 
+            mask="url(#reveal-mask)" 
+          />
+        </svg>
+      </div>
+    </div>
   );
 };
+
+
+
+
+
+
+

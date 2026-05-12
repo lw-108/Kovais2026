@@ -1,25 +1,25 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect } from 'react';
 import { 
   Star, 
+  Flower2,
   Clock, 
   Home, 
-  User, 
-  Calendar as CalendarIcon, 
-  ArrowRight,
+  Building, 
+  Check, 
   Award,
-  Phone,
-  Zap,
-  Check,
-  Lock,
-  Flower2,
+  Sparkles,
   Droplets,
   Leaf,
-  Sparkles,
-  Building,
   Heart,
   Shield,
-  Eye
+  User,
+  Eye,
+  ArrowRight,
+  Phone,
+  Zap,
+  Lock
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -42,6 +42,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { LazyImage } from "@/components/ui/lazy-image";
+import LuxuryVideo from "@/components/LuxuryVideo";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -208,7 +209,7 @@ export default function SpaPage() {
   const [usedPoints, setUsedPoints] = useState(0);
   const [pointsInput, setPointsInput] = useState("");
 
-  const serviceTotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  const serviceTotal = selectedServices.reduce((sum: number, s: any) => sum + s.price, 0);
   const doorstepCharge = selectedLocation === "doorstep" ? 300 : 0;
   const baseTotal = serviceTotal + doorstepCharge;
   const discount = usedPoints * 0.10;
@@ -339,72 +340,53 @@ export default function SpaPage() {
       <Header />
 
       <main className="pt-20 pb-24 space-y-24">
-        {/* Animated Hero Section */}
-        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6">
-          <AnimatePresence mode="wait">
+        {/* Luxury Video Hero Section */}
+        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden">
+          <LuxuryVideo
+            videoSrc="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/For_Bigger_Ble.mp4"
+            posterSrc="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80"
+            title="KOVAIS LUXURY SPA EXPERIENCE"
+            aspectRatio="16/9"
+            showControls={true}
+            className="w-full h-full"
+          />
+          <div className="absolute inset-0 flex items-center justify-center text-center px-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
+                  {HERO_SLIDES[currentSlide].title} <br />
+                  <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
+                </h1>
+                <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto mt-8">
+                  {HERO_SLIDES[currentSlide].desc}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+
             <motion.div 
-              key={currentSlide}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-              className="absolute inset-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="flex flex-wrap justify-center gap-8 pt-8"
             >
-              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full grayscale brightness-50" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <Button 
+                onClick={() => document.getElementById('ritual-menu')?.scrollIntoView({ behavior: 'smooth' })}
+                className="h-16 px-12 bg-[#D4AF37] hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+              >
+                Explore Rituals
+              </Button>
+              <Button 
+                className="h-16 px-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+              >
+                View Wellness Menu
+              </Button>
             </motion.div>
-          </AnimatePresence>
-
-          <div className="relative h-full flex items-center justify-center text-center px-6">
-            <div className="max-w-4xl space-y-10">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="flex items-center justify-center gap-3 text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase"
-              >
-                <div className="size-1.5 bg-[#D4AF37]" />
-                Kovais Wellness Sanctuary
-                <div className="size-1.5 bg-[#D4AF37]" />
-              </motion.div>
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
-                    {HERO_SLIDES[currentSlide].title} <br />
-                    <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
-                  </h1>
-                  <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto mt-8">
-                    {HERO_SLIDES[currentSlide].desc}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className="flex flex-wrap justify-center gap-8 pt-8"
-              >
-                <Button 
-                  onClick={() => document.getElementById('ritual-menu')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="h-16 px-12 bg-[#D4AF37] hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
-                >
-                  Explore Rituals
-                </Button>
-                <Button 
-                  className="h-16 px-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
-                >
-                  View Wellness Menu
-                </Button>
-              </motion.div>
-            </div>
           </div>
 
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4">
@@ -478,7 +460,7 @@ export default function SpaPage() {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-background">
-                      <CalendarIcon className="mr-2 h-4 w-4 text-[#D4AF37]" />
+                      <Calendar className="mr-2 h-4 w-4 text-[#D4AF37]" />
                       {selectedDate ? format(selectedDate, "PPP") : "Select date"}
                     </Button>
                   </PopoverTrigger>
@@ -808,7 +790,7 @@ export default function SpaPage() {
                   ))}
                   <div className="pt-2 flex items-center justify-between">
                     <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                      <CalendarIcon className="size-3" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Select date"} · {selectedTime}
+                      <Calendar className="size-3" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Select date"} · {selectedTime}
                     </div>
                     <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
                   </div>

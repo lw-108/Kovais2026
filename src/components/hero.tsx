@@ -15,127 +15,69 @@ import img3 from "@/assets/3.png";
 const images = [img1, img2, img3];
 
 export function HeroSection() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % images.length);
-        }, 5000); // Change image every 5 seconds
-        return () => clearInterval(timer);
-    }, []);
-
 	return (
-		<section className="mx-auto w-full max-w-5xl overflow-hidden pt-16">
-			{/* Shades */}
-			<div
-				aria-hidden="true"
-				className="absolute inset-0 size-full overflow-hidden"
-			>
-				<div
-					className={cn(
-						"absolute inset-0 isolate -z-10",
-						"bg-[radial-gradient(20%_80%_at_20%_0%,--theme(--color-foreground/.1),transparent)]"
-					)}
-				/>
+		<section className="relative w-full h-[60vh] min-h-[500px] flex items-center overflow-hidden bg-[#0a0a0a]">
+			{/* Subtle Background Effect */}
+			<div className="absolute inset-0 z-0">
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,175,55,0.05),transparent)]" />
+				<div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />
 			</div>
-			<div className="relative z-10 flex max-w-2xl flex-col gap-5 px-4">
-				<div
+
+			{/* Overlaid Content */}
+			<div className="relative z-20 container mx-auto px-4 flex flex-col gap-6">
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8 }}
 					className={cn(
-						"group flex w-fit items-center gap-3 rounded-full border bg-card p-1 pr-3 shadow-xs",
-						"fade-in slide-in-from-bottom-10 animate-in fill-mode-backwards transition-all delay-500 duration-500 ease-out"
+						"group flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md p-1 pr-3"
 					)}
 				>
-					<div className="rounded-full border bg-primary/10 px-2 py-0.5 shadow-sm">
+					<div className="rounded-full bg-primary/20 px-2 py-0.5">
 						<p className="font-bold text-[10px] text-primary uppercase tracking-tighter">Kovais</p>
 					</div>
+					<span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Est. 2014 · Coimbatore's Finest</span>
+					<Sparkles className="size-3 text-primary animate-pulse" />
+				</motion.div>
 
-					<span className="text-[10px] font-bold uppercase tracking-widest text-foreground/70">Est. 2014 · Coimbatore's Finest</span>
-
-					<div className="pl-1">
-						<Sparkles className="size-3 text-primary animate-pulse" />
-					</div>
-				</div>
-
-				<h1
-					className={cn(
-						"text-balance font-instrument-serif text-6xl md:text-8xl text-foreground leading-[1.1] ",
-						"fade-in slide-in-from-bottom-10 animate-in fill-mode-backwards delay-100 duration-500 ease-out"
-					)}
+				<motion.h1
+					initial={{ opacity: 0, y: 30 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8, delay: 0.2 }}
+					className="max-w-4xl font-instrument-serif text-5xl md:text-8xl text-white leading-[1.1]"
 				>
-					Where Luxury Meets <span className="text-[#D4AF37] font-instrument-serif tracking-normal text-6xl md:text-9xl ">Wellness</span>
+					Where Luxury Meets <span className="text-primary tracking-normal italic">Wellness</span>
+				</motion.h1>
 
-				</h1>
-
-				<p
-					className={cn(
-						"text-muted-foreground text-sm tracking-wide sm:text-lg md:text-xl font-medium max-w-lg",
-						"fade-in slide-in-from-bottom-10 animate-in fill-mode-backwards delay-200 duration-500 ease-out"
-					)}
+				<motion.p
+					initial={{ opacity: 0, y: 30 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8, delay: 0.4 }}
+					className="text-white/70 text-sm tracking-wide sm:text-lg md:text-xl font-medium max-w-2xl"
 				>
 					Premium hospitality, spa, grooming {"&"} fitness — all under one roof.
-				</p>
+				</motion.p>
 
-				<div className="fade-in slide-in-from-bottom-10 flex w-fit animate-in items-center justify-center gap-3 fill-mode-backwards pt-4 delay-300 duration-500 ease-out">
+				<motion.div 
+					initial={{ opacity: 0, y: 30 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8, delay: 0.6 }}
+					className="flex flex-wrap gap-4 pt-4"
+				>
 					<Link to="/services">
-						<Button className="items-center flex rounded-none justify-center border-[#D4AF37] bg-[#D4AF37] hover:bg-[#B8962E] text-white px-8 py-6 text-sm serif text-2xl  shadow-lg shadow-[#D4AF37]/20 transition-all hover:scale-105 active:scale-95">
-							Book a Service{" "}
-							<ArrowRight data-icon="inline-end" className="size-4 ml-2" />
+						<Button className="rounded-none border-primary bg-primary hover:bg-primary/90 text-white px-10 py-8 text-2xl font-instrument-serif shadow-2xl transition-all hover:scale-105 active:scale-95">
+							Book a Service
+							<ArrowRight className="size-5 ml-3" />
 						</Button>
 					</Link>
-				</div>
-			</div>
-			<div className="relative">
-				<div
-					className={cn(
-						"absolute -inset-x-20 inset-y-0 -translate-y-1/3 scale-120 rounded-full",
-						"bg-[radial-gradient(ellipse_at_center,theme(--color-foreground/.1),transparent,transparent)]",
-						"blur-[50px]"
-					)}
-				/>
-				<div
-					className={cn(
-						"relative mt-12 overflow-hidden px-2 sm:mt-16 md:mt-24",
-						"fade-in slide-in-from-bottom-5 animate-in fill-mode-backwards delay-100 duration-1000 ease-out"
-					)}
-				>
-					<div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border bg-background/50 backdrop-blur-md p-2 shadow-2xl ring-1 ring-white/10">
-                        <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-xl bg-black/5">
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={currentIndex}
-                                    initial={{ opacity: 0, scale: 1.05 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{ duration: 1, ease: "easeOut" }}
-                                    className="h-full w-full"
-                                >
-                                    <LazyImage
-                                        src={images[currentIndex]}
-                                        alt={`Slide ${currentIndex + 1}`}
-                                        className="h-full w-full"
-                                    />
-                                </motion.div>
-                            </AnimatePresence>
-
-                            {/* Carousel Indicators */}
-                            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-3 z-20">
-                                {images.map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className={cn(
-                                            "h-1 rounded-full transition-all duration-500",
-                                            i === currentIndex ? "w-10 bg-[#D4AF37]" : "w-2 bg-white/30"
-                                        )}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Vignette Overlay */}
-                            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                        </div>
-					</div>
-				</div>
+				</motion.div>
 			</div>
 		</section>
 	);
 }
+
+
