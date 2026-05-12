@@ -262,7 +262,7 @@ export default function FuneralPage() {
     <div className="min-h-screen bg-transparent">
       <Header />
 
-      <main className="pt-32 pb-24">
+      <main className="pt-20 pb-24">
         {/* Cinematic Hero */}
         <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6 rounded-3xl">
           <AnimatePresence mode="wait">

@@ -62,7 +62,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 			<Button
 				aria-label="Toggle menu"
 				className={cn(
-                    "relative z-[110] rounded-full p-2 border border-border bg-background hover:bg-muted transition-colors flex items-center justify-center w-10 h-10",
+                    "relative z-[110] rounded-none p-2 border border-border bg-background hover:bg-muted transition-colors flex items-center justify-center w-10 h-10",
                     open && "opacity-0 pointer-events-none"
                 )}
 				onClick={toggleMenu}
@@ -92,7 +92,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                     variant="ghost" 
                                     size="icon" 
                                     onClick={() => setOpen(false)}
-                                    className="size-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-full shadow-2xl transition-all duration-300"
+                                    className="size-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-none shadow-2xl transition-all duration-300"
                                 >
                                     <XIcon className="size-6" />
                                 </Button>
@@ -110,8 +110,8 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 
                                 {/* User Info if logged in */}
                                 {isLoggedIn && (
-                                    <div className="flex items-center gap-3 p-4 bg-[#D4AF37] shadow-lg border-2 border-[#D4AF37]">
-                                        <div className="size-10 bg-white p-0.5">
+                                    <div className="flex items-center gap-3 p-4 bg-[#D4AF37] shadow-lg border-2 border-[#D4AF37] rounded-none">
+                                        <div className="size-10 bg-background p-0.5 rounded-none">
                                             <div className="flex size-full items-center justify-center">
                                                 <User className="size-5 text-[#D4AF37]" />
                                             </div>
@@ -129,7 +129,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                 {/* Main Sections */}
                                 <div className="flex flex-col gap-4">
                                     {/* Booking Accordion */}
-                                    <div className="flex flex-col border rounded-2xl overflow-hidden bg-muted/5">
+                                    <div className="flex flex-col border rounded-none overflow-hidden bg-muted/5">
                                         <button 
                                             onClick={() => setBookingOpen(!bookingOpen)}
                                             className="flex items-center justify-between p-4 w-full text-left"
@@ -153,10 +153,10 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                                             <a
                                                                 key={link.label}
                                                                 href={link.href}
-                                                                className={cn("flex items-center gap-4 p-4 text-sm font-medium rounded-xl hover:bg-muted/30 group transition-all", hoverGold)}
+                                                                className={cn("flex items-center gap-4 p-4 text-sm font-medium rounded-none hover:bg-muted/30 group transition-all", hoverGold)}
                                                                 onClick={() => setOpen(false)}
                                                             >
-                                                                <div className="p-2 rounded-lg bg-muted/50 group-hover:bg-[#D4AF37]/10 transition-colors">
+                                                                <div className="p-2 rounded-none bg-muted/50 group-hover:bg-[#D4AF37]/10 transition-colors">
                                                                     <link.icon className="size-4 text-[#D4AF37]" />
                                                                 </div>
                                                                 <div className="flex flex-col text-left">
@@ -177,7 +177,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                             <a
                                                 key={link.label}
                                                 href={link.href}
-                                                className="flex flex-col items-start gap-2 p-4 rounded-2xl border bg-muted/5 hover:bg-muted/10 transition-all group"
+                                                className="flex flex-col items-start gap-2 p-4 rounded-none border bg-muted/5 hover:bg-muted/10 transition-all group"
                                                 onClick={() => setOpen(false)}
                                             >
                                                 <link.icon className="size-4 text-[#D4AF37]" />

@@ -10,7 +10,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  Camera,
   X,
   Phone,
   Mail,
@@ -18,14 +17,12 @@ import {
   Check,
   Lock,
   Award,
-  Sparkles,
-  CheckCircle,
-  Scissors
+  Sparkles
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import { useInView } from 'react-intersection-observer';
+
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,7 +31,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import {
@@ -117,7 +114,7 @@ const STATS = [
   { icon: Award, value: "500+", label: "Happy Clients" },
 ];
 
-import { useEffect } from "react";
+
 
 export default function FunctionPage() {
 
@@ -275,7 +272,7 @@ export default function FunctionPage() {
     <div className="min-h-screen bg-transparent">
       <Header />
 
-      <main className="pt-32 pb-24 space-y-24">
+      <main className="pt-20 pb-24 space-y-24">
         {/* Animated Hero Section */}
         <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6">
           <AnimatePresence mode="wait">
@@ -404,10 +401,10 @@ export default function FunctionPage() {
           <AnimatePresence>
             {selectedServices.length > 0 && (
               <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden">
-                <div className="bg-[#D4AF37] text-white px-8 py-3 flex items-center justify-between font-black uppercase tracking-widest text-[11px]">
+                <div className="bg-[#D4AF37] text-stone-950 px-8 py-3 flex items-center justify-between font-black uppercase tracking-widest text-[11px]">
                   <div className="flex items-center gap-6">
                     <span>{selectedServices.length} Package(s) Selected</span>
-                    {selectedLocation === 'doorstep' && <span className="bg-black/20 px-3 py-1">+ ₹250 Doorstep Convenience</span>}
+                    {selectedLocation === 'doorstep' && <span className="bg-black/10 px-3 py-1">+ ₹250 Doorstep Convenience</span>}
                   </div>
                   <span className="text-lg">Total Value: <span className="text-black ml-2">₹{finalTotal.toLocaleString()}</span></span>
                 </div>
@@ -589,7 +586,7 @@ export default function FunctionPage() {
 
       {/* --- Login Modal --- */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
+        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl font-black tracking-tight serif uppercase">Event Access</h2>
@@ -601,17 +598,17 @@ export default function FunctionPage() {
             <div className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+                <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
               </div>
               {isNewUser && (
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                  <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                  <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
                 </div>
               )}
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
               </div>
               
               <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
@@ -630,67 +627,77 @@ export default function FunctionPage() {
 
       {/* --- Booking Modal --- */}
       <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-        <DialogContent className="max-w-2xl p-0 overflow-hidden bg-[#FDFBF7] border-none rounded-2xl shadow-2xl">
-          <div className="p-8 bg-white border-b border-[#D4AF37]/10">
+        <DialogContent className="max-w-6xl p-0 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
+          <div className="p-8 bg-background border-b border-[#D4AF37]/10">
             <div className="flex items-center gap-3">
               <Zap className="size-5 text-[#D4AF37]" />
-              <h2 className="text-2xl font-black tracking-tight serif uppercase">Reservation Request</h2>
+              <h2 className="text-2xl font-black tracking-tight serif uppercase text-foreground">Reservation Request</h2>
             </div>
           </div>
           
-          <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
-            <div className="p-6 bg-white border border-border/5 space-y-4">
-              {selectedServices.map(s => (
-                <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
-                  <div className="font-black text-[10px] uppercase">{s.name} Ritual</div>
-                  <div className="font-black text-sm serif">₹{s.price}</div>
-                </div>
-              ))}
-              <div className="pt-2 flex items-center justify-between">
-                <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                  <CalendarIcon className="size-3" /> {format(selectedDate || new Date(), "EEE, dd MMM")} · {selectedTime}
-                </div>
-                <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
-              </div>
-            </div>
-
-            <div className="p-6 bg-[#D4AF37]/5 border border-[#D4AF37]/20 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
-                  <span className="text-xs font-black uppercase tracking-tight">Redeem Experience Points</span>
-                </div>
-                <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
-              </div>
-              <div className="flex gap-4">
-                <input className="flex-1 h-12 px-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
-                <Button className="h-12 bg-black text-white px-8 rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Redeem</Button>
-              </div>
-              {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
-            </div>
-
-            <div className="space-y-4">
-              <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
-              <div className="grid grid-cols-2 gap-4">
-                <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('offline')}>
-                  <Clock className="size-6 text-[#D4AF37]" />
-                  <div>
-                    <div className="font-black text-xs uppercase tracking-tight">In-Person</div>
-                    <div className="text-[9px] font-bold opacity-60">Discuss at sanctuary</div>
+          <div className="p-8 max-h-[85vh] overflow-y-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Column 1: Summary & Services */}
+              <div className="space-y-6">
+                <div className="p-6 bg-background border border-border/10 space-y-4">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-2">Selected Packages</div>
+                  {selectedServices.map(s => (
+                    <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
+                      <div className="font-black text-[10px] uppercase text-foreground">{s.name} Ritual</div>
+                      <div className="font-black text-sm serif text-foreground">₹{s.price}</div>
+                    </div>
+                  ))}
+                  <div className="pt-2 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                      <CalendarIcon className="size-3" /> {format(selectedDate || new Date(), "EEE, dd MMM")} · {selectedTime}
+                    </div>
+                    <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
                   </div>
                 </div>
-                <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('online')}>
-                  <Zap className="size-6 text-[#D4AF37]" />
-                  <div>
-                    <div className="font-black text-xs uppercase tracking-tight">Priority Booking</div>
-                    <div className="text-[9px] font-bold opacity-60">Instant confirmation</div>
+              </div>
+
+              {/* Column 2: Rewards Section */}
+              <div className="space-y-8">
+                <div className="p-6 bg-[#D4AF37]/5 border border-[#D4AF37]/20 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
+                      <span className="text-xs font-black uppercase tracking-tight">Redeem Experience Points</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
+                  </div>
+                  <div className="space-y-4">
+                    <input className="w-full h-12 px-4 bg-background border border-border/20 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
+                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Redeem Points</Button>
+                  </div>
+                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
+                </div>
+              </div>
+
+              {/* Column 3: Payment Ritual */}
+              <div className="space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('offline')}>
+                    <Clock className="size-6 text-[#D4AF37]" />
+                    <div>
+                      <div className="font-black text-xs uppercase tracking-tight text-foreground">In-Person</div>
+                      <div className="text-[9px] font-bold opacity-60 text-foreground">Discuss at sanctuary</div>
+                    </div>
+                  </div>
+                  <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('online')}>
+                    <Zap className="size-6 text-[#D4AF37]" />
+                    <div>
+                      <div className="font-black text-xs uppercase tracking-tight text-foreground">Priority Booking</div>
+                      <div className="text-[9px] font-bold opacity-60 text-foreground">Instant confirmation</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="p-8 bg-white border-t border-border/10">
+          <div className="p-8 bg-background border-t border-border/10">
             <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
               {loading ? "Processing Request..." : `Request Ritual · ₹${finalTotal.toLocaleString()}`}
             </Button>

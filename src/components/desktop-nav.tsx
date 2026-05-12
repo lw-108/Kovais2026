@@ -48,8 +48,8 @@ export function DesktopNav() {
 					<NavigationMenuTrigger className={cn("bg-transparent", hoverGold)}>
 						Booking
 					</NavigationMenuTrigger>
-					<NavigationMenuContent className="bg-muted/50 p-1 pr-1.5 dark:bg-background">
-						<div className="rounded-2xl grid w-[400px] grid-cols-1 gap-2 border bg-popover p-2 shadow md:w-[600px] md:grid-cols-2">
+					<NavigationMenuContent className="bg-muted/50 p-1 pr-1.5 dark:bg-background rounded-none">
+						<div className="rounded-none grid w-[400px] grid-cols-1 gap-2 border bg-popover p-2 shadow md:w-[600px] md:grid-cols-2">
 							{bookingLinks.map((item, i) => (
 								<NavigationMenuLink asChild key={`booking-${item.label}-${i}`}>
 									<LinkItem {...item} className={hoverGold} />
@@ -64,8 +64,8 @@ export function DesktopNav() {
 					<NavigationMenuTrigger className={cn("bg-transparent", hoverGold)}>
 						Info
 					</NavigationMenuTrigger>
-					<NavigationMenuContent className="bg-muted/50 p-1 pr-1.5 dark:bg-background">
-						<div className="rounded-2xl grid w-[300px] grid-cols-1 gap-2 border bg-popover p-2 shadow md:w-[400px]">
+					<NavigationMenuContent className="bg-muted/50 p-1 pr-1.5 dark:bg-background rounded-none">
+						<div className="rounded-none grid w-[300px] grid-cols-1 gap-2 border bg-popover p-2 shadow md:w-[400px]">
 							{infoLinks.map((item, i) => (
 								<NavigationMenuLink asChild key={`info-${item.label}-${i}`}>
 									<LinkItem {...item} className={hoverGold} />

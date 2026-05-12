@@ -80,8 +80,8 @@ export function Header() {
 					{user && (
 						<div className="hidden items-center gap-3 md:flex">
 							<div className="flex items-center gap-2 pr-3 border-r border-[#D4AF37]/20">
-								<div className="size-10 bg-[#D4AF37] p-0.5 shadow-lg">
-									<div className="flex size-full items-center justify-center bg-white">
+								<div className="size-10 bg-[#D4AF37] p-0.5 shadow-lg rounded-none">
+									<div className="flex size-full items-center justify-center bg-background">
 										{user.emblem_url ? (
 											<img src={user.emblem_url} alt="Avatar" className="size-full object-cover" />
 										) : (
@@ -91,7 +91,7 @@ export function Header() {
 								</div>
 							</div>
 							<div className="flex flex-col">
-								<span className="text-sm font-bold text-black">{user.username}</span>
+								<span className="text-sm font-bold text-foreground">{user.username}</span>
 								<span className="text-xs text-[#D4AF37] font-black uppercase tracking-widest">{points.toLocaleString()} Points</span>
 							</div>
 							<Button 

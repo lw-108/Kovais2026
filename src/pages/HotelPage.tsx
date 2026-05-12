@@ -399,7 +399,7 @@
                   <div className="size-2 rounded-full bg-white animate-pulse" />
                   <span className="text-white text-base font-black serif">10 ROOMS</span>
                 </div>
-                <span className="text-black/60 text-[9px] font-black uppercase tracking-[0.3em]">REMAINING TONIGHT</span>
+                <span className="text-white/60 text-[9px] font-black uppercase tracking-[0.3em]">REMAINING TONIGHT</span>
               </div>
             </div>
           </div>
@@ -425,14 +425,14 @@
                 
                 <div className="absolute top-3 left-3 md:top-6 md:left-6 flex flex-col gap-2 md:gap-3">
                   <Badge className="bg-[#D4AF37] text-white rounded-none border-none text-[8px] md:text-[9px] uppercase font-black px-2 md:px-4 py-1 md:py-1.5 shadow-lg w-fit"><Zap className="size-2.5 md:size-3 mr-1.5 md:mr-2" /> Instant</Badge>
-                  <Badge className="bg-white text-black rounded-none border-none text-[8px] md:text-[9px] uppercase font-black px-2 md:px-4 py-1 md:py-1.5 shadow-lg w-fit">Free Cancellation</Badge>
+                  <Badge className="bg-background text-foreground rounded-none border-none text-[8px] md:text-[9px] uppercase font-black px-2 md:px-4 py-1 md:py-1.5 shadow-lg w-fit">Free Cancellation</Badge>
                 </div>
 
-                <div className="absolute bottom-3 left-3 md:bottom-10 md:left-10 space-y-0 md:space-y-1 bg-white/80 backdrop-blur-lg p-2 rounded-md">
-                  <div className="text-2xl sm:text-3xl md:text-5xl font-black serif text-black drop-shadow-2xl">
+                <div className="absolute bottom-3 left-3 md:bottom-10 md:left-10 space-y-0 md:space-y-1 bg-primary/80 backdrop-blur-lg p-2 rounded-none">
+                  <div className="text-2xl sm:text-3xl md:text-5xl font-black serif text-foreground drop-shadow-2xl">
                     ₹{pricePerNight.toLocaleString()}
                   </div>
-                  <div className="text-[7px] md:text-[10px] font-black uppercase tracking-[0.1em] md:tracking-[0.4em] text-black">Per Night · Deluxe</div>
+                  <div className="text-[7px] md:text-[10px] font-black uppercase tracking-[0.1em] md:tracking-[0.4em] text-foreground">Per Night · Deluxe</div>
                 </div>
 
                 <div className="absolute bottom-4 right-4 md:bottom-10 md:right-10 flex items-end gap-1">
@@ -601,7 +601,7 @@
 
         {/* --- Login Modal --- */}
         <Dialog open={showLogin} onOpenChange={setShowLogin}>
-          <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
+          <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
               <div className="space-y-8">
                   <div className="text-center">
                       <h2 className="text-3xl font-black tracking-tight serif uppercase">Welcome to Kovais</h2>
@@ -611,17 +611,17 @@
                   <div className="space-y-4">
                       <div className="relative">
                           <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                          <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+                          <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
                       </div>
                       {isNewUser && (
                           <div className="relative">
                               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                              <input className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                              <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
                           </div>
                       )}
                       <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                          <input type="password" className="w-full h-12 pl-10 pr-4 bg-white border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37]" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+                          <input type="password" className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
                       </div>
                       
                       <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
@@ -640,81 +640,88 @@
 
         {/* --- Booking Modal --- */}
         <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-          <DialogContent className="max-w-2xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
-              <div className="p-8 bg-white/40 border-b border-border/10">
-                  <div className="flex items-center gap-3">
-                      <Zap className="size-5 text-[#D4AF37]" />
-                      <h2 className="text-2xl font-black tracking-tight serif uppercase">Complete Your Stay</h2>
+          <DialogContent className="max-w-6xl p-0 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
+          <div className="p-8 bg-background border-b border-border/10">
+            <div className="flex items-center gap-3">
+              <Zap className="size-5 text-[#D4AF37]" />
+              <h2 className="text-2xl font-black tracking-tight serif uppercase">Complete Your Stay</h2>
+            </div>
+          </div>
+          
+          <div className="p-8 max-h-[85vh] overflow-y-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Column 1: Summary & Purpose */}
+              <div className="space-y-8">
+                <div className="p-6 bg-card border border-border/10 flex items-center justify-between">
+                  <div>
+                    <div className="font-black text-sm uppercase text-foreground">{room.title}</div>
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase mt-1">
+                      <CalendarIcon className="size-3" /> {nights} Nights · <User className="size-3" /> {rooms} Room
+                    </div>
                   </div>
+                  <div className="text-xl font-black serif text-foreground">₹{finalTotal.toLocaleString()}</div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Purpose of Visit</label>
+                  <input className="w-full h-12 px-4 bg-background border border-border/10 rounded-none text-foreground" placeholder="Business, Leisure, Family..." value={purpose} onChange={e => setPurpose(e.target.value)} />
+                </div>
               </div>
-              
-              <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
-                  {/* Summary */}
-                  <div className="p-6 bg-card border border-border/10 flex items-center justify-between">
-                      <div>
-                          <div className="font-black text-sm uppercase">{room.title}</div>
-                          <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase mt-1">
-                              <CalendarIcon className="size-3" /> {nights} Nights · <User className="size-3" /> {rooms} Room
-                          </div>
-                      </div>
-                      <div className="text-xl font-black serif">₹{finalTotal.toLocaleString()}</div>
-                  </div>
 
-                  {/* Purpose */}
-                  <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Purpose of Visit</label>
-                      <input className="w-full h-12 px-4 bg-background border border-border/10 rounded-none" placeholder="Business, Leisure, Family..." value={purpose} onChange={e => setPurpose(e.target.value)} />
+              {/* Column 2: Rewards Section */}
+              <div className="space-y-8">
+                <div className="p-6 bg-[#D4AF37]/5 border border-[#D4AF37]/20 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
+                      <span className="text-xs font-black uppercase tracking-tight">Use Rewards</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
                   </div>
-
-                  {/* Rewards */}
-                  <div className="p-6 bg-[#D4AF37]/5 border border-[#D4AF37]/20 space-y-4">
-                      <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                              <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
-                              <span className="text-xs font-black uppercase tracking-tight">Use Rewards</span>
-                          </div>
-                          <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
-                      </div>
-                      <div className="flex gap-4">
-                          <input className="flex-1 h-12 px-4 bg-white border border-border/10 rounded-none" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
-                          <Button className="h-12 bg-black text-white px-8 rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Apply</Button>
-                      </div>
-                      {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount} discount applied</div>}
-                  </div>
-
-                  {/* Payment */}
                   <div className="space-y-4">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Method</label>
-                      <div className="grid grid-cols-2 gap-4">
-                          <div className={`p-4 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('offline')}>
-                              <Clock className="size-6 text-[#D4AF37]" />
-                              <div>
-                                  <div className="font-black text-xs">Pay at Hotel</div>
-                                  <div className="text-[9px] font-bold opacity-60">Reserve now, pay later</div>
-                              </div>
-                          </div>
-                          <div className={`p-4 border cursor-pointer flex items-center gap-4 transition-all ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10'}`} onClick={() => setPayType('online')}>
-                              <Zap className="size-6 text-[#D4AF37]" />
-                              <div>
-                                  <div className="font-black text-xs">Pay Now</div>
-                                  <div className="text-[9px] font-bold opacity-60">Instant confirmation</div>
-                              </div>
-                          </div>
+                    <input className="w-full h-12 px-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
+                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Apply Points</Button>
+                  </div>
+                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount} discount applied</div>}
+                </div>
+              </div>
+
+              {/* Column 3: Payment Method */}
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Method</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className={`p-4 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('offline')}>
+                      <Clock className="size-6 text-[#D4AF37]" />
+                      <div>
+                        <div className="font-black text-xs">Pay at Hotel</div>
+                        <div className="text-[9px] font-bold opacity-60">Reserve now, pay later</div>
                       </div>
+                    </div>
+                    <div className={`p-4 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('online')}>
+                      <Zap className="size-6 text-[#D4AF37]" />
+                      <div>
+                        <div className="font-black text-xs">Pay Now</div>
+                        <div className="text-[9px] font-bold opacity-60">Instant confirmation</div>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="flex items-center justify-center gap-8 opacity-40 grayscale py-4">
-                      <div className="flex items-center gap-2 text-[10px] font-black"><Shield className="size-3" /> Secure</div>
-                      <div className="flex items-center gap-2 text-[10px] font-black"><Clock className="size-3" /> Free Cancel</div>
-                      <div className="flex items-center gap-2 text-[10px] font-black"><Check className="size-3" /> Verified</div>
-                  </div>
+                </div>
               </div>
+            </div>
 
-              <div className="p-8 bg-white border-t border-border/10">
-                  <Button className="w-full h-14 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
-                      {loading ? "Confirming..." : `Confirm Booking · ₹${finalTotal.toLocaleString()}`}
-                  </Button>
-              </div>
+            <div className="flex items-center justify-center gap-8 opacity-40 grayscale py-8">
+              <div className="flex items-center gap-2 text-[10px] font-black"><Shield className="size-3" /> Secure</div>
+              <div className="flex items-center gap-2 text-[10px] font-black"><Clock className="size-3" /> Free Cancel</div>
+              <div className="flex items-center gap-2 text-[10px] font-black"><Check className="size-3" /> Verified</div>
+            </div>
+          </div>
+
+          <div className="p-8 bg-background border-t border-border/10">
+            <Button className="w-full h-14 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
+              {loading ? "Confirming..." : `Confirm Booking · ₹${finalTotal.toLocaleString()}`}
+            </Button>
+          </div>
           </DialogContent>
         </Dialog>
 

@@ -158,7 +158,7 @@ export default function ServicesPage() {
                       </span>
                       <div className="h-[2px] w-0 group-hover:w-full bg-[#D4AF37] transition-all duration-700" />
                     </div>
-                    <div className="p-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="p-3 bg-background/5 backdrop-blur-md border border-[#D4AF37]/40 rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                       <ArrowUpRight className="text-[#D4AF37]" size={20} />
                     </div>
                   </div>
