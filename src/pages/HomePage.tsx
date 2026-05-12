@@ -1,6 +1,7 @@
 import { Component as EtheralShadow } from "@/components/ui/etheral-shadow";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero";
+import { MaskReveal } from "@/components/MaskReveal";
 import { Integrations } from "@/components/integrations";
 import AboutSection3 from "@/components/ui/about-section";
 import Features from "@/components/features";
@@ -29,6 +30,7 @@ export default function HomePage() {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 pb-20">
+          <MaskReveal />
           <HeroSection />
           <Integrations />
           <AboutSection3 />
