@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LazyImage } from './ui/lazy-image';
 
 // Desktop Images
 import img1 from '../assets/1.jpg';
@@ -21,13 +20,55 @@ import img6M from '../assets/6Mobile.png';
 import img7M from '../assets/7Mobile.png';
 
 const images = [
-  { desktop: img1, mobile: img1M },
-  { desktop: img2, mobile: img2M },
-  { desktop: img3, mobile: img3M },
-  { desktop: img4, mobile: img4M },
-  { desktop: img5, mobile: img5M },
-  { desktop: img6, mobile: img6M },
-  { desktop: img7, mobile: img7M },
+  { 
+    desktop: img1, 
+    mobile: img1M,
+    category: "Hospitality",
+    title: "Luxury Hospitality",
+    subtitle: "Boutique Heritage Suites"
+  },
+  { 
+    desktop: img2, 
+    mobile: img2M,
+    category: "Wellness",
+    title: "Holistic Wellness",
+    subtitle: "Ancient Therapeutic Spa Rituals"
+  },
+  { 
+    desktop: img3, 
+    mobile: img3M,
+    category: "Performance",
+    title: "Elite Fitness",
+    subtitle: "State-of-the-Art Training Studio"
+  },
+  { 
+    desktop: img4, 
+    mobile: img4M,
+    category: "Grooming",
+    title: "Master Grooming",
+    subtitle: "Precision Barber Atelier"
+  },
+  { 
+    desktop: img5, 
+    mobile: img5M,
+    category: "Aesthetics",
+    title: "Couture Beauty",
+    subtitle: "High-Definition Aesthetics Maison"
+  },
+  { 
+    desktop: img6, 
+    mobile: img6M,
+    category: "Events",
+    title: "Grand Celebrations",
+    subtitle: "Elegantly Crafted Event Estates"
+  },
+  { 
+    desktop: img7, 
+    mobile: img7M,
+    category: "Remembrance",
+    title: "Graceful Legacies",
+    subtitle: "Compassionate Remembrance Services"
+  },
 ];
 
 
@@ -68,11 +109,46 @@ export const LuxuryCarousel: React.FC = () => {
         >
           <img
             src={currentImage}
-            alt={`Luxury Slide ${currentIndex + 1}`}
+            alt={images[currentIndex].title}
             loading="eager"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain z-0"
           />
 
+          {/* Vignette Overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10 pointer-events-none" />
+
+          {/* Content Overlay */}
+          <div className="absolute bottom-24 left-6 md:left-20 z-20 max-w-xl text-left pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="flex items-center gap-2 mb-2"
+            >
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">
+                {images[currentIndex].category}
+              </span>
+              <div className="h-[1px] w-8 bg-primary/40" />
+            </motion.div>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-4xl md:text-6xl font-black tracking-tighter text-white font-instrument-serif italic leading-tight"
+            >
+              {images[currentIndex].title}
+            </motion.h2>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-white/60 text-xs md:text-sm tracking-widest font-sans uppercase mt-2 font-medium"
+            >
+              {images[currentIndex].subtitle}
+            </motion.p>
+          </div>
         </motion.div>
       </AnimatePresence>
 

@@ -16,12 +16,12 @@ const images = [img1, img2, img3];
 
 export function HeroSection() {
 	return (
-		<section className="relative w-full h-[60vh] min-h-[500px] flex items-center overflow-hidden bg-[#0a0a0a]">
+		<section className="relative w-full h-[60vh] min-h-[500px] flex items-center overflow-hidden">
 			{/* Subtle Background Effect */}
-			<div className="absolute inset-0 z-0">
+			{/* <div className="absolute inset-0 z-0">
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,175,55,0.05),transparent)]" />
 				<div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />
-			</div>
+			</div> */}
 
 			{/* Overlaid Content */}
 			<div className="relative z-20 container mx-auto px-4 flex flex-col gap-6">

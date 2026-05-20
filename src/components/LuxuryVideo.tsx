@@ -249,7 +249,6 @@ export default function LuxuryVideo({
                   style={{ width: `${(currentTime / duration) * 100}%` }}
                 />
               </div>
-              </div>
             </div>
 
             {/* Volume Control */}
