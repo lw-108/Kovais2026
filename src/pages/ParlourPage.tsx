@@ -15,7 +15,9 @@ import {
   Eye,
   ArrowRight,
   Building,
-  Home
+  Home,
+  MapPin,
+  CheckCircle
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -40,6 +42,7 @@ import {
 } from "@/components/ui/popover";
 import { LazyImage } from "@/components/ui/lazy-image";
 
+import { ServiceGuide } from "@/components/ServiceGuide";
 import { userService, bookingService } from "@/lib/data-service";
 
 const HERO_SLIDES = [
@@ -149,6 +152,33 @@ const WHY_CHOOSE_PARLOUR = [
 
 export default function ParlourPage() {
 
+  const guideSteps: any[] = [
+    {
+      title: "Explore Catalog",
+      titleTa: "கட்டலியைக் கண்டுபிடிக்க",
+      description: "Browse our curated rituals and select your preferences.",
+      descriptionTa: "எங்கள் சேவைகளைப் பார்வையிட்டு விருப்பங்களைத் தேர்ந்தெடுக்கவும்.",
+      icon: MapPin,
+      anchorId: "ritual-selection-bar"
+    },
+    {
+      title: "Select Specialist & Time",
+      titleTa: "நிபுணர் & நேரம் தேர்வு",
+      description: "Choose your artisan and preferred time slot.",
+      descriptionTa: "உங்கள் நிபுணர் மற்றும் நேரத்தைத் தேர்ந்தெடுக்கவும்.",
+      icon: Clock,
+      anchorId: "specialist-time-section"
+    },
+    {
+      title: "Finalize Booking",
+      titleTa: "விருப்பத்தில் உறுதிப்படுத்தவும்",
+      description: "Review your choices and complete the reservation.",
+      descriptionTa: "விருப்பங்களைப் பரிசீலித்து முடிக்கவும்.",
+      icon: CheckCircle,
+      anchorId: "booking-checkout-section"
+    }
+  ];
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState<"salon" | "doorstep">("salon");
   const [selectedCategory, setSelectedCategory] = useState<string>("Hair Care");
@@ -180,7 +210,7 @@ export default function ParlourPage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      setCurrentSlide((prev: number) => (prev + 1) % HERO_SLIDES.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
@@ -300,11 +330,13 @@ export default function ParlourPage() {
 
   return (
     <div className="min-h-screen bg-transparent">
+     
+
       <Header />
 
-      <main className="pt-20 pb-24 space-y-24">
+      <main className="pt-0 pb-24 space-y-24">
         {/* Animated Hero Section */}
-        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden mx-6">
+        <section className="relative h-[80vh] md:h-[90vh] overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div 
               key={currentSlide}
@@ -314,7 +346,7 @@ export default function ParlourPage() {
               transition={{ duration: 1.5 }}
               className="absolute inset-0"
             >
-              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full grayscale brightness-50" />
+              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full brightness-50" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </motion.div>
           </AnimatePresence>
@@ -397,6 +429,9 @@ export default function ParlourPage() {
           </div>
         </div>
 
+         {/* Service Guide */}
+      <ServiceGuide steps={guideSteps} serviceName="Parlour" />
+
         {/* Ritual Configuration */}
         <div className="max-w-7xl mx-auto px-6 space-y-1">
           <div className="p-4 bg-background border border-[#D4AF37]/10 shadow-2xl relative">
@@ -464,7 +499,7 @@ export default function ParlourPage() {
         </div>
 
         {/* Services & Booking Grid */}
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-px bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="ritual-menu">
+                  <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-px bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="ritual-selection-bar">
           {/* Left: Ritual Menu */}
           <div className="p-8 md:p-12 bg-background space-y-10">
             <div className="flex items-center justify-between">
@@ -497,7 +532,7 @@ export default function ParlourPage() {
                         <span className="flex items-center gap-1"><Star className="size-3 fill-[#D4AF37]/60" /> {service.rating}</span>
                         <button 
                           onClick={() => { setSelectedDetailService(service); setShowDetailModal(true); }}
-                          className="flex items-center gap-1 text-black hover:text-[#D4AF37] transition-colors"
+                          className="flex items-center gap-1 text-foreground hover:text-[#D4AF37] transition-colors"
                         >
                           <Eye className="size-3" /> View Detail
                         </button>
@@ -513,10 +548,12 @@ export default function ParlourPage() {
                 );
               })}
             </div>
+            
+            
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
+          <div className="p-8 md:p-12 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10" id="specialist-time-section">
             <div className="space-y-12">
               <div className="space-y-8">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Select Beauty Artisan</h3>
@@ -525,7 +562,7 @@ export default function ParlourPage() {
                     <button 
                       key={artisan.id}
                       onClick={() => setSelectedArtisan(artisan)}
-                      className={`p-5 border transition-all flex items-center justify-between ${selectedArtisan?.id === artisan.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-white border-border/10 hover:border-[#D4AF37]/30'}`}
+                      className={`p-5 border transition-all flex items-center justify-between ${selectedArtisan?.id === artisan.id ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10 hover:border-[#D4AF37]/30 text-foreground'}`}
                     >
                       <div className="flex items-center gap-4">
                         <div className="size-12 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20">
@@ -551,7 +588,7 @@ export default function ParlourPage() {
                     <button 
                       key={time}
                       onClick={() => setSelectedTime(time)}
-                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-black' : 'bg-white border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
+                      className={`h-11 text-[10px] font-black border transition-all ${selectedTime === time ? 'bg-black text-white border-[#D4AF37]' : 'bg-background border-border/10 hover:border-[#D4AF37]/50 text-muted-foreground'}`}
                     >
                       {time}
                     </button>
@@ -636,6 +673,10 @@ export default function ParlourPage() {
       {/* --- Service Detail Modal --- */}
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
+          {/* Frame corner clips */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+          
           {selectedDetailService && (
             <div className="flex flex-col md:flex-row h-full">
               <div className="md:w-1/2 relative h-64 md:h-auto">
@@ -697,10 +738,14 @@ export default function ParlourPage() {
 
       {/* --- Login Modal --- */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
-          <div className="space-y-8">
+        <DialogContent className="max-w-md p-8 bg-black/85 backdrop-blur-sm border border-[#D4AF37]/20 rounded-none shadow-2xl relative">
+          {/* Frame corner clips */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+
+          <div className="space-y-8 relative z-10">
             <div className="text-center">
-              <h2 className="text-3xl font-black tracking-tight serif uppercase">Aesthetic Access</h2>
+              <h2 className="text-3xl font-black tracking-tight serif uppercase text-white">Aesthetic Access</h2>
               <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">
                 {isNewUser ? "Join our inner circle" : "Verify your identity"}
               </p>
@@ -709,20 +754,20 @@ export default function ParlourPage() {
             <div className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+                <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/30" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
               </div>
               {isNewUser && (
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                  <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                  <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/30" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
                 </div>
               )}
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input type="password" className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/30" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
               </div>
               
-              <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
+              <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
                 {loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
               </Button>
 
@@ -738,29 +783,35 @@ export default function ParlourPage() {
 
       {/* --- Booking Modal --- */}
       <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-        <DialogContent className="max-w-6xl p-0 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
-          <div className="p-8 bg-background border-b border-[#D4AF37]/10">
+        <DialogContent className="w-[calc(100%-2rem)] max-w-5xl p-0 bg-black/85 backdrop-blur-sm border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-hidden relative">
+          {/* Frame corner clips */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+
+          <div className="p-8 bg-transparent border-b border-[#D4AF37]/10 relative z-10">
             <div className="flex items-center gap-3">
               <Sparkles className="size-5 text-[#D4AF37]" />
-              <h2 className="text-2xl font-black tracking-tight serif uppercase">Confirm Transformation</h2>
+              <h2 className="text-2xl font-black tracking-tight serif uppercase text-white">Confirm Transformation Ritual</h2>
             </div>
           </div>
           
-          <div className="p-8 max-h-[85vh] overflow-y-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="p-8 max-h-[60vh] overflow-y-auto relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Column 1: Summary & Details */}
               <div className="space-y-6">
-                <div className="p-6 bg-background border border-border/10 space-y-4">
+                <div className="p-6 bg-white/5 border border-white/10 space-y-4">
                   <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-2">Selected Rituals</div>
-                  {selectedServices.map(s => (
-                    <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
-                      <div className="font-black text-[10px] uppercase tracking-tight">{s.name}</div>
-                      <div className="font-black text-sm serif">₹{s.price}</div>
-                    </div>
-                  ))}
-                  <div className="pt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                      <CalendarIcon className="size-3" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Scheduled"} · {selectedTime}
+                  <div className="space-y-3">
+                    {selectedServices.map(s => (
+                      <div key={s.id} className="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                        <div className="font-black text-[10px] uppercase tracking-tight text-white">{s.name}</div>
+                        <div className="font-black text-sm serif text-[#D4AF37]">₹{s.price}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                      <CalendarIcon className="size-3 text-[#D4AF37]" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Scheduled"} · {selectedTime}
                     </div>
                     <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
                   </div>
@@ -773,15 +824,15 @@ export default function ParlourPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
-                      <span className="text-xs font-black uppercase tracking-tight">Redeem Rewards</span>
+                      <span className="text-xs font-black uppercase tracking-tight text-white">Redeem Rewards</span>
                     </div>
-                    <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
+                    <span className="text-[10px] font-bold text-white/50">{points} pts available</span>
                   </div>
                   <div className="space-y-4">
-                    <input className="w-full h-12 px-4 bg-background border border-border/20 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
-                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Redeem Points</Button>
+                    <input className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/30" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
+                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white rounded-none font-black text-[10px] uppercase transition-all duration-300" onClick={handleApplyPoints}>Redeem Points</Button>
                   </div>
-                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
+                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-500 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
                 </div>
               </div>
 
@@ -790,18 +841,18 @@ export default function ParlourPage() {
                 <div className="space-y-4">
                   <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
                   <div className="grid grid-cols-1 gap-4">
-                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('offline')}>
+                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 border-white/10 hover:border-[#D4AF37]/30'}`} onClick={() => setPayType('offline')}>
                       <Clock className="size-6 text-[#D4AF37]" />
                       <div>
-                        <div className="font-black text-xs uppercase tracking-tight">At Parlour</div>
-                        <div className="text-[9px] font-bold opacity-60">Pay after transformation</div>
+                        <div className="font-black text-xs uppercase tracking-tight text-white">At Parlour</div>
+                        <div className="text-[9px] font-bold text-white/50 uppercase">Pay after transformation</div>
                       </div>
                     </div>
-                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('online')}>
+                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 border-white/10 hover:border-[#D4AF37]/30'}`} onClick={() => setPayType('online')}>
                       <Zap className="size-6 text-[#D4AF37]" />
                       <div>
-                        <div className="font-black text-xs uppercase tracking-tight">Instant Pay</div>
-                        <div className="text-[9px] font-bold opacity-60">Priority confirmation</div>
+                        <div className="font-black text-xs uppercase tracking-tight text-white">Instant Pay</div>
+                        <div className="text-[9px] font-bold text-white/50 uppercase">Priority confirmation</div>
                       </div>
                     </div>
                   </div>
@@ -810,8 +861,8 @@ export default function ParlourPage() {
             </div>
           </div>
 
-          <div className="p-8 bg-background border-t border-border/10">
-            <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
+          <div className="p-8 bg-transparent border-t border-[#D4AF37]/10 relative z-10">
+            <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-300" onClick={handleConfirmBooking} disabled={loading}>
               {loading ? "Registering Ritual..." : `Confirm Transformation · ₹${finalTotal.toLocaleString()}`}
             </Button>
           </div>

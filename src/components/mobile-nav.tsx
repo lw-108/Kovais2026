@@ -18,8 +18,7 @@ import {
   Phone,
   Shield,
   FileText,
-  RotateCcw,
-  LayoutGrid
+  RotateCcw
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
@@ -27,11 +26,11 @@ import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
     isLoggedIn: boolean;
-    setIsLoggedIn: (val: boolean) => void;
     isHeaderScrolled?: boolean;
+    onLoginClick?: () => void;
 }
 
-export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
+export function MobileNav({ isLoggedIn, onLoginClick }: MobileNavProps) {
 	const [open, setOpen] = useState(false);
     const [bookingOpen, setBookingOpen] = useState(true); // Default open for better visibility
 
@@ -68,6 +67,7 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
 				onClick={toggleMenu}
 				size="icon"
 				variant="ghost"
+				disabled={open}
 			>
 				<MenuIcon className="size-5 text-foreground" />
 			</Button>
@@ -191,32 +191,37 @@ export function MobileNav({ isLoggedIn, setIsLoggedIn }: MobileNavProps) {
                                 </div>
 
                                 {/* Auth Action */}
-                                <div className="mt-auto pt-6 flex flex-col gap-3">
-                                    {isLoggedIn ? (
-                                        <Button 
-                                            className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20" 
-                                            variant="ghost"
-                                            onClick={() => {
-                                                setIsLoggedIn(false);
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <LogOut className="size-5" />
-                                            <span>Logout</span>
-                                        </Button>
-                                    ) : (
-                                        <Button 
-                                            className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20"
-                                            onClick={() => {
-                                                window.location.href = '/hotel';
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <LogIn className="size-5" />
-                                            <span>Login to Kovais</span>
-                                        </Button>
-                                    )}
-                                </div>
+                                 <div className="mt-auto pt-6 flex flex-col gap-3">
+                                     {isLoggedIn ? (
+                                         <Button 
+                                             className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20" 
+                                             variant="ghost"
+                                             onClick={() => {
+                                                 localStorage.removeItem("loggedInUser");
+                                                 window.dispatchEvent(new Event("auth-change"));
+                                                 setOpen(false);
+                                             }}
+                                         >
+                                             <LogOut className="size-5" />
+                                             <span>Logout</span>
+                                         </Button>
+                                     ) : (
+                                         <Button 
+                                             className="w-full h-14 gap-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none shadow-lg shadow-[#D4AF37]/20"
+                                             onClick={() => {
+                                                 if (onLoginClick) {
+                                                     onLoginClick();
+                                                 } else {
+                                                     window.location.href = '/hotel';
+                                                 }
+                                                 setOpen(false);
+                                             }}
+                                         >
+                                             <LogIn className="size-5" />
+                                             <span>Login to Kovais</span>
+                                         </Button>
+                                     )}
+                                 </div>
                             </div>
                         </motion.div>
                     </Portal>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Check, X, IndianRupee, CreditCard, Users, Clock, Shield, Star } from 'lucide-react'
+import { Check, X, CreditCard, Users, Clock, Shield, Star } from 'lucide-react'
 
 export interface ServiceRequirement {
   id: string

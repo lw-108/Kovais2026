@@ -19,7 +19,8 @@ import {
   ArrowRight,
   Phone,
   Zap,
-  Lock
+  Lock,
+  Calendar as CalendarIcon
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -42,7 +43,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { LazyImage } from "@/components/ui/lazy-image";
-import LuxuryVideo from "@/components/LuxuryVideo";
+import { ServiceGuide } from "@/components/ServiceGuide";
+import { CheckCircle2 } from "lucide-react";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -339,54 +341,73 @@ export default function SpaPage() {
     <div className="min-h-screen bg-transparent">
       <Header />
 
-      <main className="pt-20 pb-24 space-y-24">
-        {/* Luxury Video Hero Section */}
+      <main className="pt-0 pb-24 space-y-24">
+        {/* Luxury Hero Carousel Section */}
         <section className="relative h-[80vh] md:h-[90vh] overflow-hidden">
-          <LuxuryVideo
-            videoSrc="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/For_Bigger_Ble.mp4"
-            posterSrc="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80"
-            title="KOVAIS LUXURY SPA EXPERIENCE"
-            aspectRatio="16/9"
-            showControls={true}
-            className="w-full h-full"
-          />
-          <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.8 }}
-              >
-                <h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
-                  {HERO_SLIDES[currentSlide].title} <br />
-                  <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
-                </h1>
-                <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto mt-8">
-                  {HERO_SLIDES[currentSlide].desc}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
+          <AnimatePresence mode="wait">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-wrap justify-center gap-8 pt-8"
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0"
             >
-              <Button 
-                onClick={() => document.getElementById('ritual-menu')?.scrollIntoView({ behavior: 'smooth' })}
-                className="h-16 px-12 bg-[#D4AF37] hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
-              >
-                Explore Rituals
-              </Button>
-              <Button 
-                className="h-16 px-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
-              >
-                View Wellness Menu
-              </Button>
+              <LazyImage src={HERO_SLIDES[currentSlide].image} alt="Hero image" className="size-full brightness-50" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </motion.div>
+          </AnimatePresence>
+
+          <div className="relative h-full flex items-center justify-center text-center px-6">
+            <div className="max-w-4xl space-y-10">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex items-center justify-center gap-3 text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase"
+              >
+                <div className="size-1.5 bg-[#D4AF37]" />
+                Kovais Luxury Spa Experience
+                <div className="size-1.5 bg-[#D4AF37]" />
+              </motion.div>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h1 className="text-6xl md:text-9xl font-black tracking-tight serif text-white leading-[0.85]">
+                    {HERO_SLIDES[currentSlide].title} <br />
+                    <span className="text-[#D4AF37] italic font-light">{HERO_SLIDES[currentSlide].titleHighlight}</span>
+                  </h1>
+                  <p className="text-white/60 font-medium text-lg md:text-xl max-w-xl mx-auto mt-8">
+                    {HERO_SLIDES[currentSlide].desc}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-wrap justify-center gap-8 pt-8"
+              >
+                <Button 
+                  onClick={() => document.getElementById('ritual-menu')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="h-16 px-12 bg-[#D4AF37] hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+                >
+                  Explore Rituals
+                </Button>
+                <Button 
+                  className="h-16 px-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white hover:text-black text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-500"
+                >
+                  View Wellness Menu
+                </Button>
+              </motion.div>
+            </div>
           </div>
 
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4">
@@ -415,8 +436,47 @@ export default function SpaPage() {
           </div>
         </div>
 
+        {/* Visual Guided Stepper for Spa Page */}
+        <ServiceGuide
+          serviceName="Spa"
+          steps={[
+            {
+              title: "1. Where & Who",
+              titleTa: "1. இடம் மற்றும் நபர்",
+              description: "Choose 'Spa Salon' or 'Home Spa', and select target category (Women, Men, Couples).",
+              descriptionTa: "சாலூன் அல்லது வீட்டிற்கு வர வேண்டுமா என்பதை தேர்வு செய்து, ஆண்கள்/பெண்கள்/ஜோடிகள் என்பதை தேர்ந்தெடுக்கவும்.",
+              icon: Building,
+              anchorId: "ritual-configuration"
+            },
+            {
+              title: "2. Select Rituals",
+              titleTa: "2. சேவைகளை தேர்வு செய்",
+              description: "Look at the Ritual Menu below and click 'Add to Journey' on the treatments you want.",
+              descriptionTa: "கீழே உள்ள மெனுவிலிருந்து உங்களுக்கு தேவையான சேவைகளை 'Add to Journey' என்பதை கிளிக் செய்து தேர்ந்தெடுக்கவும்.",
+              icon: Sparkles,
+              anchorId: "ritual-menu"
+            },
+            {
+              title: "3. Choose Therapist & Time",
+              titleTa: "3. நேரம் மற்றும் நிபுணர்",
+              description: "Pick your preferred professional therapist and choose a suitable time slot.",
+              descriptionTa: "உங்களுக்கு மசாஜ் செய்ய வேண்டிய நிபுணரையும், தகுந்த நேரத்தையும் தேர்ந்தெடுக்கவும்.",
+              icon: Clock,
+              anchorId: "therapist-selection"
+            },
+            {
+              title: "4. Confirm Booking",
+              titleTa: "4. முன்பதிவை உறுதிசெய்",
+              description: "Press 'Schedule Your Escape' to book, or just tap to call/WhatsApp directly!",
+              descriptionTa: "உங்கள் முன்பதிவை உறுதிசெய்ய 'Schedule' பட்டனை அழுத்தவும், அல்லது நேரடியாக எங்களை அழைக்கவும்!",
+              icon: CheckCircle2,
+              anchorId: "booking-section"
+            }
+          ]}
+        />
+
         {/* Ritual Configuration */}
-        <div className="max-w-7xl mx-auto px-6 space-y-1">
+        <div className="max-w-7xl mx-auto px-6 space-y-1" id="ritual-configuration">
           <div className="p-4 bg-background border border-[#D4AF37]/10 shadow-2xl relative">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
               <div className="space-y-2">
@@ -460,7 +520,7 @@ export default function SpaPage() {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start text-left font-bold rounded-none border-[#D4AF37]/10 h-11 bg-background">
-                      <Calendar className="mr-2 h-4 w-4 text-[#D4AF37]" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[#D4AF37]" />
                       {selectedDate ? format(selectedDate, "PPP") : "Select date"}
                     </Button>
                   </PopoverTrigger>
@@ -536,7 +596,7 @@ export default function SpaPage() {
           {/* Right: Specialists & Finalize */}
           <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
             <div className="space-y-12">
-              <div className="space-y-8">
+              <div className="space-y-8" id="therapist-selection">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Select Wellness Therapist</h3>
                 <div className="grid grid-cols-1 gap-4">
                   {THERAPISTS.map((therapist) => (
@@ -577,7 +637,7 @@ export default function SpaPage() {
                 </div>
               </div>
 
-              <div className="pt-12 border-t border-[#D4AF37]/20">
+              <div className="pt-12 border-t border-[#D4AF37]/20" id="booking-section">
                 <div className="flex justify-between items-end mb-8">
                   <div className="space-y-1">
                     <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Estimated Investment</div>
@@ -727,10 +787,14 @@ export default function SpaPage() {
 
       {/* --- Login Modal --- */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="max-w-md p-8 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl">
-          <div className="space-y-8">
+        <DialogContent className="w-[calc(100%-2rem)] md:max-w-md p-8 bg-black/80 backdrop-blur-sm border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-hidden text-white">
+          {/* Frame corner clips */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+          
+          <div className="space-y-8 relative z-10">
             <div className="text-center">
-              <h2 className="text-3xl font-black tracking-tight serif uppercase">Wellness Access</h2>
+              <h2 className="text-3xl font-black tracking-tight serif uppercase text-white">Wellness Access</h2>
               <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">
                 {isNewUser ? "Join our wellness circle" : "Verify your identity"}
               </p>
@@ -739,20 +803,20 @@ export default function SpaPage() {
             <div className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
+                <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" placeholder="Username" value={loginData.username} onChange={e => setLoginData({...loginData, username: e.target.value})} />
               </div>
               {isNewUser && (
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                  <input className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
+                  <input className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" placeholder="Phone Number" value={loginData.phone} onChange={e => setLoginData({...loginData, phone: e.target.value})} />
                 </div>
               )}
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
-                <input type="password" className="w-full h-12 pl-10 pr-4 bg-background border border-border/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
+                <input type="password" className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" placeholder="Password" value={loginData.password} onChange={e => setLoginData({...loginData, password: e.target.value})} />
               </div>
               
-              <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px]" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
+              <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300" onClick={isNewUser ? handleSignup : handleLogin} disabled={loading}>
                 {loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
               </Button>
 
@@ -768,29 +832,35 @@ export default function SpaPage() {
 
       {/* --- Booking Modal --- */}
       <Dialog open={showBookingModal} onOpenChange={setShowBookingModal}>
-        <DialogContent className="max-w-6xl p-0 bg-background border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-visible">
-          <div className="p-8 bg-background border-b border-[#D4AF37]/10">
+        <DialogContent className="w-[calc(100%-2rem)] max-w-5xl p-0 bg-black/85 backdrop-blur-sm border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-hidden">
+          {/* Frame corner clips */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+          
+          <div className="p-8 bg-transparent border-b border-[#D4AF37]/10 relative z-10">
             <div className="flex items-center gap-3">
               <Flower2 className="size-5 text-[#D4AF37]" />
-              <h2 className="text-2xl font-black tracking-tight serif uppercase">Confirm Ritual Journey</h2>
+              <h2 className="text-2xl font-black tracking-tight serif uppercase text-white">Confirm Ritual Journey</h2>
             </div>
           </div>
           
-          <div className="p-8 max-h-[85vh] overflow-y-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="p-8 max-h-[60vh] overflow-y-auto relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Column 1: Summary & Details */}
               <div className="space-y-6">
-                <div className="p-6 bg-background border border-border/10 space-y-4">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-2">Selected Rituals</div>
-                  {selectedServices.map(s => (
-                    <div key={s.id} className="flex justify-between items-center border-b border-border/5 pb-2 last:border-0 last:pb-0">
-                      <div className="font-black text-[10px] uppercase tracking-tight">{s.name}</div>
-                      <div className="font-black text-sm serif">₹{s.price}</div>
-                    </div>
-                  ))}
-                  <div className="pt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                      <Calendar className="size-3" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Select date"} · {selectedTime}
+                <div className="p-6 bg-white/5 border border-white/10 space-y-4">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-2">Selected Rituals (Required)</div>
+                  <div className="space-y-3">
+                    {selectedServices.map(s => (
+                      <div key={s.id} className="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                        <div className="font-black text-[10px] uppercase tracking-tight text-white">{s.name}</div>
+                        <div className="font-black text-sm serif text-[#D4AF37]">₹{s.price}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                      <CalendarIcon className="size-3 text-[#D4AF37]" /> {selectedDate ? format(selectedDate, "EEE, dd MMM") : "Select date"} · {selectedTime}
                     </div>
                     <div className="text-xl font-black serif text-[#D4AF37]">₹{finalTotal.toLocaleString()}</div>
                   </div>
@@ -803,15 +873,15 @@ export default function SpaPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Star className="size-4 text-[#D4AF37] fill-[#D4AF37]" />
-                      <span className="text-xs font-black uppercase tracking-tight">Redeem Rewards</span>
+                      <span className="text-xs font-black uppercase tracking-tight text-white">Redeem Rewards</span>
                     </div>
-                    <span className="text-[10px] font-bold text-muted-foreground">{points} pts available</span>
+                    <span className="text-[10px] font-bold text-white/50">{points} pts available</span>
                   </div>
                   <div className="space-y-4">
-                    <input className="w-full h-12 px-4 bg-background border border-border/20 rounded-none focus:outline-none focus:border-[#D4AF37] text-foreground" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
-                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-none font-black text-[10px] uppercase" onClick={handleApplyPoints}>Redeem Points</Button>
+                    <input className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/30" placeholder="Enter points" value={pointsInput} onChange={e => setPointsInput(e.target.value)} />
+                    <Button className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white rounded-none font-black text-[10px] uppercase transition-all duration-300" onClick={handleApplyPoints}>Redeem Points</Button>
                   </div>
-                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-600 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
+                  {usedPoints > 0 && <div className="text-[10px] font-bold text-green-500 flex items-center gap-2"><Check className="size-3" /> ₹{discount.toFixed(2)} savings applied</div>}
                 </div>
               </div>
 
@@ -820,18 +890,18 @@ export default function SpaPage() {
                 <div className="space-y-4">
                   <label className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Payment Ritual</label>
                   <div className="grid grid-cols-1 gap-4">
-                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('offline')}>
+                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'offline' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 border-white/10 hover:border-[#D4AF37]/30'}`} onClick={() => setPayType('offline')}>
                       <Clock className="size-6 text-[#D4AF37]" />
                       <div>
-                        <div className="font-black text-xs uppercase tracking-tight">At Sanctuary</div>
-                        <div className="text-[9px] font-bold opacity-60">Pay after ritual</div>
+                        <div className="font-black text-xs uppercase tracking-tight text-white">At Sanctuary</div>
+                        <div className="text-[9px] font-bold text-white/50 uppercase">Pay after ritual</div>
                       </div>
                     </div>
-                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'bg-background border-border/10'}`} onClick={() => setPayType('online')}>
+                    <div className={`p-5 border cursor-pointer flex items-center gap-4 transition-all rounded-none ${payType === 'online' ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'bg-white/5 border-white/10 hover:border-[#D4AF37]/30'}`} onClick={() => setPayType('online')}>
                       <Zap className="size-6 text-[#D4AF37]" />
                       <div>
-                        <div className="font-black text-xs uppercase tracking-tight">Instant Pay</div>
-                        <div className="text-[9px] font-bold opacity-60">Priority confirmation</div>
+                        <div className="font-black text-xs uppercase tracking-tight text-white">Instant Pay</div>
+                        <div className="text-[9px] font-bold text-white/50 uppercase">Priority confirmation</div>
                       </div>
                     </div>
                   </div>
@@ -840,8 +910,8 @@ export default function SpaPage() {
             </div>
           </div>
 
-          <div className="p-8 bg-background border-t border-border/10">
-            <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]" onClick={handleConfirmBooking} disabled={loading}>
+          <div className="p-8 bg-transparent border-t border-[#D4AF37]/10 relative z-10">
+            <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white font-black uppercase tracking-widest text-[11px] rounded-none transition-all duration-300" onClick={handleConfirmBooking} disabled={loading}>
               {loading ? "Registering Journey..." : `Confirm Journey · ₹${finalTotal.toLocaleString()}`}
             </Button>
           </div>

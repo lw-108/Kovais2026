@@ -35,7 +35,6 @@ export default function LuxuryVideo({
   const [volume, setVolume] = useState(1);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ x: 50, y: 50 });
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -121,9 +120,8 @@ export default function LuxuryVideo({
     setMaskPosition({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+   const handleMouseDown = () => {
     setIsDragging(true);
-    setDragStart({ x: e.clientX - maskPosition.x, y: e.clientY - maskPosition.y });
   };
 
   const handleMouseUp = () => {
@@ -166,6 +164,7 @@ export default function LuxuryVideo({
         ref={videoRef}
         src={videoSrc}
         poster={posterSrc}
+        title={title}
         className={`w-full h-full object-contain transition-transform duration-300`}
         style={{ 
           transform: `scale(${zoomLevel})`,
@@ -314,13 +313,13 @@ export default function LuxuryVideo({
             {/* Skip & Fullscreen */}
             <div className="flex items-center gap-2">
               <button
-                onClick={() => videoRef.current?.skipBackward?.()}
+                onClick={() => { if (videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10); }}
                 className="flex items-center justify-center w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full transition-all"
               >
                 <SkipBack className="w-4 h-4 text-white" />
               </button>
               <button
-                onClick={() => videoRef.current?.skipForward?.()}
+                onClick={() => { if (videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration || 0, videoRef.current.currentTime + 10); }}
                 className="flex items-center justify-center w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full transition-all"
               >
                 <SkipForward className="w-4 h-4 text-white" />

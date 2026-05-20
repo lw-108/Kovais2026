@@ -1,0 +1,38 @@
+/* GlassCard.css */
+/* Glassmorphism card with primary color corner accents */
+.glass-card {
+  @apply relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4;
+  /* Ensure content stays readable */
+  color: var(--foreground);
+  overflow: hidden;
+}
+/* Corner accents using pseudo-elements */
+.glass-card::before,
+.glass-card::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--primary);
+  border-radius: 2px;
+}
+/* Top-left corner */
+.glass-card::before {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+/* Bottom-right corner */
+.glass-card::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .glass-card {
+    @apply p-2;
+  }
+}

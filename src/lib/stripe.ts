@@ -22,7 +22,7 @@ export const createCheckoutSession = async (priceId: string) => {
 
     const stripe = await stripePromise
     if (stripe) {
-      const { error } = await stripe.redirectToCheckout({
+      const { error } = await (stripe as any).redirectToCheckout({
         sessionId: session.id,
       })
       

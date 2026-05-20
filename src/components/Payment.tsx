@@ -1,5 +1,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import { CheckCircle, CreditCard } from 'lucide-react';
+import './GlassCard.css';
+import './ModalStyles.css';
 
 export const PaymentPage = ({ show, onHide, bookingSummary, onPaymentSuccess, onBookNowPayLater, points, onUsePoints }: any) => {
   return (
@@ -7,8 +9,8 @@ export const PaymentPage = ({ show, onHide, bookingSummary, onPaymentSuccess, on
       <Modal.Header closeButton className="border-0">
         <Modal.Title className="fw-bold">Finalize Your Booking</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="p-4">
-        <div className="mb-4 p-3 bg-light rounded">
+      <Modal.Body className="glass-card p-4">
+        <div className="glass-card mb-4 p-3 rounded">
           <h6 className="fw-bold mb-2">Booking Summary</h6>
           <div className="d-flex justify-content-between small">
             <span>Service: {bookingSummary.services.map((s: any) => s.name).join(', ')}</span>
@@ -19,16 +21,22 @@ export const PaymentPage = ({ show, onHide, bookingSummary, onPaymentSuccess, on
           </div>
         </div>
 
-        {points > 0 && (
-          <div className="mb-4 p-3 border border-warning rounded bg-warning bg-opacity-10">
-            <h6 className="fw-bold mb-2">Loyalty Points</h6>
-            <p className="small mb-2">You have {points} points. Use them for a discount!</p>
-            <div className="d-flex gap-2">
-              <input type="number" className="form-control form-control-sm" placeholder="Points to use" />
-              <Button variant="warning" size="sm" onClick={() => onUsePoints(50, 5)}>Apply</Button>
-            </div>
+          <div className="glass-card mb-4">
+            <h6 className="fw-bold mb-2 text-white">Ritual Required</h6>
+            <p className="mb-0 text-white/70">Please confirm that you have completed the necessary ritual before proceeding.</p>
           </div>
-        )}
+          {/* Identity Verified */}
+<div className="glass-card mb-4"><h6 className="fw-bold mb-2 text-white">Identity Verified</h6><p className="mb-0 text-white/70">Your identity has been verified. You may continue with the payment.</p></div>
+          {points > 0 && (
+            <div className="mb-4 p-3 border border-warning rounded bg-warning bg-opacity-10">
+              <h6 className="fw-bold mb-2">Loyalty Points</h6>
+              <p className="small mb-2">You have {points} points. Use them for a discount!</p>
+              <div className="d-flex gap-2">
+                <input type="number" className="form-control form-control-sm" placeholder="Points to use" />
+                <Button variant="warning" size="sm" onClick={() => onUsePoints(50, 5)}>Apply</Button>
+              </div>
+            </div>
+          )}
 
         <div className="d-grid gap-3">
           <Button variant="primary" size="lg" className="d-flex align-items-center justify-content-center gap-2" onClick={() => onPaymentSuccess({ transactionId: 'TXN' + Math.random().toString(36).substr(2, 9), amount: bookingSummary.amount, paymentMethod: 'Card' })}>

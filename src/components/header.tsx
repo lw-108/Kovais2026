@@ -6,14 +6,21 @@ import { useScroll } from "@/hooks/use-scroll";
 import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/desktop-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { LogIn, LogOut, User as UserIcon } from "lucide-react";
+import { LogIn, LogOut, User as UserIcon, Lock, Phone, User } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { userService } from "@/lib/data-service";
+import Swal from "sweetalert2";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export function Header() {
 	const scrolled = useScroll(10);
     const [user, setUser] = useState<any>(null);
     const [points, setPoints] = useState(0);
+
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [isNewUser, setIsNewUser] = useState(false);
+    const [loginData, setLoginData] = useState({ username: "", password: "", phone: "" });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         let lastUserStr = "";
@@ -53,6 +60,34 @@ export function Header() {
     const handleLogout = () => {
         localStorage.removeItem("loggedInUser");
         setUser(null);
+    };
+
+    const handleLogin = async () => {
+        setLoading(true);
+        try {
+            const u = await userService.login(loginData.username, loginData.password);
+            setUser(u);
+            setPoints(u.points);
+            setShowLoginModal(false);
+            Swal.fire({ icon: 'success', title: 'Identity Verified', text: "Welcome back to your sanctuary" });
+        } catch (e) {
+            Swal.fire({ icon: 'error', title: 'Verification Failed', text: "Invalid credentials" });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSignup = async () => {
+        setLoading(true);
+        try {
+            await userService.signup(loginData.username, loginData.phone, loginData.password);
+            setIsNewUser(false);
+            Swal.fire({ icon: 'success', title: 'Profile Created', text: "Your wellness journey begins now" });
+        } catch (e) {
+            Swal.fire({ icon: 'error', title: 'Error', text: "Profile creation failed" });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const hoverGold = "hover:text-[#D4AF37] [&_svg]:hover:text-[#D4AF37] transition-all duration-200";
@@ -110,7 +145,7 @@ export function Header() {
 						<Button 
 							variant="outline" 
 							size="lg" 
-							onClick={() => window.location.href = '/hotel'}
+							onClick={() => setShowLoginModal(true)}
 							className="hidden md:flex gap-2 px-6 py-3 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300 border-none shadow-lg shadow-[#D4AF37]/20"
 						>
 							<LogIn className="size-4" />
@@ -120,11 +155,81 @@ export function Header() {
 					
 					<MobileNav 
 						isLoggedIn={!!user} 
-						setIsLoggedIn={() => {}} 
 						isHeaderScrolled={scrolled}
+						onLoginClick={() => setShowLoginModal(true)}
 					/>
 				</div>
 			</nav>
+
+			{/* --- Unified Elegant Login Modal --- */}
+			<Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
+				<DialogContent className="w-[calc(100%-2rem)] md:max-w-md p-8 bg-black/80 backdrop-blur-sm border border-[#D4AF37]/20 rounded-none shadow-2xl overflow-hidden text-white">
+					{/* Frame corner clips */}
+					<div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37] pointer-events-none" />
+					<div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37] pointer-events-none" />
+					
+					<div className="space-y-8 relative z-10">
+						<div className="text-center">
+							<DialogTitle className="text-3xl font-black tracking-tight serif uppercase text-white">
+								Wellness Access
+							</DialogTitle>
+							<DialogDescription className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2 block">
+								{isNewUser ? "Join our wellness circle" : "Verify your identity"}
+							</DialogDescription>
+						</div>
+						
+						<div className="space-y-4">
+							<div className="relative">
+								<User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+								<input 
+									className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" 
+									placeholder="Username" 
+									value={loginData.username} 
+									onChange={e => setLoginData({...loginData, username: e.target.value})} 
+								/>
+							</div>
+							{isNewUser && (
+								<div className="relative">
+									<Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+									<input 
+										className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" 
+										placeholder="Phone Number" 
+										value={loginData.phone} 
+										onChange={e => setLoginData({...loginData, phone: e.target.value})} 
+									/>
+								</div>
+							)}
+							<div className="relative">
+								<Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#D4AF37]" />
+								<input 
+									type="password" 
+									className="w-full h-12 pl-10 pr-4 bg-white/5 border border-white/10 rounded-none focus:outline-none focus:border-[#D4AF37] text-white placeholder:text-white/40" 
+									placeholder="Password" 
+									value={loginData.password} 
+									onChange={e => setLoginData({...loginData, password: e.target.value})} 
+								/>
+							</div>
+							
+							<Button 
+								className="w-full h-12 bg-[#D4AF37] hover:bg-[#B8962E] text-stone-950 hover:text-white font-black uppercase tracking-widest text-[10px] rounded-none transition-all duration-300" 
+								onClick={isNewUser ? handleSignup : handleLogin} 
+								disabled={loading}
+							>
+								{loading ? "Processing..." : isNewUser ? "Create Profile" : "Authenticate"}
+							</Button>
+
+							<div className="text-center">
+								<button 
+									className="text-[10px] font-black uppercase text-[#D4AF37] hover:underline" 
+									onClick={() => setIsNewUser(!isNewUser)}
+								>
+									{isNewUser ? "Member already? Login" : "New here? Begin journey"}
+								</button>
+							</div>
+						</div>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</header>
 	);
 }

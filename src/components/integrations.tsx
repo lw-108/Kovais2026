@@ -24,17 +24,17 @@ const data: Integration[] = [
 	{
 		name: "Master Grooming",
 		icon: <Scissors className="size-5 md:size-6 text-[#D4AF37]" />,
-        href: "/grooming"
+        href: "/barber"
 	},
 	{
 		name: "Special Care",
 		icon: <HeartPulse className="size-5 md:size-6 text-[#D4AF37]" />,
-        href: "/special-care"
+        href: "/funeral"
 	},
 	{
 		name: "Function Services",
 		icon: <CalendarDays className="size-5 md:size-6 text-[#D4AF37]" />,
-        href: "/booking/function"
+        href: "/function"
 	},
 	{
 		name: "Luxury Hotel",
@@ -49,7 +49,7 @@ const data: Integration[] = [
 	{
 		name: "Fitness Studio",
 		icon: <Dumbbell className="size-5 md:size-6 text-[#D4AF37]" />,
-        href: "/fitness"
+        href: "/gym"
 	},
 ];
 

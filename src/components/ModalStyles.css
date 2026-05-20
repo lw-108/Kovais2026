@@ -1,0 +1,9 @@
+/* ModalStyles.css */
+/* Make the Bootstrap modal background transparent and apply a subtle blur */
+.modal-content {
+  @apply bg-transparent backdrop-blur-sm border-0 rounded-lg overflow-hidden;
+}
+/* Ensure the modal backdrop (overlay) is also semi-transparent */
+.modal-backdrop.show {
+  @apply bg-black/30;
+}

@@ -41,6 +41,8 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { LazyImage } from "@/components/ui/lazy-image";
+import { ServiceGuide } from "@/components/ServiceGuide";
+import { CheckCircle2, Building, Sparkles as SparklesIcon } from "lucide-react";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -307,8 +309,47 @@ export default function LuxuryBarber() {
           </div>
         </section>
 
+        {/* Visual Guided Stepper for Luxury Barber */}
+        <ServiceGuide
+          serviceName="Barber & Grooming"
+          steps={[
+            {
+              title: "1. Select Category",
+              titleTa: "1. பிரிவு தேர்வு",
+              description: "Choose Location ('Salon' or 'Home') and Category (Men, Women, Kids).",
+              descriptionTa: "இடம் (சாலூன் / வீடு) மற்றும் வகையை (ஆண்கள், பெண்கள், குழந்தைகள்) தேர்ந்தெடுக்கவும்.",
+              icon: Building,
+              anchorId: "ritual-selection-bar"
+            },
+            {
+              title: "2. Choose Services",
+              titleTa: "2. சேவைகளைத் தேர்ந்தெடு",
+              description: "Browse the Ritual Menu below and select the treatments you want.",
+              descriptionTa: "கீழே உள்ள மெனுவிலிருந்து உங்களுக்கு தேவையான சேவைகளைத் தேர்ந்தெடுக்கவும்.",
+              icon: SparklesIcon,
+              anchorId: "service-grid-section"
+            },
+            {
+              title: "3. Choose Barber & Time",
+              titleTa: "3. நிபுணர் மற்றும் நேரம்",
+              description: "Pick your preferred specialist stylist and select an available time slot.",
+              descriptionTa: "உங்களுக்கு பிடித்த ஹேர் ஸ்டைலிஸ்ட் மற்றும் நேரத்தை தேர்ந்தெடுக்கவும்.",
+              icon: Clock,
+              anchorId: "specialist-time-section"
+            },
+            {
+              title: "4. Secure Booking",
+              titleTa: "4. முன்பதிவு செய்",
+              description: "Click 'Schedule Ritual' to complete checkout, or tap to call/WhatsApp directly!",
+              descriptionTa: "உங்கள் முன்பதிவை உறுதிசெய்ய 'Schedule Ritual' பட்டனை அழுத்தவும், அல்லது நேரடியாக எங்களை அழைக்கவும்!",
+              icon: CheckCircle2,
+              anchorId: "booking-checkout-section"
+            }
+          ]}
+        />
+
         {/* Ritual Selection Bar */}
-        <div className="space-y-1">
+        <div className="space-y-1" id="ritual-selection-bar">
           <div className="p-2 bg-card/40 backdrop-blur-xl border border-border/10 shadow-2xl relative">
             <div className="absolute top-0 left-0 size-4 border-t border-l border-[#D4AF37]/40" />
             <div className="absolute bottom-0 right-0 size-4 border-b border-r border-[#D4AF37]/40" />
@@ -400,7 +441,7 @@ export default function LuxuryBarber() {
         </div>
 
         {/* Services & Booking Grid */}
-        <div className="grid lg:grid-cols-2 gap-1 px-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20">
+        <div className="grid lg:grid-cols-2 gap-1 px-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20" id="service-grid-section">
           {/* Left: Service Menu */}
           <div className="p-6 bg-background space-y-6">
             <div className="flex items-center justify-between">
@@ -443,7 +484,7 @@ export default function LuxuryBarber() {
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-12 bg-background flex flex-col justify-between">
+          <div className="p-8 md:p-12 bg-background flex flex-col justify-between" id="specialist-time-section">
             <div className="space-y-10">
               <div className="space-y-6">
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#D4AF37]">1. Select Specialist</h3>
@@ -491,7 +532,7 @@ export default function LuxuryBarber() {
                 </div>
               </div>
 
-              <div className="pt-10 border-t border-border/10">
+              <div className="pt-10 border-t border-border/10" id="booking-checkout-section">
                 <Button 
                   className="w-full h-14 rounded-none bg-[#D4AF37] hover:bg-[#B8962E] text-white font-black uppercase tracking-widest text-[11px]"
                   onClick={handleBookingClick}

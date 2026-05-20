@@ -36,6 +36,7 @@ export interface RazorpayOptions {
   timeout: number;
   callback_url?: string;
   redirect: boolean;
+  config?: any;
 }
 
 export interface RazorpayResponse {

@@ -57,18 +57,17 @@
   import { Header } from "@/components/header";
   import { Footer } from "@/components/footer";
   import {
-    Dialog,
-    DialogContent,
-  } from "@/components/ui/dialog";
-  import { LazyImage } from "@/components/ui/lazy-image";
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import { LazyImage } from "@/components/ui/lazy-image";
+import { ServiceGuide } from "@/components/ServiceGuide";
+import { CheckCircle2, Building } from "lucide-react";
 
 
   import { userService, bookingService, ROOMS } from "@/lib/data-service";
 
   import hotelImg from "@/assets/hotel.jpeg";
-  import spaImg from "@/assets/spa.jpeg";
-  import gymImg from "@/assets/gym.jpeg";
-  import barberImg from "@/assets/barber.jpeg";
 
   import room1 from "@/assets/hotelImages/1.png";
   import room2 from "@/assets/hotelImages/2.png";
@@ -272,6 +271,45 @@
             <p className="text-muted-foreground font-medium text-lg">Curated stays with exceptional comfort</p>
           </div>
 
+          {/* Visual Guided Stepper for Hotel Page */}
+          <ServiceGuide
+            serviceName="Hotel Stay"
+            steps={[
+              {
+                title: "1. Select Destination",
+                titleTa: "1. இடத்தை தேர்ந்தெடு",
+                description: "Select your destination and preferred room type from the dropdown.",
+                descriptionTa: "சாலூன் அல்லது தங்குமிடம் மற்றும் உங்களுக்கு தேவையான அறை வகையை தேர்ந்தெடுக்கவும்.",
+                icon: Building,
+                anchorId: "location-selector"
+              },
+              {
+                title: "2. Choose Dates",
+                titleTa: "2. தேதிகளை தேர்வு செய்",
+                description: "Select check-in and check-out dates using the calendar popovers.",
+                descriptionTa: "வருதல் மற்றும் புறப்படுதல் தேதிகளை காலண்டர் மூலமாக தேர்ந்தெடுக்கவும்.",
+                icon: CalendarIcon,
+                anchorId: "location-selector"
+              },
+              {
+                title: "3. Rooms & Guests",
+                titleTa: "3. அறைகள் மற்றும் நபர்கள்",
+                description: "Adjust the count of rooms and guests using the plus/minus buttons.",
+                descriptionTa: "அறைகளின் எண்ணிக்கை மற்றும் தங்கும் நபர்களின் எண்ணிக்கையை அமைக்கவும்.",
+                icon: Clock,
+                anchorId: "room-guest-selectors"
+              },
+              {
+                title: "4. Book Stay",
+                titleTa: "4. தங்குமிடத்தை புக் செய்",
+                description: "Press 'Book Now' to verify and confirm your stay, or tap to call/WhatsApp directly!",
+                descriptionTa: "முன்பதிவை உறுதிசெய்ய 'Book Now' பட்டனை அழுத்தவும், அல்லது எங்களை அழைக்கவும்!",
+                icon: CheckCircle2,
+                anchorId: "booking-section"
+              }
+            ]}
+          />
+
           {/* Search Bar Wrapper */}
           <div className="space-y-1">
               {/* Pricing Summary Row */}
@@ -297,7 +335,7 @@
                   )}
               </AnimatePresence>
 
-              <div className="p-2 bg-card/40 backdrop-blur-xl border border-border/10 shadow-2xl relative">
+              <div className="p-2 bg-card/40 backdrop-blur-xl border border-border/10 shadow-2xl relative" id="location-selector">
                   <div className="absolute top-0 left-0 size-4 border-t border-l border-[#D4AF37]/40" />
                   <div className="absolute bottom-0 right-0 size-4 border-b border-r border-[#D4AF37]/40" />
 
@@ -493,7 +531,7 @@
                 </div>
 
                 {/* Selection Controls */}
-                <div className="p-6 bg-muted/30 border border-border/10 grid grid-cols-2 gap-8 items-center">
+                <div className="p-6 bg-muted/30 border border-border/10 grid grid-cols-2 gap-8 items-center" id="room-guest-selectors">
                   <div className="space-y-4">
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">Rooms</label>
                       <div className="flex items-center gap-4">
@@ -513,7 +551,7 @@
                 </div>
 
                 {/* Action Bar - Re-engineered for Symmetry and Elegance */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pt-10" id="booking-section">
                   <Button 
                     variant="outline" 
                     className="h-16 md:h-20 rounded-none border-white/10 bg-white/5 backdrop-blur-xl font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px] text-white hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/5 transition-all duration-500 group flex flex-col items-center justify-center gap-2" 

@@ -1,18 +1,7 @@
-import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { LazyImage } from "@/components/ui/lazy-image";
-
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
-// Import images
-import img1 from "@/assets/1.jpg";
-import img2 from "@/assets/2.jpg";
-import img3 from "@/assets/3.png";
-
-const images = [img1, img2, img3];
 
 export function HeroSection() {
 	return (
@@ -30,9 +19,7 @@ export function HeroSection() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.8 }}
-					className={cn(
-						"group flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md p-1 pr-3"
-					)}
+					className="group flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md p-1 pr-3"
 				>
 					<div className="rounded-full bg-primary/20 px-2 py-0.5">
 						<p className="font-bold text-[10px] text-primary uppercase tracking-tighter">Kovais</p>

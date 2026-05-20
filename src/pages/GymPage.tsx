@@ -14,6 +14,7 @@ import {
   Trophy,
   Activity,
   Award,
+  Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -29,8 +30,8 @@ import {
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { LazyImage } from "@/components/ui/lazy-image";
-
-
+import { ServiceGuide } from "@/components/ServiceGuide";
+import { CheckCircle2, Building } from "lucide-react";
 
 import { userService, bookingService, GYM_PLANS } from "@/lib/data-service";
 
@@ -340,6 +341,45 @@ export default function GymPage() {
             ))}
           </div>
         </div>
+
+        {/* Visual Guided Stepper for Gym Page */}
+        <ServiceGuide
+          serviceName="Gym"
+          steps={[
+            {
+              title: "1. Select Category",
+              titleTa: "1. பிரிவு தேர்வு",
+              description: "Choose the target category (Men or Women) for your training program.",
+              descriptionTa: "உங்கள் பயிற்சிக்கான பிரிவை (ஆண்கள் அல்லது பெண்கள்) தேர்ந்தெடுக்கவும்.",
+              icon: Building,
+              anchorId: "gender-selection"
+            },
+            {
+              title: "2. Your Age Group",
+              titleTa: "2. வயது வரம்பு",
+              description: "Select your age group (Under 18, Above 20, Above 30) for safety classification.",
+              descriptionTa: "உங்கள் பாதுகாப்பு வகைப்பாட்டிற்காக உங்கள் வயது வரம்பைத் தேர்ந்தெடுக்கவும்.",
+              icon: CheckCircle2,
+              anchorId: "age-selection"
+            },
+            {
+              title: "3. Choose Schedule",
+              titleTa: "3. அட்டவணை தேர்வு",
+              description: "Pick your start date and preferred training window/time slot.",
+              descriptionTa: "பயிற்சி துவங்கும் தேதி மற்றும் நேரத்தை தேர்ந்தெடுக்கவும்.",
+              icon: Clock,
+              anchorId: "schedule-selection"
+            },
+            {
+              title: "4. Select Plan",
+              titleTa: "4. திட்டத்தை தேர்வு செய்",
+              description: "Choose the membership plan duration and tap to join, or call/WhatsApp us!",
+              descriptionTa: "உங்களுக்கு தேவையான கால அளவைத் தேர்வு செய்து முன்பதிவு செய்யவும், அல்லது அழைக்கவும்!",
+              icon: Sparkles,
+              anchorId: "membership-plans"
+            }
+          ]}
+        />
 
         {/* Stats Strip */}
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">

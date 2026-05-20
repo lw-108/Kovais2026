@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-<<<<<<< HEAD
 // import { LazyImage } from './ui/lazy-image';
-=======
->>>>>>> 2b4b064e4c9728670a322a4a94ccf12cb4568311
 
 // Desktop Images
 import img1 from '../assets/1.jpg';
@@ -78,45 +75,37 @@ const images = [
 
 export const LuxuryCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Robust mobile detection
-    const mql = window.matchMedia('(max-width: 768px)');
-    const onChange = () => setIsMobile(mql.matches);
-    
-    setIsMobile(mql.matches);
-    mql.addEventListener('change', onChange);
-    
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 4000);
     
     return () => {
-      mql.removeEventListener('change', onChange);
       clearInterval(timer);
     };
   }, []);
 
-  const currentImage = isMobile ? images[currentIndex].mobile : images[currentIndex].desktop;
-
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden bg-[#0a0a0a] flex items-center justify-center">
+    <div className="relative w-full h-[calc(100dvh-5rem)] overflow-hidden flex items-center justify-center">
       <AnimatePresence mode="wait">
         <motion.div
-          key={`${currentIndex}-${isMobile}`}
+          key={currentIndex}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeInOut" }}
           className="absolute inset-0 w-full h-full flex items-center justify-center"
         >
-          <img
-            src={currentImage}
-            alt={images[currentIndex].title}
-            loading="eager"
-            className="w-full h-full object-contain z-0"
-          />
+          <picture className="absolute inset-0 w-full h-full z-0">
+            <source media="(max-width: 768px)" srcSet={images[currentIndex].mobile} />
+            <img
+              src={images[currentIndex].desktop}
+              alt={images[currentIndex].title}
+              loading="eager"
+              className="w-full h-full object-cover"
+            />
+          </picture>
 
           {/* Vignette Overlay for readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10 pointer-events-none" />

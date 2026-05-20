@@ -39,6 +39,8 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { LazyImage } from "@/components/ui/lazy-image";
+import { ServiceGuide } from "@/components/ServiceGuide";
+import { CheckCircle2, Building } from "lucide-react";
 
 import { userService, bookingService } from "@/lib/data-service";
 
@@ -348,8 +350,47 @@ export default function FunctionPage() {
           </div>
         </section>
 
+        {/* Visual Guided Stepper for Function Page */}
+        <ServiceGuide
+          serviceName="Function Grooming"
+          steps={[
+            {
+              title: "1. Select Type & Date",
+              titleTa: "1. வகை மற்றும் தேதி",
+              description: "Select Location ('Salon' or 'Doorstep') and choose your celebration date.",
+              descriptionTa: "இடம் (சாலூன் / வீடு) மற்றும் உங்களது சுபமுகூர்த்த தேதியை தேர்ந்தெடுக்கவும்.",
+              icon: Building,
+              anchorId: "ritual-selection-bar"
+            },
+            {
+              title: "2. Choose Packages",
+              titleTa: "2. பேக்கேஜ் தேர்வு",
+              description: "Browse the Function Packages menu and click on the styling package you need.",
+              descriptionTa: "விழா அலங்கார பேக்கேஜ்களில் உங்களுக்கு தேவையானதை தேர்ந்தெடுக்கவும்.",
+              icon: Sparkles,
+              anchorId: "ritual-grid"
+            },
+            {
+              title: "3. Choose Specialist & Time",
+              titleTa: "3. நிபுணர் மற்றும் நேரம்",
+              description: "Select your preferred styling specialist and choose a suitable time slot.",
+              descriptionTa: "உங்களுக்கு அலங்காரம் செய்ய வேண்டிய நிபுணரையும், நேரத்தையும் தேர்ந்தெடுக்கவும்.",
+              icon: Clock,
+              anchorId: "specialist-time-section"
+            },
+            {
+              title: "4. Request Booking",
+              titleTa: "4. முன்பதிவு செய்",
+              description: "Click 'Schedule Ritual' to complete the checkout, or tap to call/WhatsApp directly!",
+              descriptionTa: "உங்கள் முன்பதிவை உறுதிசெய்ய 'Schedule Ritual' பட்டனை அழுத்தவும், அல்லது நேரடியாக எங்களை அழைக்கவும்!",
+              icon: CheckCircle2,
+              anchorId: "booking-checkout-section"
+            }
+          ]}
+        />
+
         {/* Ritual Selection Bar */}
-        <div className="max-w-7xl mx-auto px-6 space-y-1">
+        <div className="max-w-7xl mx-auto px-6 space-y-1" id="ritual-selection-bar">
           <div className="p-2 bg-card/40 backdrop-blur-xl border border-border/10 shadow-2xl relative">
             <div className="absolute top-0 left-0 size-4 border-t border-l border-[#D4AF37]/40" />
             <div className="absolute bottom-0 right-0 size-4 border-b border-r border-[#D4AF37]/40" />
@@ -455,7 +496,7 @@ export default function FunctionPage() {
           </div>
 
           {/* Right: Specialists & Finalize */}
-          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10">
+          <div className="p-8 md:p-16 bg-background flex flex-col justify-between border-l border-[#D4AF37]/10" id="specialist-time-section">
             <div className="space-y-12">
               <div className="space-y-8">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">I. Choose Specialist</h3>
@@ -498,7 +539,7 @@ export default function FunctionPage() {
                 </div>
               </div>
 
-              <div className="pt-12 border-t border-[#D4AF37]/20">
+              <div className="pt-12 border-t border-[#D4AF37]/20" id="booking-checkout-section">
                 <div className="flex justify-between items-end mb-8">
                   <div className="space-y-1">
                     <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Ritual Value</div>
