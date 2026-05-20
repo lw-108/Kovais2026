@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LazyImage } from './ui/lazy-image';
+// import { LazyImage } from './ui/lazy-image';
 
 // Desktop Images
 import img1 from '../assets/1.jpg';
